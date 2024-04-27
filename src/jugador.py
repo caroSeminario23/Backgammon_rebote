@@ -1,11 +1,6 @@
 from src import Ficha
 
 class Jugador:
-    def __init__(self, color):
-        # Inicializa un jugador con un color de ficha
-        self.color = color
-        self.fichas = [Ficha(color, 'libre') for _ in range(15)]  # Cada jugador comienza con 15 fichas libres
-
-    def jugar_turno(self, tablero):
-        # Decide qué movimiento hacer basándose en el estado actual del tablero
-        pass
+    def __init__(self, color): # Inicializa un jugador con un color de ficha (rojo o amarillo)
+        self.color = color # 'R' o 'A'
+        self.fichas = [Ficha(color, 'ordinaria') for _ in range(15)]  # Cada jugador comienza con 15 fichas ordinarias
