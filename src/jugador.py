@@ -1,4 +1,4 @@
-# from src import Tablero, Juego, Dado, Ficha
+from src import Ficha
 
 class Jugador:
     def __init__(self, color):
