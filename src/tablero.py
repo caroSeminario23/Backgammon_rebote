@@ -1,7 +1,10 @@
+# from src import Jugador, Juego, Dado, Ficha
+
 class Tablero:
     def __init__(self):
-        # Inicializa el tablero de juego
-        pass
+        # Inicializa un tablero de 12x2
+        self.tablero = [['v' for _ in range(12)] for _ in range(2)] # 'v' representa una casilla vacía en el tablero
+
 
     def mover_ficha(self, ficha, movimiento):
         # Mueve una ficha en el tablero según las reglas del backgammon
