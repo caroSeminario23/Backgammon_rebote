@@ -6,3 +6,4 @@ from .dado import Dado
 from .ficha import Ficha
 from .dado import Dado
 from .turno import Turno
+from .estado import Estado
