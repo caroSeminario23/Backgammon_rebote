@@ -639,10 +639,61 @@ class Juego:
         
     
     # REGLA 11
+    # Rebotar drf de (a,b) a (c,d) según “n” posiciones -> rdrf(a,b,c,d,n)
     def rdrf(self, a, b, c, d, n):
-        # Rebotar drf de (a,b) a (c,d) según “n” posiciones
-        pass
+        # Calcular valor de c
+        c = 26 - (a+n)
 
+        # Calcular valor de d
+        d = 2
+
+        if self.movimiento_rdrf_valido(a,b,c,d,n) == True:
+            # ACTUALIZAR TABLERO
+            # Actualizar casilla (a,b)
+            if self.estado.estado_casilla_FR(a,b) == 0:
+                valor_casilla = 'v'
+            elif self.estado.estado_casilla_FR(a,b) >= 0:
+                valor_casilla = 'drf'
+
+            # Actualizar casilla (c,d)
+            valor_casilla_2 = 'drf'
+
+            # Aplicar actualizaciones
+            tablero_2 = self.estado.get_tablero
+            tablero_2.actualizar_casilla(a, b, valor_casilla)
+            tablero_2.actualizar_casilla(c, d, valor_casilla_2)
+
+            # ACTUALIZAR TIPOS DE FICHAS
+            fichas_2 = self.estado.get_fichas
+            if tablero_2.estado_casilla(c, d) == 'drf':
+                fichas_2.adicionar_ficha_drf()
+                fichas_2.eliminar_ficha_drf()
+
+            # ACTUALIZAR FR
+            FR_2 = self.estado.get_FR
+            FR_2.eliminar_ficha_FR(a, b)
+            FR_2.adicionar_ficha_FR(c, d)
+
+            # Actualizar estado
+            self.estado.actualizar_estado(tablero_2, 'A', fichas_2 , self.moneda.esperar_lanzamiento(), FR_2, self.estado.get_FA)
+
+            # Se indica que el movimiento fue exitoso
+            print('Movimiento exitoso')
+        else:
+            print('Movimiento no válido')
+    
+    # Verificar si rdrf es válido
+    def movimiento_rdrf_valido(self, a, b, c, d, n): # Verificar si un movimiento es válido
+        if (self.estado.get_turno == 'R' and self.estado.get_moneda == 'a' and self.estado.get_tablero.estado_casilla(a,b) == 'drf' and 
+            self.estado.get_fichas[3] <= 15 and (self.estado.get_tablero.estado_casilla(c,d) == 'v' or self.estado.get_tablero.estado_casilla(c,d) == 'drf') 
+            and self.estado.get_fichas[5] == 0 and (c >= 8 and c <= 12) and (a >= 8 and a <= 12) and (b == 2) and (n >= 1 or n <= 6)) and a+n > 13:
+            return True
+        else:
+            return False
+        
+    
+    # REGLA 12
+    # Rebotar daf de (a,b) a (c,d) según “n” posiciones -> rdaf(a,b,c,d,n)
     def rdaf(self, a, b, c, d, n):
         # Rebotar daf de (a,b) a (c,d) según “n” posiciones
         pass
