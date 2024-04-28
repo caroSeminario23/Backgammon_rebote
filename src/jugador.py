@@ -1,4 +1,6 @@
-from src import Ficha, Dado, Moneda
+from src.ficha import Ficha
+from src.dado import Dado
+from src.moneda import Moneda
 
 class Jugador:
     def __init__(self, color): # Inicializa un jugador con un color de ficha (rojo o amarillo)

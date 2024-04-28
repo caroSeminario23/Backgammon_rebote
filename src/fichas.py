@@ -58,6 +58,10 @@ class Fichas:
     def set_fichas(self, fichas):
         self.fichas = fichas
 
+    # Obtener el valor de una celda del arreglo
+    def get_ficha(self, i):
+        return self.fichas[i]
+
     # Muestra el estado de las fichas
     def __str__(self):
         return 'Fichas: ' + str(self.fichas)

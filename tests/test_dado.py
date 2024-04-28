@@ -1,5 +1,5 @@
 import unittest
-from src import Dado
+from src.dado import Dado
 
 class TestDado(unittest.TestCase):
     def setUp(self): # Se ejecuta antes de cada test

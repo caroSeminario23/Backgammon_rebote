@@ -1,4 +1,7 @@
-from src import Fichas, Tablero, Moneda
+from src.fichas import Fichas
+from src.tablero import Tablero
+from src.moneda import Moneda
+#import Fichas, Tablero, Moneda
 class Estado:
     def __init__(self, turno):
         self.tablero = Tablero()  # T: matriz que representa el tablero

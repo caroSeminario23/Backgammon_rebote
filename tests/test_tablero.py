@@ -1,5 +1,5 @@
 import unittest
-from src import Tablero
+from src.tablero import Tablero
 
 class TestTablero(unittest.TestCase):
     def setUp(self): # Se ejecuta antes de cada test

@@ -1,5 +1,5 @@
 import unittest
-from src import Moneda
+from src.moneda import Moneda
 
 class TestMoneda(unittest.TestCase):
     def test_lanzar_moneda(self): # Test para verificar que el estado actual de la moneda es 'a' o 'r'

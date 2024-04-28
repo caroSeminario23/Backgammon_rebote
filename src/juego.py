@@ -1,9 +1,12 @@
-from src import Jugador, Turno, Estado
+from src.jugador import Jugador
+from src.turno import Turno
+from src.estado import Estado
 class Juego:
     def __init__(self, turno): # Inicializa un juego de backgammon
         self.jugador1 = Jugador('rojo')
         self.jugador2 = Jugador('amarillo')
         self.estado = Estado(Turno(turno))
+        self.tiempo_juego = 0  # Inicializa el tiempo de juego en 0
 
     # Solicitud al usuario para que escoja su turno
     def elegir_turno(self): # El primer jugador elije el turno que desea
@@ -27,11 +30,11 @@ class Juego:
 
     # VERIFICACION DEL ESTADO META
     def verificar_estado_meta(self):
-        if self.estado.get_fichas[6] == 15:
+        if self.estado.get_fichas().get_ficha(6) == 15:
             return 'Rojo gana'
-        elif self.estado.get_fichas[7] == 15:
+        elif self.estado.get_fichas().get_ficha(7) == 15:
             return 'Amarillo gana'
-        elif self.estado.get_fichas[6] < 15 and self.estado.get_fichas[7] < 15 and self.tiempo_juego > 30:
+        elif self.estado.get_fichas().get_ficha(6) < 15 and self.estado.get_fichas().get_ficha(7) < 15 and self.tiempo_juego > 30:
             return 'Empate'
         else:
             return 'El juego continúa'
@@ -97,8 +100,8 @@ class Juego:
         
     # Verificar si adro es válido
     def movimiento_adro_valido(self, a, b, c, d, n): # Verificar si un movimiento es válido
-        if (self.turno.get_turno_actual == 'R' and self.estado.get_moneda == 'a' and self.estado.get_tablero.estado_casilla(a,b) == 'dro' and 
-            (self.estado.get_tablero.estado_casilla(c,d) == 'v' or self.estado.tablero.get_tablero.estado_casilla(c,d) == 'dro') and 
+        if (self.estado.get_turno().get_turno_actual() == 'R' and self.estado.get_moneda == 'a' and self.estado.get_tablero.estado_casilla(a,b) == 'dro' and 
+            (self.estado.get_tablero().estado_casilla(c,d) == 'v' or self.estado.tablero.get_tablero.estado_casilla(c,d) == 'dro') and 
             self.estado.get_fichas[4] == 0 and (c >= 1 or c <= 12) and (d >= 1 or d <= 2) and (n >= 1 or n <= 6)):
             return True
         else:

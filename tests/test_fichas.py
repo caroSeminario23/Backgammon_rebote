@@ -1,5 +1,5 @@
 import unittest
-from src import Fichas
+from src.fichas import Fichas
 
 class TestFichas(unittest.TestCase):
     def setUp(self): # Se ejecuta antes de cada test

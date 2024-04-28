@@ -1,5 +1,5 @@
 import unittest
-from src import Juego
+from src.juego import Juego
 
 class TestJuego(unittest.TestCase):
     def setUp(self): # Se ejecuta antes de cada test
@@ -21,13 +21,26 @@ class TestJuego(unittest.TestCase):
         self.assertEqual(self.juego.adro(1, 2, 3), 4)
 
     def test_adao(self): # Test para verificar que ada devuelve 4
-        self.assertEqual(self.juego.ada(1, 2, 3), 4)
+        self.assertEqual(self.juego.adao(1, 2, 3), 4)
 
     def test_adrf(self): # Test para verificar que adrf devuelve 6
         self.assertEqual(self.juego.adrf(1, 2, 3, 4, 5), 6)
 
-    def test_adaf(self): # Test para verificar que adaf devuelve 6
-        self.assertEqual(self.juego.adaf(1, 2, 3, 4, 5), 6)
+
+    def test_adaf(self):
+        # Configurar el estado inicial del juego
+        # (Asegúrate de que el estado inicial sea tal que el movimiento adaf sea válido)
+
+        # Llamar a adaf
+        self.juego.adaf(1, 2, 3, 2, 5)
+
+        # Comprobar que el estado del tablero se ha actualizado correctamente
+        self.assertEqual(self.juego.estado.get_tablero().estado_casilla(0, 0), 'dao')
+        self.assertEqual(self.juego.estado.get_tablero().estado_casilla(3, 1), 'daf')
+
+
+    '''def test_adaf(self): # Test para verificar que adaf devuelve 6
+        self.assertEqual(self.juego.adaf(1, 2, 3, 4, 5), 6)'''
 
     def test_rdro(self): # Test para verificar que rdro devuelve 6
         self.assertEqual(self.juego.rdro(1, 2, 3, 4, 5), 6)

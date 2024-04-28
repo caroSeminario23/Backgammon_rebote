@@ -1,5 +1,8 @@
 import unittest
-from src import Estado, Tablero, Fichas, Moneda
+from src.estado import Estado
+from src.tablero import Tablero
+from src.fichas import Fichas
+from src.moneda import Moneda
 
 class TestEstado(unittest.TestCase):
     def setUp(self): # Se ejecuta antes de cada test

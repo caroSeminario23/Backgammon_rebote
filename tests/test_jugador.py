@@ -1,4 +1,4 @@
-from src import Jugador
+from src.jugador import Jugador
 
 def test_jugador_jugar_turno(): # Prueba de la función jugar_turno de la clase Jugador
     jugador = Jugador("rojo")

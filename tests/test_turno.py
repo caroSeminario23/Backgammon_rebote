@@ -1,5 +1,5 @@
 import unittest
-from src import Turno
+from src.turno import Turno
 
 class TestTurno(unittest.TestCase):
     def test_get_turno_actual(self): # Test para verificar que el turno actual es 'R'
