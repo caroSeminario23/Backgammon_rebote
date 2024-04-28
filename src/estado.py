@@ -1,10 +1,10 @@
-from src import Fichas
+from src import Fichas, Tablero, Moneda
 class Estado:
-    def __init__(self, tablero, turno, fichas, moneda):
-        self.tablero = tablero  # T: matriz que representa el tablero
+    def __init__(self, turno):
+        self.tablero = Tablero()  # T: matriz que representa el tablero
         self.turno = turno  # t: turno
-        self.fichas = fichas #[15,15,0,0,0,0,0,0]  # ndro, ndao, ndrf, ndaf, ndrc, ndac, ndrl, ndal: número de cada tipo de ficha
-        self.moneda = moneda  # m: valor de la moneda 
+        self.fichas = Fichas() #[15,15,0,0,0,0,0,0]  # ndro, ndao, ndrf, ndaf, ndrc, ndac, ndrl, ndal: número de cada tipo de ficha
+        self.moneda = Moneda()  # m: valor de la moneda 
         self.FR = [[0, 0, 0, 0, 3, 0, 5, 0, 0, 0, 0, 0],
                    [5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2]] # FR: matriz que representa el número de fichas rojas por casilla del tablero
         self.FA = [[5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],

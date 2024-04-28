@@ -1,13 +1,14 @@
 from src import Tablero, Jugador, Turno, Estado, Moneda, Fichas
 class Juego:
     def __init__(self, turno): # Inicializa un juego de backgammon
-        self.tablero = Tablero()
+        #self.tablero = Tablero()
         self.jugador1 = Jugador('rojo')
         self.jugador2 = Jugador('amarillo')
-        self.turno = Turno(turno)
-        self.fichas = [15,15,0,0,0,0,0,0]
-        self.moneda = Moneda()
-        self.estado = Estado(self.tablero, self.turno, self.fichas, self.moneda)
+        #self.turno = Turno(turno)
+        #self.fichas = [15,15,0,0,0,0,0,0]
+        #self.moneda = Moneda()
+        #self.estado = Estado(self.tablero, self.turno, self.fichas, self.moneda)
+        self.estado = Estado(Turno(turno))
 
     def elegir_turno(self): # El primer jugador elije el turno que desea
         turno = input('Elige el turno (R/A): ')
