@@ -747,9 +747,47 @@ class Juego:
 
 
     # REGLA 13
-    def sdrf(self, a, b):
-        # Sacar drf de (a,b) a fuera del tablero
-        pass
+    # Sacar drf de (a,b) a fuera del tablero -> sdrf(a,b)
+    def sdrf(self, a, b, n):
+        if self.movimiento_sdrf_valido(a,b, n) == True:
+            # Actualizar casilla (a,b)
+            if self.estado.estado_casilla_FR(a,b) == 0:
+                valor_casilla = 'v'
+            elif self.estado.estado_casilla_FR(a,b) >= 0:
+                valor_casilla = 'drf'
+
+            # Aplicar actualizaciones
+            tablero_2 = self.estado.get_tablero
+            tablero_2.actualizar_casilla(a, b, valor_casilla)
+
+            # ACTUALIZAR TIPOS DE FICHAS
+            fichas_2 = self.estado.get_fichas
+            fichas_2.eliminar_ficha_drf()
+            fichas_2.adicionar_ficha_drl()
+
+            # ACTUALIZAR FR
+            FR_2 = self.estado.get_FR
+            FR_2.eliminar_ficha_FR(a, b)
+
+            # Actualizar estado
+            self.estado.actualizar_estado(tablero_2, 'A', fichas_2 , self.moneda.esperar_lanzamiento(), FR_2, self.estado.get_FA)
+
+            # Se indica que el movimiento fue exitoso
+            print('Movimiento exitoso')
+        else:
+            print('Movimiento no válido')
+    
+    # Verificar si sdrf es válido
+    def movimiento_sdrf_valido(self, a, b, n): # Verificar si un movimiento es válido
+        if (self.estado.get_turno == 'R' and self.estado.get_moneda == 'a' and self.estado.get_tablero.estado_casilla(a,b) == 'drf' and 
+            self.estado.get_fichas[3] <= 15 and (a >= 8 and a <= 12) and (b == 2) and self.estado.get_fichas[5] == 0
+            and (n >= 1 or n <= 6) and a+n == 13):
+            return True
+        else:
+            return False
+        
+    
+    # REGLA 14
 
     def sdaf(self, a, b):
         # Sacar daf de (a,b) a fuera del tablero
