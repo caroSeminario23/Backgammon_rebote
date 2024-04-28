@@ -747,7 +747,7 @@ class Juego:
 
 
     # REGLA 13
-    # Sacar drf de (a,b) a fuera del tablero -> sdrf(a,b)
+    # Sacar drf de (a,b) a fuera del tablero -> sdrf(a,b, n)
     def sdrf(self, a, b, n):
         if self.movimiento_sdrf_valido(a,b, n) == True:
             # Actualizar casilla (a,b)
@@ -788,7 +788,41 @@ class Juego:
         
     
     # REGLA 14
+    # Sacar daf de (a,b) a fuera del tablero -> sdaf(a,b, n)
+    def sdaf(self, a, b, n):
+        if self.movimiento_sdaf_valido(a,b, n) == True:
+            # Actualizar casilla (a,b)
+            if self.estado.estado_casilla_FA(a,b) == 0:
+                valor_casilla = 'v'
+            elif self.estado.estado_casilla_FA(a,b) >= 0:
+                valor_casilla = 'daf'
 
-    def sdaf(self, a, b):
-        # Sacar daf de (a,b) a fuera del tablero
-        pass
+            # Aplicar actualizaciones
+            tablero_2 = self.estado.get_tablero
+            tablero_2.actualizar_casilla(a, b, valor_casilla)
+
+            # ACTUALIZAR TIPOS DE FICHAS
+            fichas_2 = self.estado.get_fichas
+            fichas_2.eliminar_ficha_daf()
+            fichas_2.adicionar_ficha_dal()
+
+            # ACTUALIZAR FA
+            FA_2 = self.estado.get_FA
+            FA_2.eliminar_ficha_FA(a, b)
+
+            # Actualizar estado
+            self.estado.actualizar_estado(tablero_2, 'R', fichas_2 , self.moneda.esperar_lanzamiento(), self.estado.get_FR, FA_2)
+
+            # Se indica que el movimiento fue exitoso
+            print('Movimiento exitoso')
+        else:
+            print('Movimiento no válido')
+
+    # Verificar si sdaf es válido
+    def movimiento_sdaf_valido(self, a, b, n): # Verificar si un movimiento es válido
+        if (self.estado.get_turno == 'A' and self.estado.get_moneda == 'a' and self.estado.get_tablero.estado_casilla(a,b) == 'daf' and 
+            self.estado.get_fichas[4] <= 15 and (a >= 8 and a <= 12) and (b == 2) and self.estado.get_fichas[6] == 0
+            and (n >= 1 or n <= 6) and a+n == 13):
+            return True
+        else:
+            return False
