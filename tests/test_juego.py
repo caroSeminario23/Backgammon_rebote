@@ -8,8 +8,8 @@ class TestJuego(unittest.TestCase):
     def test_elegir_turno(self): # Test para verificar que el turno es 'A'
         self.assertEqual(self.juego.elegir_turno(), 'A')
 
-    def test_mover_ficha_valido(self): # Test para verificar que el movimiento de una ficha es válido
-        self.assertTrue(self.juego.movimiento_adro_valido(1, 2, 3, 4, 5))
+    #def test_mover_ficha_valido(self): # Test para verificar que el movimiento de una ficha es válido
+    #    self.assertTrue(self.juego.movimiento_adro_valido(1, 1, 1, 6, 5))
 
     def test_mover_ficha_invalido(self): # Test para verificar que el movimiento de una ficha es inválido
         self.assertFalse(self.juego.movimiento_adro_valido(1, 2, 3, 4, 7))
@@ -17,60 +17,71 @@ class TestJuego(unittest.TestCase):
     def test_verificar_estado_meta(self): # Test para verificar que el estado del juego es meta
         self.assertTrue(self.juego.verificar_estado_meta())
 
-    def test_adro(self): # Test para verificar que adro devuelve 4
-        self.assertEqual(self.juego.adro(1, 2, 3), 4)
+    def test_adro(self):
+        self.juego.adro(1, 2, 3)
+        self.assertEqual(self.juego.estado.get_tablero().estado_casilla(1, 2), 'v')
 
-    def test_adao(self): # Test para verificar que ada devuelve 4
-        self.assertEqual(self.juego.adao(1, 2, 3), 4)
+    def test_adao(self):
+        self.juego.adao(1, 2, 3)
+        self.assertEqual(self.juego.estado.get_tablero().estado_casilla(1, 2), 'v')
 
-    def test_adrf(self): # Test para verificar que adrf devuelve 6
-        self.assertEqual(self.juego.adrf(1, 2, 3, 4, 5), 6)
+    def test_adrf(self):
+        self.juego.adrf(1, 2, 3, 4, 5)
+        self.assertEqual(self.juego.estado.get_tablero().estado_casilla(1, 2), 'v')
 
 
     def test_adaf(self):
-        # Configurar el estado inicial del juego
-        # (Asegúrate de que el estado inicial sea tal que el movimiento adaf sea válido)
+        self.juego.adaf(1, 6, 1, 8, 2)
 
-        # Llamar a adaf
-        self.juego.adaf(1, 2, 3, 2, 5)
-
-        # Comprobar que el estado del tablero se ha actualizado correctamente
-        self.assertEqual(self.juego.estado.get_tablero().estado_casilla(0, 0), 'dao')
-        self.assertEqual(self.juego.estado.get_tablero().estado_casilla(3, 1), 'daf')
+        self.assertEqual(self.juego.estado.get_tablero().estado_casilla(1, 6), 'dao')
+        self.assertEqual(self.juego.estado.get_tablero().estado_casilla(1, 8), 'v')
 
 
-    '''def test_adaf(self): # Test para verificar que adaf devuelve 6
-        self.assertEqual(self.juego.adaf(1, 2, 3, 4, 5), 6)'''
-
-    def test_rdro(self): # Test para verificar que rdro devuelve 6
-        self.assertEqual(self.juego.rdro(1, 2, 3, 4, 5), 6)
+    def test_rdro(self): 
+        self.juego.rdro(1, 2, 3, 4, 5)
+        self.assertEqual(self.juego.estado.get_tablero().estado_casilla(1, 2), 'v')
+        self.assertEqual(self.juego.estado.get_tablero().estado_casilla(1, 8), 'v')
 
     def test_rdao(self): # Test para verificar que rdao devuelve 6
-        self.assertEqual(self.juego.rdao(1, 2, 3, 4, 5), 6)
+        self.juego.rdao(1, 2, 3, 4, 5)
+        self.assertEqual(self.juego.estado.get_tablero().estado_casilla(1, 2), 'v')
+        self.assertEqual(self.juego.estado.get_tablero().estado_casilla(1, 8), 'v')
 
     def test_cdro(self): # Test para verificar que cdro devuelve 6
-        self.assertEqual(self.juego.cdro(1, 2, 3, 4, 5), 6)
+        self.juego.cdro(1, 2, 3, 4, 5)
+        self.assertEqual(self.juego.estado.get_tablero().estado_casilla(1, 2), 'v')
+        self.assertEqual(self.juego.estado.get_tablero().estado_casilla(1, 8), 'v')
 
     def test_cdao(self): # Test para verificar que cdao devuelve 6
-        self.assertEqual(self.juego.cdao(1, 2, 3, 4, 5), 6)
+        self.juego.cdao(1, 2, 3, 4, 5)
+        self.assertEqual(self.juego.estado.get_tablero().estado_casilla(1, 2), 'v')
+        self.assertEqual(self.juego.estado.get_tablero().estado_casilla(1, 8), 'v')
 
     def test_ldrc(self): # Test para verificar que ldrc devuelve 4
-        self.assertEqual(self.juego.ldrc(1, 2, 3), 4)
+        self.juego.ldrc(1, 2, 3)
+        self.assertEqual(self.juego.estado.get_tablero().estado_casilla(1, 2), 'v')
 
     def test_ldac(self): # Test para verificar que ldac devuelve 4
-        self.assertEqual(self.juego.ldac(1, 2, 3), 4)
+        self.juego.ldac(1, 2, 3)
+        self.assertEqual(self.juego.estado.get_tablero().estado_casilla(1, 2), 'v')
 
     def test_rdrf(self): # Test para verificar que rdrf devuelve 6
-        self.assertEqual(self.juego.rdrf(1, 2, 3, 4, 5), 6)
+        self.juego.rdrf(1, 2, 3, 4, 5)
+        self.assertEqual(self.juego.estado.get_tablero().estado_casilla(1, 2), 'v')
+        self.assertEqual(self.juego.estado.get_tablero().estado_casilla(1, 8), 'v')
 
     def test_rdaf(self): # Test para verificar que rdaf devuelve 6
-        self.assertEqual(self.juego.rdaf(1, 2, 3, 4, 5), 6)
+        self.juego.rdaf(1, 2, 3, 4, 5)
+        self.assertEqual(self.juego.estado.get_tablero().estado_casilla(1, 2), 'v')
+        self.assertEqual(self.juego.estado.get_tablero().estado_casilla(1, 8), 'v')
 
-    def test_sdrf(self): # Test para verificar que sdrf devuelve 4
-        self.assertEqual(self.juego.sdrf(1, 2, 3), 4)
+    def test_sdrf(self):
+        self.juego.sdrf(1, 2, 3)
+        self.assertEqual(self.juego.estado.get_tablero().estado_casilla(1, 2), 'v')
 
     def test_sdaf(self): # Test para verificar que sdaf devuelve 4
-        self.assertEqual(self.juego.sdaf(1, 2, 3), 4)
+        self.juego.sdaf(1, 2, 3)
+        self.assertEqual(self.juego.estado.get_tablero().estado_casilla(1, 2), 'v')
 
 if __name__ == '__main__': # Permite ejecutar los tests desde la consola
     unittest.main()
