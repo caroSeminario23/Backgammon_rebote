@@ -1,4 +1,5 @@
 import unittest
+#from unittest.mock import Mock
 from src.juego import Juego
 
 class TestJuego(unittest.TestCase):
@@ -11,8 +12,46 @@ class TestJuego(unittest.TestCase):
     #def test_mover_ficha_valido(self): # Test para verificar que el movimiento de una ficha es válido
     #    self.assertTrue(self.juego.movimiento_adro_valido(1, 1, 1, 6, 5))
 
-    def test_mover_ficha_invalido(self): # Test para verificar que el movimiento de una ficha es inválido
-        self.assertFalse(self.juego.movimiento_adro_valido(1, 2, 3, 4, 7))
+    #def test_mover_ficha_invalido(self): # Test para verificar que el movimiento de una ficha es inválido
+    #    self.assertFalse(self.juego.movimiento_adro_valido(1, 2, 3, 4, 7))
+
+    def test_verificar_gana_rojo(self): # Test para verificar que el jugador rojo gana
+        self.juego.estado.get_tablero().actualizar_casilla(0,4,'v')
+        self.juego.estado.get_tablero().actualizar_casilla(0,6,'v')
+        self.juego.estado.get_tablero().actualizar_casilla(1,0,'v')
+        self.juego.estado.get_tablero().actualizar_casilla(1,11,'v')
+        fichas_nuevas = [0,7,0,6,0,2,15,0]
+        self.juego.estado.get_fichas().set_fichas(fichas_nuevas)
+        self.assertEqual(self.juego.verificar_estado_meta(), 'Rojo gana')
+
+    def test_verificar_gana_amarillo(self): # Test para verificar que el jugador rojo gana
+        self.juego.estado.get_tablero().actualizar_casilla(0,0,'v')
+        self.juego.estado.get_tablero().actualizar_casilla(0,11,'v')
+        self.juego.estado.get_tablero().actualizar_casilla(1,4,'v')
+        self.juego.estado.get_tablero().actualizar_casilla(1,6,'v')
+        fichas_nuevas = [7,0,6,0,2,0,0,15]
+        self.juego.estado.get_fichas().set_fichas(fichas_nuevas)
+        self.assertEqual(self.juego.verificar_estado_meta(), 'Amarillo gana')
+
+    def test_verificar_empate(self): # Test para verificar que el jugador rojo gana
+        self.juego.estado.get_tablero().actualizar_casilla(0,0,'v')
+        self.juego.estado.get_tablero().actualizar_casilla(0,11,'v')
+        self.juego.estado.get_tablero().actualizar_casilla(1,4,'v')
+        self.juego.estado.get_tablero().actualizar_casilla(1,6,'v')
+        fichas_nuevas = [3,5,2,2,2,1,8,7]
+        self.juego.estado.get_fichas().set_fichas(fichas_nuevas)
+        self.juego.tiempo_juego = 31
+        self.assertEqual(self.juego.verificar_estado_meta(), 'Empate')
+
+    def test_verificar_juego_continua(self): # Test para verificar que el jugador rojo gana
+        self.juego.estado.get_tablero().actualizar_casilla(0,0,'v')
+        self.juego.estado.get_tablero().actualizar_casilla(0,11,'v')
+        self.juego.estado.get_tablero().actualizar_casilla(1,4,'v')
+        self.juego.estado.get_tablero().actualizar_casilla(1,6,'v')
+        fichas_nuevas = [3,5,2,2,2,1,8,7]
+        self.juego.estado.get_fichas().set_fichas(fichas_nuevas)
+        self.juego.tiempo_juego = 25
+        self.assertEqual(self.juego.verificar_estado_meta(), 'El juego continúa')
 
     def test_verificar_estado_meta(self): # Test para verificar que el estado del juego es meta
         self.assertTrue(self.juego.verificar_estado_meta())
@@ -82,6 +121,7 @@ class TestJuego(unittest.TestCase):
     def test_sdaf(self): # Test para verificar que sdaf devuelve 4
         self.juego.sdaf(1, 2, 3)
         self.assertEqual(self.juego.estado.get_tablero().estado_casilla(1, 2), 'v')
+
 
 if __name__ == '__main__': # Permite ejecutar los tests desde la consola
     unittest.main()

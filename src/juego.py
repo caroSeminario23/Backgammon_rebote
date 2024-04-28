@@ -11,6 +11,7 @@ class Juego:
     # Solicitud al usuario para que escoja su turno
     def elegir_turno(self): # El primer jugador elije el turno que desea
         turno = input('Elige el turno (R/A): ')
+        print('Turno:', turno)
         return turno
 
     # Juega una partida de backgammon rebote
@@ -31,12 +32,16 @@ class Juego:
     # VERIFICACION DEL ESTADO META
     def verificar_estado_meta(self):
         if self.estado.get_fichas().get_ficha(6) == 15:
+            print('Rojo gana')
             return 'Rojo gana'
         elif self.estado.get_fichas().get_ficha(7) == 15:
+            print('Amarillo gana')
             return 'Amarillo gana'
         elif self.estado.get_fichas().get_ficha(6) < 15 and self.estado.get_fichas().get_ficha(7) < 15 and self.tiempo_juego > 30:
+            print('Empate')
             return 'Empate'
         else:
+            print('El juego continúa')
             return 'El juego continúa'
 
 
