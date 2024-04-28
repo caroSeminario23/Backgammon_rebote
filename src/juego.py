@@ -54,7 +54,22 @@ class Juego:
 
     # REGLAS DEL JUEGO
     # Avanzar dro de (a,b) a (c,d) según “n” posiciones -> adro(a,b,c,d,n)
-    def adro(self, a, b, c, d, n):
+    def adro(self, a, b, n):
+        # Calcular valor de c
+        if b == 1:
+            c = a-n
+        elif b == 2:
+            c = a+n
+        elif b == 1 and n == 1:
+            c = a
+
+        # Calcular valor de d
+        if a-n >= 1:
+            d = b
+        else:
+            d = b+1
+
+        # Verificar si el movimiento es válido
         if self.movimiento_adro_valido(a,b,c,d,n) == True:
             # ACTUALIZAR TABLERO
             # Actualizar casilla (a,b)
@@ -72,13 +87,14 @@ class Juego:
                 valor_casilla_2 = 'drf'
 
             # Aplicar actualizaciones
-            tablero_2 = self.tablero.actualizar_casilla(a, b, valor_casilla)
-            tablero_2 = tablero_2.actualizar_casilla(c, d, valor_casilla_2)
+            tablero_2 = self.estado.get_tablero
+            tablero_2.actualizar_casilla(c, d, valor_casilla_2)
 
             # ACTUALIZAR TIPOS DE FICHAS
             fichas_2 = self.estado.get_fichas
             if tablero_2.estado_casilla(c, d) == 'drf':
                 fichas_2.adicionar_ficha_drf()
+                fichas_2.eliminar_ficha_dro()
 
             # ACTUALIZAR FR
             FR_2 = self.estado.get_FR
@@ -87,11 +103,16 @@ class Juego:
 
             # Actualizar estado
             self.estado.actualizar_estado(tablero_2, 'A', fichas_2 , self.moneda.esperar_lanzamiento(), FR_2, self.estado.get_FA)
+
+            # Se indica que el movimiento fue exitoso
+            print('Movimiento exitoso')
+        else:
+            print('Movimiento no válido')
         
     # Verificar si adro es válido
     def movimiento_adro_valido(self, a, b, c, d, n): # Verificar si un movimiento es válido
-        if (self.turno.get_turno_actual == 'R' and self.tablero.estado_casilla(a, b) == 'dro' and 
-            (self.tablero.estado_casilla(c, d) == 'v' or self.tablero.estado_casilla(c, d) == 'dro') and 
+        if (self.turno.get_turno_actual == 'R' and self.estado.get_tablero.estado_casilla(a,b) == 'dro' and 
+            (self.estado.tablero.get_tablero.estado_casilla(c,d) == 'v' or self.estado.tablero.get_tablero.estado_casilla(c,d) == 'dro') and 
             self.estado.get_fichas[5] == 0 and (c >= 1 or c <= 12) and (d >= 1 or d <= 2) and (n >= 1 or n <= 6)):
             return True
         else:
@@ -148,6 +169,9 @@ class Juego:
 
             # Actualizar estado
             self.estado.actualizar_estado(tablero_2, 'R', fichas_2 , self.moneda.esperar_lanzamiento(), self.estado.get_FR, FA_2)
+
+            # Se indica que el movimiento fue exitoso
+            print('Movimiento exitoso')
         else:
             print('Movimiento no válido')
 
