@@ -589,15 +589,56 @@ class Juego:
     # Verificar si ldrc es válido
     def movimiento_ldrc_valido(self, a, b, n): # Verificar si un movimiento es válido
         if (self.estado.get_turno == 'R' and self.estado.get_moneda == 'a' and self.estado.get_fichas[5] >= 1 
-            and self.estado.get_tablero.estado_casilla(a,b) == 'drc' and (a >= 1 and a <= 12) and (n >= 1 or n <= 6)):
+            and self.estado.get_tablero.estado_casilla(a,b) == 'drc' and self.estado.get_tablero.estado_casilla(a,b) == 'v' 
+            and (a >= 1 and a <= 12) and (n >= 1 or n <= 6)):
             return True
         else:
             return False
 
-    def ldac(self, a, b, n):
-        # Liberar dac a (a,b) según “n” posiciones
-        pass
 
+    # REGLA 10
+    # Liberar dac a (a,b) según “n” posiciones -> ldac(a,b,n)
+    def ldac(self, a, b, n):
+        # Calcular valor de a
+        a = 12 - n
+
+        # Calcular valor de b
+        b = 2
+
+        if self.movimiento_ldac_valido(a,b,n) == True:
+            # Aplicar actualizaciones
+            tablero_2 = self.estado.get_tablero
+            tablero_2.actualizar_casilla(a, b, 'dao')
+
+            # ACTUALIZAR TIPOS DE FICHAS
+            fichas_2 = self.estado.get_fichas
+            if tablero_2.estado_casilla(a, b) == 'dao':
+                fichas_2.adicionar_ficha_dao()
+                fichas_2.eliminar_ficha_dac()
+
+            # ACTUALIZAR FA
+            FA_2 = self.estado.get_FA
+            FA_2.adicionar_ficha_FA(a, b)
+
+            # Actualizar estado
+            self.estado.actualizar_estado(tablero_2, 'R', fichas_2 , self.moneda.esperar_lanzamiento(), self.estado.get_FR, FA_2)
+
+            # Se indica que el movimiento fue exitoso
+            print('Movimiento exitoso')
+        else:
+            print('Movimiento no válido')
+
+    # Verificar si ldac es válido
+    def movimiento_ldac_valido(self, a, b, n): # Verificar si un movimiento es válido
+        if (self.estado.get_turno == 'A' and self.estado.get_moneda == 'a' and self.estado.get_fichas[6] >= 1 
+            and self.estado.get_tablero.estado_casilla(a,b) == 'dac' and self.estado.get_tablero.estado_casilla(a,b) == 'v' 
+            and (a >= 1 and a <= 12) and (n >= 1 or n <= 6)):
+            return True
+        else:
+            return False
+        
+    
+    # REGLA 11
     def rdrf(self, a, b, c, d, n):
         # Rebotar drf de (a,b) a (c,d) según “n” posiciones
         pass
