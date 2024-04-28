@@ -1,3 +1,4 @@
+from src import Fichas
 class Estado:
     def __init__(self, tablero, turno, fichas, moneda):
         self.tablero = tablero  # T: matriz que representa el tablero
@@ -51,52 +52,14 @@ class Estado:
     def estado_casilla_FA(self, a, b):
         return self.FA[a][b]
     
-    # Adicion de una ficha del tipo correspondiente
-    def adicionar_ficha_dro():
-        self.fichas[0] += 1
+    def adicionar_ficha_FR(self, a, b):
+        self.FR[a][b] += 1
+    
+    def adicionar_ficha_FA(self, a, b):
+        self.FA[a][b] += 1
 
-    def adicionar_ficha_dao():
-        self.fichas[1] += 1
-    
-    def adicionar_ficha_drf():
-        self.fichas[2] += 1
-    
-    def adicionar_ficha_daf():
-        self.fichas[3] += 1
-    
-    def adicionar_ficha_drc():
-        self.fichas[4] += 1
+    def eliminar_ficha_FR(self, a, b):
+        self.FR[a][b] -= 1
 
-    def adicionar_ficha_dac():
-        self.fichas[5] += 1
-    
-    def adicionar_ficha_drl():
-        self.fichas[6] += 1
-    
-    def adicionar_ficha_dal():
-        self.fichas[7] += 1
-    
-    # Eliminacion de una ficha del tipo correspondiente
-    def eliminar_ficha_dro():
-        self.fichas[0] -= 1
-    
-    def eliminar_ficha_dao():
-        self.fichas[1] -= 1
-
-    def eliminar_ficha_drf():
-        self.fichas[2] -= 1
-    
-    def eliminar_ficha_daf():
-        self.fichas[3] -= 1
-    
-    def eliminar_ficha_drc():
-        self.fichas[4] -= 1
-    
-    def eliminar_ficha_dac():
-        self.fichas[5] -= 1
-    
-    def eliminar_ficha_drl():
-        self.fichas[6] -= 1
-    
-    def eliminar_ficha_dal():
-        self.fichas[7] -= 1
+    def eliminar_ficha_FA(self, a, b):
+        self.FA[a][b] -= 1
