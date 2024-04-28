@@ -41,16 +41,17 @@ class Juego:
     def mover_ficha(self, ficha, movimiento): # Mueve una ficha en el tablero según las reglas del backgammon
         self.tablero.mover_ficha(ficha, movimiento)
 
+
+    # VERIFICACION DEL ESTADO META
     def verificar_estado_meta(self):
-        if self.estado.fichas['drl'] == 15:
+        if self.estado.get_fichas[6] == 15:
             return 'Rojo gana'
-        elif self.estado.fichas['dal'] == 15:
+        elif self.estado.get_fichas[7] == 15:
             return 'Amarillo gana'
-        elif self.estado.fichas['drl'] < 15 and self.estado.fichas['dal'] < 15 and self.tiempo_juego > 30:
+        elif self.estado.get_fichas[6] < 15 and self.estado.get_fichas[7] < 15 and self.tiempo_juego > 30:
             return 'Empate'
         else:
             return 'El juego continúa'
-
 
 
     # REGLAS DEL JUEGO
@@ -115,7 +116,7 @@ class Juego:
     def movimiento_adro_valido(self, a, b, c, d, n): # Verificar si un movimiento es válido
         if (self.turno.get_turno_actual == 'R' and self.estado.get_moneda == 'a' and self.estado.get_tablero.estado_casilla(a,b) == 'dro' and 
             (self.estado.get_tablero.estado_casilla(c,d) == 'v' or self.estado.tablero.get_tablero.estado_casilla(c,d) == 'dro') and 
-            self.estado.get_fichas[5] == 0 and (c >= 1 or c <= 12) and (d >= 1 or d <= 2) and (n >= 1 or n <= 6)):
+            self.estado.get_fichas[4] == 0 and (c >= 1 or c <= 12) and (d >= 1 or d <= 2) and (n >= 1 or n <= 6)):
             return True
         else:
             return False
@@ -182,7 +183,7 @@ class Juego:
     def movimiento_adao_valido(self, a, b, c, d, n): # Verificar si un movimiento es válido
         if (self.estado.get_turno == 'A' and self.estado.get_moneda == 'a' and self.estado.get_tablero.estado_casilla(a,b) == 'dao' and 
             (self.estado.get_tablero.estado_casilla(c,d) == 'v' or self.estado.get_tablero.estado_casilla(c,d) == 'dao') and 
-            self.estado.get_fichas[6] == 0 and (c >= 1 or c <= 12) and (d >= 1 or d <= 2) and (n >= 1 or n <= 6)):
+            self.estado.get_fichas[5] == 0 and (c >= 1 or c <= 12) and (d >= 1 or d <= 2) and (n >= 1 or n <= 6)):
             return True
         else:
             return False
@@ -236,7 +237,7 @@ class Juego:
     def movimiento_adrf_valido(self, a, b, c, d, n): # Verificar si un movimiento es válido
         if (self.estado.get_turno == 'R' and self.estado.get_moneda == 'a' and self.estado.get_tablero.estado_casilla(a,b) == 'drf' and 
             (self.estado.get_tablero.estado_casilla(c,d) == 'v' or self.estado.get_tablero.estado_casilla(c,d) == 'drf') and 
-            self.estado.get_fichas[5] == 0 and (c >= 7 or c <= 12) and (d == 2) and (n >= 1 or n <= 6)):
+            self.estado.get_fichas[4] == 0 and (c >= 7 or c <= 12) and (d == 2) and (n >= 1 or n <= 6)):
             return True
         else:
             return False
@@ -290,7 +291,7 @@ class Juego:
     def movimiento_adaf_valido(self, a, b, c, d, n): # Verificar si un movimiento es válido
         if (self.estado.get_turno == 'A' and self.estado.get_moneda == 'a' and self.estado.get_tablero.estado_casilla(a,b) == 'daf' and 
             (self.estado.get_tablero.estado_casilla(c,d) == 'v' or self.estado.get_tablero.estado_casilla(c,d) == 'daf') and 
-            self.estado.get_fichas[6] == 0 and (c >= 7 or c <= 12) and (d == 1) and (n >= 1 or n <= 6)):
+            self.estado.get_fichas[5] == 0 and (c >= 7 or c <= 12) and (d == 1) and (n >= 1 or n <= 6)):
             return True
         else:
             return False
@@ -354,7 +355,7 @@ class Juego:
     def movimiento_rdro_valido(self, a, b, c, d, n): # Verificar si un movimiento es válido
         if (self.estado.get_turno == 'R' and self.estado.get_moneda == 'r' and self.estado.get_tablero.estado_casilla(a,b) == 'dro' and 
             (self.estado.get_tablero.estado_casilla(c,d) == 'v' or self.estado.get_tablero.estado_casilla(c,d) == 'dro') and 
-            self.estado.get_fichas[5] == 0 and (c >= 1 or c <= 12) and (d >= 1 or d <= 2) and (n >= 1 or n <= 6)):
+            self.estado.get_fichas[4] == 0 and (c >= 1 or c <= 12) and (d >= 1 or d <= 2) and (n >= 1 or n <= 6)):
             return True
         else:
             return False
@@ -418,7 +419,7 @@ class Juego:
     def movimiento_rdao_valido(self, a, b, c, d, n): # Verificar si un movimiento es válido
         if (self.estado.get_turno == 'A' and self.estado.get_moneda == 'r' and self.estado.get_tablero.estado_casilla(a,b) == 'dao' and 
             (self.estado.get_tablero.estado_casilla(c,d) == 'v' or self.estado.get_tablero.estado_casilla(c,d) == 'dao') and 
-            self.estado.get_fichas[6] == 0 and (c >= 1 or c <= 12) and (d >= 1 or d <= 2) and (n >= 1 or n <= 6)):
+            self.estado.get_fichas[5] == 0 and (c >= 1 or c <= 12) and (d >= 1 or d <= 2) and (n >= 1 or n <= 6)):
             return True
         else:
             return False
@@ -483,7 +484,7 @@ class Juego:
     def movimiento_cdro_valido(self, a, b, c, d, n): # Verificar si un movimiento es válido
         if (self.estado.get_turno == 'R' and self.estado.get_moneda == 'a' and self.estado.get_tablero.estado_casilla(a,b) == 'dro' and 
             self.estado.get_tablero.estado_casilla(c,d) == 'dao' and self.estado.estado_casilla_FA(c,d) == 1
-            and self.estado.get_fichas[5] == 0 and (c >= 1 or c <= 12) and (d >= 1 or d <= 2) and (n >= 1 or n <= 6)):
+            and self.estado.get_fichas[4] == 0 and (c >= 1 or c <= 12) and (d >= 1 or d <= 2) and (n >= 1 or n <= 6)):
             return True
         else:
             return False
@@ -548,7 +549,7 @@ class Juego:
     def movimiento_cdao_valido(self, a, b, c, d, n): # Verificar si un movimiento es válido
         if (self.estado.get_turno == 'A' and self.estado.get_moneda == 'a' and self.estado.get_tablero.estado_casilla(a,b) == 'dao' and 
             self.estado.get_tablero.estado_casilla(c,d) == 'dro' and self.estado.estado_casilla_FR(c,d) == 1
-            and self.estado.get_fichas[6] == 0 and (c >= 1 or c <= 12) and (d >= 1 or d <= 2) and (n >= 1 or n <= 6)):
+            and self.estado.get_fichas[5] == 0 and (c >= 1 or c <= 12) and (d >= 1 or d <= 2) and (n >= 1 or n <= 6)):
             return True
         else:
             return False
@@ -588,7 +589,7 @@ class Juego:
     
     # Verificar si ldrc es válido
     def movimiento_ldrc_valido(self, a, b, n): # Verificar si un movimiento es válido
-        if (self.estado.get_turno == 'R' and self.estado.get_moneda == 'a' and self.estado.get_fichas[5] >= 1 
+        if (self.estado.get_turno == 'R' and self.estado.get_moneda == 'a' and self.estado.get_fichas[4] >= 1 
             and self.estado.get_tablero.estado_casilla(a,b) == 'drc' and self.estado.get_tablero.estado_casilla(a,b) == 'v' 
             and (a >= 1 and a <= 12) and (n >= 1 or n <= 6)):
             return True
@@ -630,7 +631,7 @@ class Juego:
 
     # Verificar si ldac es válido
     def movimiento_ldac_valido(self, a, b, n): # Verificar si un movimiento es válido
-        if (self.estado.get_turno == 'A' and self.estado.get_moneda == 'a' and self.estado.get_fichas[6] >= 1 
+        if (self.estado.get_turno == 'A' and self.estado.get_moneda == 'a' and self.estado.get_fichas[5] >= 1 
             and self.estado.get_tablero.estado_casilla(a,b) == 'dac' and self.estado.get_tablero.estado_casilla(a,b) == 'v' 
             and (a >= 1 and a <= 12) and (n >= 1 or n <= 6)):
             return True
@@ -685,8 +686,8 @@ class Juego:
     # Verificar si rdrf es válido
     def movimiento_rdrf_valido(self, a, b, c, d, n): # Verificar si un movimiento es válido
         if (self.estado.get_turno == 'R' and self.estado.get_moneda == 'a' and self.estado.get_tablero.estado_casilla(a,b) == 'drf' and 
-            self.estado.get_fichas[3] <= 15 and (self.estado.get_tablero.estado_casilla(c,d) == 'v' or self.estado.get_tablero.estado_casilla(c,d) == 'drf') 
-            and self.estado.get_fichas[5] == 0 and (c >= 8 and c <= 12) and (a >= 8 and a <= 12) and (b == 2) and (n >= 1 or n <= 6)) and a+n > 13:
+            self.estado.get_fichas[2] <= 15 and (self.estado.get_tablero.estado_casilla(c,d) == 'v' or self.estado.get_tablero.estado_casilla(c,d) == 'drf') 
+            and self.estado.get_fichas[4] == 0 and (c >= 8 and c <= 12) and (a >= 8 and a <= 12) and (b == 2) and (n >= 1 or n <= 6)) and a+n > 13:
             return True
         else:
             return False
@@ -739,8 +740,8 @@ class Juego:
     # Verificar si rdaf es válido
     def movimiento_rdaf_valido(self, a, b, c, d, n): # Verificar si un movimiento es válido
         if (self.estado.get_turno == 'A' and self.estado.get_moneda == 'a' and self.estado.get_tablero.estado_casilla(a,b) == 'daf' and 
-            self.estado.get_fichas[4] <= 15 and (self.estado.get_tablero.estado_casilla(c,d) == 'v' or self.estado.get_tablero.estado_casilla(c,d) == 'daf') 
-            and self.estado.get_fichas[6] == 0 and (c >= 8 and c <= 12) and (a >= 8 and a <= 12) and (b == 1) and (n >= 1 or n <= 6)) and a+n > 13:
+            self.estado.get_fichas[3] <= 15 and (self.estado.get_tablero.estado_casilla(c,d) == 'v' or self.estado.get_tablero.estado_casilla(c,d) == 'daf') 
+            and self.estado.get_fichas[5] == 0 and (c >= 8 and c <= 12) and (a >= 8 and a <= 12) and (b == 1) and (n >= 1 or n <= 6)) and a+n > 13:
             return True
         else:
             return False
@@ -780,7 +781,7 @@ class Juego:
     # Verificar si sdrf es válido
     def movimiento_sdrf_valido(self, a, b, n): # Verificar si un movimiento es válido
         if (self.estado.get_turno == 'R' and self.estado.get_moneda == 'a' and self.estado.get_tablero.estado_casilla(a,b) == 'drf' and 
-            self.estado.get_fichas[3] <= 15 and (a >= 8 and a <= 12) and (b == 2) and self.estado.get_fichas[5] == 0
+            self.estado.get_fichas[2] <= 15 and (a >= 8 and a <= 12) and (b == 2) and self.estado.get_fichas[4] == 0
             and (n >= 1 or n <= 6) and a+n == 13):
             return True
         else:
@@ -821,7 +822,7 @@ class Juego:
     # Verificar si sdaf es válido
     def movimiento_sdaf_valido(self, a, b, n): # Verificar si un movimiento es válido
         if (self.estado.get_turno == 'A' and self.estado.get_moneda == 'a' and self.estado.get_tablero.estado_casilla(a,b) == 'daf' and 
-            self.estado.get_fichas[4] <= 15 and (a >= 8 and a <= 12) and (b == 2) and self.estado.get_fichas[6] == 0
+            self.estado.get_fichas[3] <= 15 and (a >= 8 and a <= 12) and (b == 2) and self.estado.get_fichas[5] == 0
             and (n >= 1 or n <= 6) and a+n == 13):
             return True
         else:
