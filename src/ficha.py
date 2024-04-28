@@ -4,13 +4,13 @@ class Ficha: # Representa a una dama
         self.estado = estado  # 'ordinaria (o)', 'finalista' (f), 'capturada (c)', 'libre (l)'
 
     def convertir_en_finalista(self): # Convierte una ficha en finalista
-        self.estado = 'finalista'
+        self.estado = 'f'
     
     def convertir_en_ordinaria(self): # Convierte una ficha en ordinaria
-        self.estado = 'ordinaria'
+        self.estado = 'o'
 
     def convertir_en_capturada(self): # Convierte una ficha en capturada
-        self.estado = 'capturada'
+        self.estado = 'c'
     
     def convertir_en_libre(self): # Convierte una ficha en libre
-        self.estado = 'libre'
+        self.estado = 'l'
