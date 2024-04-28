@@ -5,7 +5,7 @@ class Tablero:
         self.casillas = [['dao','v','v','v','dro','v','dro','v','v','v','v','dao'],
                          ['dro','v','v','v','dao','v','dao','v','v','v','v','dro']] # Inicializa las casillas
 
-    def mover_ficha(self, color, a, b, c, d):
+    '''def mover_ficha(self, color, a, b, c, d):
         # Mueve una ficha del color dado de la casilla (a,b) a la casilla (c,d)
         pass
 
@@ -16,7 +16,11 @@ class Tablero:
     def liberar_ficha(self, color, a, b):
         # Libera una ficha capturada del color dado a la casilla (a,b)
         pass
+    '''
 
-    def estado_casilla(self, a, b):
-        # Devuelve el estado de la casilla (a,b)
+    def estado_casilla(self, a, b): # Devuelve el estado de la casilla (a,b)
+        return self.casillas[a][b]
         pass
+
+    def actualizar_casilla(self, a, b, valor):
+        self.casillas[a][b] = valor
