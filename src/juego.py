@@ -424,10 +424,72 @@ class Juego:
             return False
 
 
-    def cdr(self, a, b, c, d, n):
-        # Captura con dr de (a,b) a da de (c,d) según “n” posiciones
-        pass
+    # REGLA 7
+    # Capturar con dro de (a,b) a da de (c,d) según “n” posiciones -> cdro(a,b,c,d,n)
+    def cdro(self, a, b, c, d, n):
+        # Calcular valor de c
+        if b == 1:
+            c = a-n
+        elif b == 2:
+            c = a+n
+        elif b == 1 and n == 1:
+            c = a
+        
+        # Calcular valor de d
+        if a-n >= 1:
+            d = b
+        elif a-n < 1:
+            d = b+1
 
+        if self.movimiento_cdro_valido(a,b,c,d,n) == True:
+            # ACTUALIZAR TABLERO
+            # Actualizar casilla (a,b)
+            if self.estado.estado_casilla_FR(a,b) == 0:
+                valor_casilla = 'v'
+            elif self.estado.estado_casilla_FR(a,b) >= 0:
+                valor_casilla = 'dao'
+
+            # Actualizar casilla (c,d)
+            valor_casilla_2 = 'dro'
+
+            # Aplicar actualizaciones
+            tablero_2 = self.estado.get_tablero
+            tablero_2.actualizar_casilla(a, b, valor_casilla)
+            tablero_2.actualizar_casilla(c, d, valor_casilla_2)
+
+            # ACTUALIZAR TIPOS DE FICHAS
+            fichas_2 = self.estado.get_fichas
+            if tablero_2.estado_casilla(c, d) == 'dro':
+                fichas_2.adicionar_ficha_dac()
+                fichas_2.eliminar_ficha_dao()
+
+            # ACTUALIZAR FR
+            FR_2 = self.estado.get_FR
+            FR_2.eliminar_ficha_FR(a, b)
+            FR_2.adicionar_ficha_FR(c, d)
+
+            FA_2 = self.estado.get_FA
+            FA_2.eliminar_ficha_FA(c, d)
+
+            # Actualizar estado
+            self.estado.actualizar_estado(tablero_2, 'A', fichas_2 , self.moneda.esperar_lanzamiento(), FR_2, FA_2)
+
+            # Se indica que el movimiento fue exitoso
+            print('Movimiento exitoso')
+        else:
+            print('Movimiento no válido')
+
+    # Verificar si cdro es válido
+    def movimiento_cdro_valido(self, a, b, c, d, n): # Verificar si un movimiento es válido
+        if (self.estado.get_turno == 'R' and self.estado.get_moneda == 'a' and self.estado.get_tablero.estado_casilla(a,b) == 'dro' and 
+            self.estado.tablero.get_tablero.estado_casilla(c,d) == 'dao' and self.estado.estado_casilla_FA(c,d) == 1
+            and self.estado.get_fichas[5] == 0 and (c >= 1 or c <= 12) and (d >= 1 or d <= 2) and (n >= 1 or n <= 6)):
+            return True
+        else:
+            return False
+
+
+    # REGLA 8
     def cda(self, a, b, c, d, n):
         # Captura con da de (a,b) a dr de (c,d) según “n” posiciones
         pass
