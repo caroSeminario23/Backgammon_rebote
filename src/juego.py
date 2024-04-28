@@ -5,7 +5,7 @@ class Juego:
         self.jugador1 = Jugador('rojo')
         self.jugador2 = Jugador('amarillo')
 
-    def jugar(self):
+    def jugar(self): # Juega una partida de backgammon
         while not self.tablero.juego_terminado(): # Juega hasta que el juego termina
             for jugador in [self.jugador1, self.jugador2]: # Por cada jugador en el juego
                 movimiento = jugador.jugar_turno(self.tablero) # El jugador decide qué movimiento hacer
