@@ -89,6 +89,7 @@ class Juego:
 
             # Aplicar actualizaciones
             tablero_2 = self.estado.get_tablero
+            tablero_2.actualizar_casilla(a, b, valor_casilla)
             tablero_2.actualizar_casilla(c, d, valor_casilla_2)
 
             # ACTUALIZAR TIPOS DE FICHAS
@@ -112,7 +113,7 @@ class Juego:
         
     # Verificar si adro es válido
     def movimiento_adro_valido(self, a, b, c, d, n): # Verificar si un movimiento es válido
-        if (self.turno.get_turno_actual == 'R' and self.estado.get_tablero.estado_casilla(a,b) == 'dro' and 
+        if (self.turno.get_turno_actual == 'R' and self.estado.get_moneda == 'a' and self.estado.get_tablero.estado_casilla(a,b) == 'dro' and 
             (self.estado.tablero.get_tablero.estado_casilla(c,d) == 'v' or self.estado.tablero.get_tablero.estado_casilla(c,d) == 'dro') and 
             self.estado.get_fichas[5] == 0 and (c >= 1 or c <= 12) and (d >= 1 or d <= 2) and (n >= 1 or n <= 6)):
             return True
@@ -155,6 +156,7 @@ class Juego:
 
             # Aplicar actualizaciones
             tablero_2 = self.estado.get_tablero
+            tablero_2.actualizar_casilla(a, b, valor_casilla)
             tablero_2.actualizar_casilla(c, d, valor_casilla_2)
 
             # ACTUALIZAR TIPOS DE FICHAS
@@ -178,7 +180,7 @@ class Juego:
 
     # Verificar si adao es válido
     def movimiento_adao_valido(self, a, b, c, d, n): # Verificar si un movimiento es válido
-        if (self.estado.get_turno == 'A' and self.estado.get_tablero.estado_casilla(a,b) == 'dao' and 
+        if (self.estado.get_turno == 'A' and self.estado.get_moneda == 'a' and self.estado.get_tablero.estado_casilla(a,b) == 'dao' and 
             (self.estado.tablero.get_tablero.estado_casilla(c,d) == 'v' or self.estado.get_tablero.estado_casilla(c,d) == 'dao') and 
             self.estado.get_fichas[6] == 0 and (c >= 1 or c <= 12) and (d >= 1 or d <= 2) and (n >= 1 or n <= 6)):
             return True
@@ -187,18 +189,178 @@ class Juego:
 
 
     # REGLA 3
+    # Avanzar drf de (a,b) a (c,d) según “n” posiciones -> adrf(a,b,c,d,n)
     def adrf(self, a, b, c, d, n):
-        # Avanzar drf de (a,b) a (c,d) según “n” posiciones
-        pass
+        # Calcular valor de c
+        c = a+n
+        
+        # Calcular valor de d
+        d = 2
+        
+        if self.movimiento_adrf_valido(a,b,c,d,n) == True:
+            # ACTUALIZAR TABLERO
+            # Actualizar casilla (a,b)
+            if self.estado.estado_casilla_FR(a,b) == 0:
+                valor_casilla = 'v'
+            elif self.estado.estado_casilla_FR(a,b) >= 0:
+                valor_casilla = 'drf'
 
+            # Actualizar casilla (c,d)
+            valor_casilla_2 = 'drf'
+
+            # Aplicar actualizaciones
+            tablero_2 = self.estado.get_tablero
+            tablero_2.actualizar_casilla(a, b, valor_casilla)
+            tablero_2.actualizar_casilla(c, d, valor_casilla_2)
+
+            # ACTUALIZAR TIPOS DE FICHAS
+            fichas_2 = self.estado.get_fichas
+            if tablero_2.estado_casilla(c, d) == 'drf':
+                fichas_2.adicionar_ficha_drf()
+                fichas_2.eliminar_ficha_drf()
+
+            # ACTUALIZAR FR
+            FR_2 = self.estado.get_FR
+            FR_2.eliminar_ficha_FR(a, b)
+            FR_2.adicionar_ficha_FR(c, d)
+
+            # Actualizar estado
+            self.estado.actualizar_estado(tablero_2, 'A', fichas_2 , self.moneda.esperar_lanzamiento(), FR_2, self.estado.get_FA)
+
+            # Se indica que el movimiento fue exitoso
+            print('Movimiento exitoso')
+        else:
+            print('Movimiento no válido')
+
+    # Verificar si adrf es válido
+    def movimiento_adrf_valido(self, a, b, c, d, n): # Verificar si un movimiento es válido
+        if (self.estado.get_turno == 'R' and self.estado.get_moneda == 'a' and self.estado.get_tablero.estado_casilla(a,b) == 'drf' and 
+            (self.estado.tablero.get_tablero.estado_casilla(c,d) == 'v' or self.estado.get_tablero.estado_casilla(c,d) == 'drf') and 
+            self.estado.get_fichas[5] == 0 and (c >= 7 or c <= 12) and (d == 2) and (n >= 1 or n <= 6)):
+            return True
+        else:
+            return False
+
+
+    # REGLA 4
+    # Avanzar daf de (a,b) a (c,d) según “n” posiciones -> adaf(a,b,c,d,n)
     def adaf(self, a, b, c, d, n):
-        # Avanzar daf de (a,b) a (c,d) según “n” posiciones
-        pass
+        # Calcular valor de c
+        c = a+n
 
-    def rdr(self, a, b, c, d, n):
-        # Retroceder dr de (a,b) a (c,d) según “n” posiciones
-        pass
+        # Calcular valor de d
+        d = 1
 
+        if self.movimiento_adaf_valido(a,b,c,d,n) == True:
+            # ACTUALIZAR TABLERO
+            # Actualizar casilla (a,b)
+            if self.estado.estado_casilla_FA(a,b) == 0:
+                valor_casilla = 'v'
+            elif self.estado.estado_casilla_FA(a,b) >= 0:
+                valor_casilla = 'daf'
+
+            # Actualizar casilla (c,d)
+            valor_casilla_2 = 'daf'
+
+            # Aplicar actualizaciones
+            tablero_2 = self.estado.get_tablero
+            tablero_2.actualizar_casilla(a, b, valor_casilla)
+            tablero_2.actualizar_casilla(c, d, valor_casilla_2)
+
+            # ACTUALIZAR TIPOS DE FICHAS
+            fichas_2 = self.estado.get_fichas
+            if tablero_2.estado_casilla(c, d) == 'daf':
+                fichas_2.adicionar_ficha_daf()
+                fichas_2.eliminar_ficha_daf()
+
+            # ACTUALIZAR FA
+            FA_2 = self.estado.get_FA
+            FA_2.eliminar_ficha_FA(a, b)
+            FA_2.adicionar_ficha_FA(c, d)
+
+            # Actualizar estado
+            self.estado.actualizar_estado(tablero_2, 'R', fichas_2 , self.moneda.esperar_lanzamiento(), self.estado.get_FR, FA_2)
+
+            # Se indica que el movimiento fue exitoso
+            print('Movimiento exitoso')
+        else:
+            print('Movimiento no válido')
+
+    # Verificar si adaf es válido
+    def movimiento_adaf_valido(self, a, b, c, d, n): # Verificar si un movimiento es válido
+        if (self.estado.get_turno == 'A' and self.estado.get_moneda == 'a' and self.estado.get_tablero.estado_casilla(a,b) == 'daf' and 
+            (self.estado.tablero.get_tablero.estado_casilla(c,d) == 'v' or self.estado.get_tablero.estado_casilla(c,d) == 'daf') and 
+            self.estado.get_fichas[6] == 0 and (c >= 7 or c <= 12) and (d == 1) and (n >= 1 or n <= 6)):
+            return True
+        else:
+            return False
+
+
+    # REGLA 5
+    # Retroceder dro de (a,b) a (c,d) según “n” posiciones -> rdro(a,b,c,d,n)
+    def rdro(self, a, b, c, d, n):
+        # Calcular valor de c
+        if b == 1:
+            c = a+n
+        elif b == 2:
+            c = a-n
+        elif b == 1 and n == 1:
+            c = a
+        
+        # Calcular valor de d
+        if a+n >= 1 and a+n <= 12 and b == 1:
+            d = b
+        elif a-n > 1 and a-n <= 12 and b == 2:
+            d = b
+        elif a-n < 1 and b == 2:
+            d = b-1
+
+        if self.movimiento_rdro_valido(a,b,c,d,n) == True:
+            # ACTUALIZAR TABLERO
+            # Actualizar casilla (a,b)
+            if self.estado.estado_casilla_FR(a,b) == 0:
+                valor_casilla = 'v'
+            elif self.estado.estado_casilla_FR(a,b) >= 0:
+                valor_casilla = 'dro'
+
+            # Actualizar casilla (c,d)
+            valor_casilla_2 = 'dro'
+
+            # Aplicar actualizaciones
+            tablero_2 = self.estado.get_tablero
+            tablero_2.actualizar_casilla(a, b, valor_casilla)
+            tablero_2.actualizar_casilla(c, d, valor_casilla_2)
+
+            # ACTUALIZAR TIPOS DE FICHAS
+            fichas_2 = self.estado.get_fichas
+            if tablero_2.estado_casilla(c, d) == 'dro':
+                fichas_2.adicionar_ficha_dro()
+                fichas_2.eliminar_ficha_dro()
+
+            # ACTUALIZAR FR
+            FR_2 = self.estado.get_FR
+            FR_2.eliminar_ficha_FR(a, b)
+            FR_2.adicionar_ficha_FR(c, d)
+
+            # Actualizar estado
+            self.estado.actualizar_estado(tablero_2, 'A', fichas_2 , self.moneda.esperar_lanzamiento(), FR_2, self.estado.get_FA)
+
+            # Se indica que el movimiento fue exitoso
+            print('Movimiento exitoso')
+        else:
+            print('Movimiento no válido')
+
+    # Verificar si rdro es válido
+    def movimiento_rdro_valido(self, a, b, c, d, n): # Verificar si un movimiento es válido
+        if (self.estado.get_turno == 'R' and self.estado.get_moneda == 'r' and self.estado.get_tablero.estado_casilla(a,b) == 'dro' and 
+            (self.estado.tablero.get_tablero.estado_casilla(c,d) == 'v' or self.estado.get_tablero.estado_casilla(c,d) == 'dro') and 
+            self.estado.get_fichas[5] == 0 and (c >= 1 or c <= 12) and (d >= 1 or d <= 2) and (n >= 1 or n <= 6)):
+            return True
+        else:
+            return False
+
+
+    # REGLA 6
     def rda(self, a, b, c, d, n):
         # Retroceder da de (a,b) a (c,d) según “n” posiciones
         pass
