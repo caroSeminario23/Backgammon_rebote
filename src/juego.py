@@ -97,10 +97,71 @@ class Juego:
         else:
             return False
 
-    def ada(self, a, b, c, d, n):
-        # Avanzar da de (a,b) a (c,d) según “n” posiciones
-        pass
 
+    # REGLA 2
+    # Avanzar dao de (a,b) a (c,d) según “n” posiciones -> adao(a,b,c,d,n)
+    def ada(self, a, b, n): 
+        # Calcular valor de c 
+        if b == 2:
+            c = a-n
+        elif b == 1:
+            c = a+n
+        elif b == 2 and n == 1:
+            c = a
+
+        # Calcular valor de d
+        if a-n >= 1:
+            d = b
+        else:
+            d = b+1
+        
+        if self.movimiento_adao_valido(a,b,c,d,n) == True:
+            # ACTUALIZAR TABLERO
+            # Actualizar casilla (a,b)
+            if self.estado.estado_casilla_FA(a,b) == 0:
+                valor_casilla = 'v'
+            elif self.estado.estado_casilla_FA(a,b) >= 0:
+                valor_casilla = 'dao'
+
+            # Actualizar casilla (c,d)
+            if (c >= 1 and c <= 6) and (d == 1):
+                valor_casilla_2 = 'dao'
+            elif (c >= 1 and c <= 12) and (d == 2):
+                valor_casilla_2 = 'dao'
+            elif (c >= 7 and c <= 12) and (d == 1):
+                valor_casilla_2 = 'daf'
+
+            # Aplicar actualizaciones
+            tablero_2 = self.estado.get_tablero
+            tablero_2.actualizar_casilla(c, d, valor_casilla_2)
+
+            # ACTUALIZAR TIPOS DE FICHAS
+            fichas_2 = self.estado.get_fichas
+            if tablero_2.estado_casilla(c, d) == 'daf':
+                fichas_2.adicionar_ficha_daf()
+                fichas_2.eliminar_ficha_dao()
+
+            # ACTUALIZAR FA
+            FA_2 = self.estado.get_FA
+            FA_2.eliminar_ficha_FA(a, b)
+            FA_2.adicionar_ficha_FA(c, d)
+
+            # Actualizar estado
+            self.estado.actualizar_estado(tablero_2, 'R', fichas_2 , self.moneda.esperar_lanzamiento(), self.estado.get_FR, FA_2)
+        else:
+            print('Movimiento no válido')
+
+    # Verificar si adao es válido
+    def movimiento_adao_valido(self, a, b, c, d, n): # Verificar si un movimiento es válido
+        if (self.estado.get_turno == 'A' and self.estado.get_tablero.estado_casilla(a,b) == 'dao' and 
+            (self.estado.tablero.get_tablero.estado_casilla(c,d) == 'v' or self.estado.get_tablero.estado_casilla(c,d) == 'dao') and 
+            self.estado.get_fichas[6] == 0 and (c >= 1 or c <= 12) and (d >= 1 or d <= 2) and (n >= 1 or n <= 6)):
+            return True
+        else:
+            return False
+
+
+    # REGLA 3
     def adrf(self, a, b, c, d, n):
         # Avanzar drf de (a,b) a (c,d) según “n” posiciones
         pass
