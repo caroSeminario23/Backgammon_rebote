@@ -1,4 +1,4 @@
-from src import Tablero, Jugador, Turno, Estado, Moneda, Fichas
+from src import Jugador, Turno, Estado
 class Juego:
     def __init__(self, turno): # Inicializa un juego de backgammon
         self.jugador1 = Jugador('rojo')

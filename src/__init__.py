@@ -3,8 +3,8 @@ from .tablero import Tablero
 from .jugador import Jugador
 from .juego import Juego
 from .dado import Dado
-from .ficha import Ficha
-from .dado import Dado
 from .turno import Turno
 from .estado import Estado
 from .fichas import Fichas
+from .moneda import Moneda
+from .ficha import Ficha

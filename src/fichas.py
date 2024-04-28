@@ -1,4 +1,4 @@
-class fichas:
+class Fichas:
     def __init__(self):
         self.fichas = [15, 15, 0, 0, 0, 0, 0, 0] # [dro, dao, drf, daf, drc, dac, drl, dal]
 
