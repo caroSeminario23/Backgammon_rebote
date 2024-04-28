@@ -361,9 +361,68 @@ class Juego:
 
 
     # REGLA 6
-    def rda(self, a, b, c, d, n):
-        # Retroceder da de (a,b) a (c,d) según “n” posiciones
-        pass
+    # Retroceder dao de (a,b) a (c,d) según “n” posiciones -> rdao(a,b,c,d,n)
+    def rdao(self, a, b, c, d, n):
+        # Calcular valor de c
+        if b == 2:
+            c = a+n
+        elif b == 1:
+            c = a-n
+        elif b == 2 and n == 1:
+            c = a
+        
+        # Calcular valor de d
+        if a-n >= 1 and a-n <= 12 and b == 2:
+            d = b
+        elif a-n > 1 and a-n <= 12 and b == 1:
+            d = b
+        elif a-n < 1 and b == 1:
+            d = b+1
+
+        if self.movimiento_rdao_valido(a,b,c,d,n) == True:
+            # ACTUALIZAR TABLERO
+            # Actualizar casilla (a,b)
+            if self.estado.estado_casilla_FA(a,b) == 0:
+                valor_casilla = 'v'
+            elif self.estado.estado_casilla_FA(a,b) >= 0:
+                valor_casilla = 'dao'
+
+            # Actualizar casilla (c,d)
+            valor_casilla_2 = 'dao'
+
+            # Aplicar actualizaciones
+            tablero_2 = self.estado.get_tablero
+            tablero_2.actualizar_casilla(a, b, valor_casilla)
+            tablero_2.actualizar_casilla(c, d, valor_casilla_2)
+
+            # ACTUALIZAR TIPOS DE FICHAS
+            fichas_2 = self.estado.get_fichas
+            if tablero_2.estado_casilla(c, d) == 'dao':
+                fichas_2.adicionar_ficha_dao()
+                fichas_2.eliminar_ficha_dao()
+
+            # ACTUALIZAR FA
+            FA_2 = self.estado.get_FA
+            FA_2.eliminar_ficha_FA(a, b)
+            FA_2.adicionar_ficha_FA(c, d)
+
+            # Actualizar estado
+            self.estado.actualizar_estado(tablero_2, 'R', fichas_2 , self.moneda.esperar_lanzamiento(), self.estado.get_FR, FA_2)
+
+            # Se indica que el movimiento fue exitoso
+            print('Movimiento exitoso')
+        else:
+            print('Movimiento no válido')
+
+    # Verificar si rdao es válido
+    def movimiento_rdao_valido(self, a, b, c, d, n): # Verificar si un movimiento es válido
+        if (self.estado.get_turno == 'A' and self.estado.get_moneda == 'r' and self.estado.get_tablero.estado_casilla(a,b) == 'dao' and 
+            (self.estado.tablero.get_tablero.estado_casilla(c,d) == 'v' or self.estado.get_tablero.estado_casilla(c,d) == 'dao') and 
+            self.estado.get_fichas[6] == 0 and (c >= 1 or c <= 12) and (d >= 1 or d <= 2) and (n >= 1 or n <= 6)):
+            return True
+        else:
+            return False
+
 
     def cdr(self, a, b, c, d, n):
         # Captura con dr de (a,b) a da de (c,d) según “n” posiciones
