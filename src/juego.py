@@ -107,7 +107,7 @@ class Juego:
 
     # REGLA 2
     # Avanzar dao de (a,b) a (c,d) según “n” posiciones -> adao(a,b,c,d,n)
-    def ada(self, a, b, n): 
+    def adao(self, a, b, n): 
         # Calcular valor de c 
         if b == 2:
             c = a-n
