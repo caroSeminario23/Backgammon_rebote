@@ -1,43 +1,26 @@
 from src import Tablero, Jugador, Turno, Estado, Moneda, Fichas
 class Juego:
     def __init__(self, turno): # Inicializa un juego de backgammon
-        #self.tablero = Tablero()
         self.jugador1 = Jugador('rojo')
         self.jugador2 = Jugador('amarillo')
-        #self.turno = Turno(turno)
-        #self.fichas = [15,15,0,0,0,0,0,0]
-        #self.moneda = Moneda()
-        #self.estado = Estado(self.tablero, self.turno, self.fichas, self.moneda)
         self.estado = Estado(Turno(turno))
 
+    # Solicitud al usuario para que escoja su turno
     def elegir_turno(self): # El primer jugador elije el turno que desea
         turno = input('Elige el turno (R/A): ')
         return turno
 
-    def jugar(self): # Juega una partida de backgammon
-        while not self.tablero.juego_terminado(): # Juega hasta que el juego termina
-            for jugador in [self.jugador1, self.jugador2]: # Por cada jugador en el juego
-                movimiento = jugador.jugar_turno(self.tablero) # El jugador decide qué movimiento hacer
-                self.tablero.mover_ficha(jugador.color, movimiento) # Se mueve la ficha en el tablero
-
-                if self.tablero.juego_terminado(): # Si el juego termina, se rompe el ciclo
+    # Juega una partida de backgammon rebote
+    def jugar(self):
+        while self.verificar_estado_meta() == 'El juego continúa': # Juega hasta que el juego termina
+            for jugador in [self.jugador1, self.jugador2]:
+                movimiento = jugador.jugar_turno(self.estado)
+                self.mover_ficha(jugador.color, movimiento)
+                if self.verificar_estado_meta() != 'El juego continúa':
+                    print(self.verificar_estado_meta())
                     break
-
-        ganador = self.tablero.ganador() # Se determina el ganador del juego
-        print(f'El ganador es el jugador con las fichas {ganador}!') # Se imprime el ganador
-
-    def juego_terminado(self): # Devuelve True si el juego ha terminado
-        finalizado = False
-        if self.tablero.juego_terminado():
-            finalizado = True
-        return finalizado;
     
-    def ganador(self): # Devuelve el color de las fichas del jugador ganador
-        return self.tablero.ganador()
-    
-    def estado_juego(self): # Devuelve el estado actual del juego (quién está ganando, cuántas fichas quedan, etc.)
-        return self.tablero.estado_juego()
-    
+    # Mover una ficha en el tablero según las reglas del backgammon
     def mover_ficha(self, ficha, movimiento): # Mueve una ficha en el tablero según las reglas del backgammon
         self.tablero.mover_ficha(ficha, movimiento)
 
