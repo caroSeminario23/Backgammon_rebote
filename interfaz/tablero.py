@@ -17,6 +17,7 @@ MELON_OSCURO = hex_to_rgb("#e49d89")
 ROJO = hex_to_rgb("#e47f83")
 PLOMO = hex_to_rgb("#FCFCFC")
 MELON_TRASLUCIDO = hex_to_rgb("D9D9D9") # Agregar 60% de opacidad "superficie_transparente.set_alpha(255 * 0.6)
+BEIGE = hex_to_rgb("#FEFAE4")
 
 # Definir dimensiones de la ventana
 # Obtener las dimensiones de la pantalla
@@ -29,7 +30,7 @@ ventana = pygame.display.set_mode((ANCHO, ALTO))
 
 # Función para dibujar el tablero
 def dibujar_tablero():
-    ventana.fill(PLOMO)
+    ventana.fill(BEIGE)
     # Agregar un titulo a la ventana
     pygame.display.set_caption("Backgammon rebote")
     # Dibujar 1 recuadro de color melon oscuro (izquierda)
