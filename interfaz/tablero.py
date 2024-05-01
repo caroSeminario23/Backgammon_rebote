@@ -16,6 +16,7 @@ MELON_CLARO = hex_to_rgb("#e8ae96")
 MELON_OSCURO = hex_to_rgb("#e49d89")
 ROJO = hex_to_rgb("#e47f83")
 PLOMO = hex_to_rgb("#FCFCFC")
+MELON_TRASLUCIDO = hex_to_rgb("D9D9D9") # Agregar 60% de opacidad "superficie_transparente.set_alpha(255 * 0.6)
 
 # Definir dimensiones de la ventana
 # Obtener las dimensiones de la pantalla
@@ -49,6 +50,28 @@ def dibujar_tablero():
     pygame.draw.rect(ventana, MELON_CLARO, (ANCHO//22, ALTO//2.4, ANCHO//4.6, ALTO//4.8))
     # Dibujar 1 recuadro de color melon claro (izquierda inferior)
     pygame.draw.rect(ventana, MELON_CLARO, (ANCHO//22, ALTO//1.53, ANCHO//4.6, ALTO//4.8))
+
+    # Dibujar 1 recuadro de color melon claro (derecha superior)
+    # Crear una nueva superficie con el tamaño del rectángulo
+    superficie_transparente = pygame.Surface((ANCHO//2.2, ALTO//1.68))
+    # Establecer el nivel de transparencia (alpha) de la superficie
+    superficie_transparente.set_alpha(255 * 0.6)  # 60% de transparencia
+    # Rellenar la superficie con el color deseado
+    superficie_transparente.fill(MELON_TRASLUCIDO)
+    # Dibujar la superficie transparente en la ventana en la posición del rectángulo
+    ventana.blit(superficie_transparente, (ANCHO//3.22, ALTO//3.6))
+
+    # Dibujar 1 recuadro de color melon claro (derecha superior 1)
+    pygame.draw.rect(ventana, MELON_CLARO, (ANCHO//1.28, ALTO//3.6, ANCHO//5.7, ALTO//6))
+    # Dibujar 1 recuadro de color melon claro (derecha superior 2)
+    pygame.draw.rect(ventana, MELON_CLARO, (ANCHO//1.28, ALTO//2.18, ANCHO//5.7, ALTO//14))
+
+    # Dibujar 1 recuadro de color melon claro (derecha inferior 1)
+    pygame.draw.rect(ventana, MELON_CLARO, (ANCHO//1.28, ALTO//1.7, ANCHO//5.7, ALTO//6))
+    # Dibujar 1 recuadro de color melon claro (derecha inferior 2)
+    pygame.draw.rect(ventana, MELON_CLARO, (ANCHO//1.28, ALTO//1.3, ANCHO//5.7, ALTO//14))
+
+
 
     ''''
     for i in range(13):
