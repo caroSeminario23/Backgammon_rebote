@@ -101,12 +101,17 @@ def dibujar_tablero():
 
 
     # CRONÓMETROS
-    # Dibujar 1 recuadro de color melon oscuro (izquierda inferior 1)
+    # Dibujar 1 recuadro de color melon claro (izquierda inferior 1)
     dibujar_rectangulo_redondeado(ventana, MELON_CLARO, (ANCHO//7, ALTO//1.49, ANCHO//9, ALTO//13), 10)
 
-    # Dibujar 1 recuadro de color melon oscuro (izquierda inferior 2)
+    # Dibujar 1 recuadro de color melon claor (izquierda inferior 2)
     dibujar_rectangulo_redondeado(ventana, MELON_CLARO, (ANCHO//7, ALTO//1.31, ANCHO//9, ALTO//13), 10)
 
+    # Dibujar 1 recuadro de color melon oscuro (izquierda inferior 3)
+    dibujar_rectangulo_redondeado(ventana, MELON_OSCURO, (ANCHO//6.8, ALTO//1.475, ANCHO//10, ALTO//14), 10)
+
+    # Dibujar 1 recuadro de color melon oscuro (izquierda inferior 4)
+    dibujar_rectangulo_redondeado(ventana, MELON_OSCURO, (ANCHO//6.8, ALTO//1.3, ANCHO//10, ALTO//14), 10)
     
     # SECCIONES DEL TABLERO
     # ---- Parte de arriba ----
@@ -161,6 +166,7 @@ def dibujar_tablero():
     # Dibujar 1 recuadro de color amarillo al lado del anterior
     pygame.draw.rect(ventana, AMARILLO, (ANCHO//1.339, ALTO//1.678, ANCHO//25.2, ALTO//3.6))
 
+
     # IMAGENES
     # Importar imagen del dado
     imagen_dado = pygame.image.load("imagenes/dado.png")
@@ -203,14 +209,41 @@ def dibujar_tablero():
     ventana.blit(valor_moneda, (ANCHO//9, ALTO//3.2))
 
     # JUGADOR 1
-    # Agregar el texto del valor de la moneda a la ventana
-    jugador1 = fTexto1.render("Valor obtenido:", True, NEGRO)
-    pseudonimo1 = fTexto1.render("Valor obtenido:", True, NEGRO)
-    color_fichas1 = fTexto1.render("Valor obtenido:", True, NEGRO)
-    ventana.blit(valor_moneda, (ANCHO//9, ALTO//3.2))
-    
+    fTexto2 = pygame.font.Font('fuentes/Inter-MediumItalic.otf', ALTO//60)
+    jugador1 = fTexto1.render("JUGADOR 1", True, NEGRO)
+    pseudonimo1 = fTexto2.render(" - Pseudónimo:", True, NEGRO)
+    color_fichas1 = fTexto2.render(" - Color de fichas:", True, NEGRO)
+    ventana.blit(jugador1, (ANCHO//9, ALTO//2.3))
+    ventana.blit(pseudonimo1, (ANCHO//9, ALTO//2.15))
+    ventana.blit(color_fichas1, (ANCHO//9, ALTO//2.05))
 
+    # JUGADOR 2
+    jugador2 = fTexto1.render("JUGADOR 2", True, NEGRO)
+    pseudonimo2 = fTexto2.render(" - Pseudónimo:", True, NEGRO)
+    color_fichas2 = fTexto2.render(" - Color de fichas:", True, NEGRO)
+    ventana.blit(jugador2, (ANCHO//9, ALTO//1.9))
+    ventana.blit(pseudonimo2, (ANCHO//9, ALTO//1.8))
+    ventana.blit(color_fichas2, (ANCHO//9, ALTO//1.73))
 
+    fTexto3 = pygame.font.Font('fuentes/Inter-ExtraBold.ttf', ALTO//50)
+    tiempo_turno1 = fTexto3.render("TIEMPO", True, NEGRO)
+    tiempo_turno2 = fTexto3.render("POR TURNO", True, NEGRO)
+    tiempo_juego1 = fTexto3.render("TIEMPO", True, NEGRO)
+    tiempo_juego2 = fTexto3.render("DE JUEGO", True, NEGRO)
+    ventana.blit(tiempo_turno1, (ANCHO//16, ALTO//1.45))
+    ventana.blit(tiempo_turno2, (ANCHO//16, ALTO//1.4))
+    ventana.blit(tiempo_juego1, (ANCHO//16, ALTO//1.3))
+    ventana.blit(tiempo_juego2, (ANCHO//16, ALTO//1.26))
+
+    fTexto4 = pygame.font.Font('fuentes/Inter-Bold.ttf', ALTO//50)
+    fichas_liberadas1 = fTexto4.render("Fichas liberadas", True, NEGRO)
+    fichas_capturadas1 = fTexto4.render("Fichas capturadas", True, NEGRO)
+    fichas_liberadas2 = fTexto4.render("Fichas liberadas", True, NEGRO)
+    fichas_capturadas2 = fTexto4.render("Fichas capturadas", True, NEGRO)
+    ventana.blit(fichas_liberadas1, (ANCHO//1.205, ALTO//3.5))
+    ventana.blit(fichas_capturadas1, (ANCHO//1.21, ALTO//2.16))
+    ventana.blit(fichas_liberadas2, (ANCHO//1.205, ALTO//1.665))
+    ventana.blit(fichas_capturadas2, (ANCHO//1.21, ALTO//1.283))
 
     ''''
     for i in range(13):
