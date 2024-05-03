@@ -33,28 +33,56 @@ def dibujar_tablero():
     ventana.fill(BEIGE)
     # Agregar un titulo a la ventana
     pygame.display.set_caption("Backgammon rebote")
+
+    # Función para dibujar un rectángulo con esquinas redondeadas
+    def dibujar_rectangulo_redondeado(surface, color, rect, radius):
+        """Dibuja un rectángulo con esquinas redondeadas en Pygame."""
+        x, y, width, height = rect
+        pygame.draw.circle(surface, color, (x+radius, y+radius), radius)
+        pygame.draw.circle(surface, color, (x+width-radius, y+radius), radius)
+        pygame.draw.circle(surface, color, (x+radius, y+height-radius), radius)
+        pygame.draw.circle(surface, color, (x+width-radius, y+height-radius), radius)
+        pygame.draw.rect(surface, color, (x, y+radius, width, height-2*radius))
+        pygame.draw.rect(surface, color, (x+radius, y, width-2*radius, height))
+
     # Dibujar 1 recuadro de color melon oscuro (izquierda)
-    pygame.draw.rect(ventana, MELON_OSCURO, (ANCHO//33, ALTO//6.8, ANCHO//4, ALTO/1.33)) # El primer argumento indica la ventana, el segundo el color, el tercero la posición y el cuarto el tamaño
+    #pygame.draw.rect(ventana, MELON_OSCURO, (ANCHO//33, ALTO//6.8, ANCHO//4, ALTO/1.33)) # El primer argumento indica la ventana, el segundo el color, el tercero la posición y el cuarto el tamaño
+    dibujar_rectangulo_redondeado(ventana, MELON_OSCURO, (ANCHO//33, ALTO//6.8, ANCHO//4, ALTO//1.33), 10)
+
     # Dibujar 1 recuadro de color melon oscuro (superior derecha)
-    pygame.draw.rect(ventana, MELON_OSCURO, (ANCHO//3.35, ALTO//6.8, ANCHO//1.48, ALTO//11.7))
+    #pygame.draw.rect(ventana, MELON_OSCURO, (ANCHO//3.35, ALTO//6.8, ANCHO//1.48, ALTO//11.7))
+    dibujar_rectangulo_redondeado(ventana, MELON_OSCURO, (ANCHO//3.35, ALTO//6.8, ANCHO//1.48, ALTO//11.7), 10)
+
     # Dibujar 1 recuadro de color melon oscuro (inferior derecha)
-    pygame.draw.rect(ventana, MELON_OSCURO, (ANCHO//3.35, ALTO//4, ANCHO//1.48, ALTO/1.54))
+    #pygame.draw.rect(ventana, MELON_OSCURO, (ANCHO//3.35, ALTO//4, ANCHO//1.48, ALTO/1.54))
+    dibujar_rectangulo_redondeado(ventana, MELON_OSCURO, (ANCHO//3.35, ALTO//4, ANCHO//1.48, ALTO//1.54), 10)
+
+    # TÍTULO
     # Importación de la fuente para el titulo
     fTitulo = pygame.font.Font('fuentes/Inter-ExtraBold.ttf', ALTO//15)
     # Agregar un texto en la ventana
     titulo = fTitulo.render("BACKGAMMON REBOTE", True, MELON_OSCURO)
     ventana.blit(titulo, (ANCHO//3.8, ALTO//21))
 
-    # Dibujar 1 recuadro de color melon claro (izquierda superior)
-    pygame.draw.rect(ventana, MELON_CLARO, (ANCHO//22, ALTO//5.5, ANCHO//4.6, ALTO//4.8))    
-    # Dibujar 1 recuadro de color melon claro (izquierda medio)
-    pygame.draw.rect(ventana, MELON_CLARO, (ANCHO//22, ALTO//2.4, ANCHO//4.6, ALTO//4.8))
-    # Dibujar 1 recuadro de color melon claro (izquierda inferior)
-    pygame.draw.rect(ventana, MELON_CLARO, (ANCHO//22, ALTO//1.53, ANCHO//4.6, ALTO//4.8))
 
+    # OBJETOS, JUGADORES Y RELOJES
+    # Dibujar 1 recuadro de color melon claro (izquierda superior)
+    #pygame.draw.rect(ventana, MELON_CLARO, (ANCHO//22, ALTO//5.5, ANCHO//4.6, ALTO//4.8))
+    dibujar_rectangulo_redondeado(ventana, MELON_CLARO, (ANCHO//22, ALTO//5.5, ANCHO//4.6, ALTO//4.8), 10)
+
+    # Dibujar 1 recuadro de color melon claro (izquierda medio)
+    #pygame.draw.rect(ventana, MELON_CLARO, (ANCHO//22, ALTO//2.4, ANCHO//4.6, ALTO//4.8))
+    dibujar_rectangulo_redondeado(ventana, MELON_CLARO, (ANCHO//22, ALTO//2.4, ANCHO//4.6, ALTO//4.8), 10)
+
+    # Dibujar 1 recuadro de color melon claro (izquierda inferior)
+    #pygame.draw.rect(ventana, MELON_CLARO, (ANCHO//22, ALTO//1.53, ANCHO//4.6, ALTO//4.8))
+    dibujar_rectangulo_redondeado(ventana, MELON_CLARO, (ANCHO//22, ALTO//1.53, ANCHO//4.6, ALTO//4.8), 10)
+
+
+    # TABLERO DE JUEGO
     # Dibujar 1 recuadro de color melon claro (derecha superior)
     # Crear una nueva superficie con el tamaño del rectángulo
-    superficie_transparente = pygame.Surface((ANCHO//2.2, ALTO//1.68))
+    superficie_transparente = pygame.Surface((ANCHO//2.1, ALTO//1.68)) # Tamaño del rectángulo
     # Establecer el nivel de transparencia (alpha) de la superficie
     superficie_transparente.set_alpha(255 * 0.6)  # 60% de transparencia
     # Rellenar la superficie con el color deseado
@@ -62,16 +90,38 @@ def dibujar_tablero():
     # Dibujar la superficie transparente en la ventana en la posición del rectángulo
     ventana.blit(superficie_transparente, (ANCHO//3.22, ALTO//3.6))
 
+
+    # TABLERO DE FICHAS LIBERADAS
     # Dibujar 1 recuadro de color melon claro (derecha superior 1)
-    pygame.draw.rect(ventana, MELON_CLARO, (ANCHO//1.28, ALTO//3.6, ANCHO//5.7, ALTO//6))
+    #pygame.draw.rect(ventana, MELON_CLARO, (ANCHO//1.25, ALTO//3.2, ANCHO//6.4, ALTO//7))
+    dibujar_rectangulo_redondeado(ventana, MELON_CLARO, (ANCHO//1.25, ALTO//3.2, ANCHO//6.4, ALTO//7), 10)
+
     # Dibujar 1 recuadro de color melon claro (derecha superior 2)
-    pygame.draw.rect(ventana, MELON_CLARO, (ANCHO//1.28, ALTO//2.18, ANCHO//5.7, ALTO//14))
+    #pygame.draw.rect(ventana, MELON_CLARO, (ANCHO//1.25, ALTO//2.05, ANCHO//6.4, ALTO//18))
+    dibujar_rectangulo_redondeado(ventana, MELON_CLARO, (ANCHO//1.25, ALTO//2.05, ANCHO//6.4, ALTO//18), 10)
 
     # Dibujar 1 recuadro de color melon claro (derecha inferior 1)
-    pygame.draw.rect(ventana, MELON_CLARO, (ANCHO//1.28, ALTO//1.7, ANCHO//5.7, ALTO//6))
-    # Dibujar 1 recuadro de color melon claro (derecha inferior 2)
-    pygame.draw.rect(ventana, MELON_CLARO, (ANCHO//1.28, ALTO//1.3, ANCHO//5.7, ALTO//14))
+    #pygame.draw.rect(ventana, MELON_CLARO, (ANCHO//1.25, ALTO//1.595, ANCHO//6.4, ALTO//7))
+    dibujar_rectangulo_redondeado(ventana, MELON_CLARO, (ANCHO//1.25, ALTO//1.595, ANCHO//6.4, ALTO//7), 10)
 
+    # Dibujar 1 recuadro de color melon claro (derecha inferior 2)
+    #pygame.draw.rect(ventana, MELON_CLARO, (ANCHO//1.25, ALTO//1.24, ANCHO//6.4, ALTO//18))
+    dibujar_rectangulo_redondeado(ventana, MELON_CLARO, (ANCHO//1.25, ALTO//1.24, ANCHO//6.4, ALTO//18), 10)
+
+
+    # CRONÓMETROS
+    # Dibujar 1 recuadro de color melon oscuro (izquierda inferior 1)
+    #pygame.draw.rect(ventana, MELON_OSCURO, (ANCHO//7, ALTO//1.49, ANCHO//9, ALTO//13))
+    dibujar_rectangulo_redondeado(ventana, MELON_CLARO, (ANCHO//7, ALTO//1.49, ANCHO//9, ALTO//13), 10)
+
+    # Dibujar 1 recuadro de color melon oscuro (izquierda inferior 2)
+    #pygame.draw.rect(ventana, MELON_OSCURO, (ANCHO//7, ALTO//1.31, ANCHO//9, ALTO//13))
+    dibujar_rectangulo_redondeado(ventana, MELON_CLARO, (ANCHO//7, ALTO//1.31, ANCHO//9, ALTO//13), 10)
+
+    
+
+    # Uso de la función
+    #dibujar_rectangulo_redondeado(ventana, MELON_CLARO, (ANCHO//22, ALTO//5.5, ANCHO//4.6, ALTO//4.8), 10)
 
 
     ''''
