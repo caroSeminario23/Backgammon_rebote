@@ -46,15 +46,12 @@ def dibujar_tablero():
         pygame.draw.rect(surface, color, (x+radius, y, width-2*radius, height))
 
     # Dibujar 1 recuadro de color melon oscuro (izquierda)
-    #pygame.draw.rect(ventana, MELON_OSCURO, (ANCHO//33, ALTO//6.8, ANCHO//4, ALTO/1.33)) # El primer argumento indica la ventana, el segundo el color, el tercero la posición y el cuarto el tamaño
     dibujar_rectangulo_redondeado(ventana, MELON_OSCURO, (ANCHO//33, ALTO//6.8, ANCHO//4, ALTO//1.33), 10)
 
     # Dibujar 1 recuadro de color melon oscuro (superior derecha)
-    #pygame.draw.rect(ventana, MELON_OSCURO, (ANCHO//3.35, ALTO//6.8, ANCHO//1.48, ALTO//11.7))
     dibujar_rectangulo_redondeado(ventana, MELON_OSCURO, (ANCHO//3.35, ALTO//6.8, ANCHO//1.48, ALTO//11.7), 10)
 
     # Dibujar 1 recuadro de color melon oscuro (inferior derecha)
-    #pygame.draw.rect(ventana, MELON_OSCURO, (ANCHO//3.35, ALTO//4, ANCHO//1.48, ALTO/1.54))
     dibujar_rectangulo_redondeado(ventana, MELON_OSCURO, (ANCHO//3.35, ALTO//4, ANCHO//1.48, ALTO//1.54), 10)
 
     # TÍTULO
@@ -67,15 +64,12 @@ def dibujar_tablero():
 
     # OBJETOS, JUGADORES Y RELOJES
     # Dibujar 1 recuadro de color melon claro (izquierda superior)
-    #pygame.draw.rect(ventana, MELON_CLARO, (ANCHO//22, ALTO//5.5, ANCHO//4.6, ALTO//4.8))
     dibujar_rectangulo_redondeado(ventana, MELON_CLARO, (ANCHO//22, ALTO//5.5, ANCHO//4.6, ALTO//4.8), 10)
 
     # Dibujar 1 recuadro de color melon claro (izquierda medio)
-    #pygame.draw.rect(ventana, MELON_CLARO, (ANCHO//22, ALTO//2.4, ANCHO//4.6, ALTO//4.8))
     dibujar_rectangulo_redondeado(ventana, MELON_CLARO, (ANCHO//22, ALTO//2.4, ANCHO//4.6, ALTO//4.8), 10)
 
     # Dibujar 1 recuadro de color melon claro (izquierda inferior)
-    #pygame.draw.rect(ventana, MELON_CLARO, (ANCHO//22, ALTO//1.53, ANCHO//4.6, ALTO//4.8))
     dibujar_rectangulo_redondeado(ventana, MELON_CLARO, (ANCHO//22, ALTO//1.53, ANCHO//4.6, ALTO//4.8), 10)
 
 
@@ -93,35 +87,78 @@ def dibujar_tablero():
 
     # TABLERO DE FICHAS LIBERADAS
     # Dibujar 1 recuadro de color melon claro (derecha superior 1)
-    #pygame.draw.rect(ventana, MELON_CLARO, (ANCHO//1.25, ALTO//3.2, ANCHO//6.4, ALTO//7))
     dibujar_rectangulo_redondeado(ventana, MELON_CLARO, (ANCHO//1.25, ALTO//3.2, ANCHO//6.4, ALTO//7), 10)
 
     # Dibujar 1 recuadro de color melon claro (derecha superior 2)
-    #pygame.draw.rect(ventana, MELON_CLARO, (ANCHO//1.25, ALTO//2.05, ANCHO//6.4, ALTO//18))
     dibujar_rectangulo_redondeado(ventana, MELON_CLARO, (ANCHO//1.25, ALTO//2.05, ANCHO//6.4, ALTO//18), 10)
 
     # Dibujar 1 recuadro de color melon claro (derecha inferior 1)
-    #pygame.draw.rect(ventana, MELON_CLARO, (ANCHO//1.25, ALTO//1.595, ANCHO//6.4, ALTO//7))
     dibujar_rectangulo_redondeado(ventana, MELON_CLARO, (ANCHO//1.25, ALTO//1.595, ANCHO//6.4, ALTO//7), 10)
 
     # Dibujar 1 recuadro de color melon claro (derecha inferior 2)
-    #pygame.draw.rect(ventana, MELON_CLARO, (ANCHO//1.25, ALTO//1.24, ANCHO//6.4, ALTO//18))
     dibujar_rectangulo_redondeado(ventana, MELON_CLARO, (ANCHO//1.25, ALTO//1.24, ANCHO//6.4, ALTO//18), 10)
 
 
     # CRONÓMETROS
     # Dibujar 1 recuadro de color melon oscuro (izquierda inferior 1)
-    #pygame.draw.rect(ventana, MELON_OSCURO, (ANCHO//7, ALTO//1.49, ANCHO//9, ALTO//13))
     dibujar_rectangulo_redondeado(ventana, MELON_CLARO, (ANCHO//7, ALTO//1.49, ANCHO//9, ALTO//13), 10)
 
     # Dibujar 1 recuadro de color melon oscuro (izquierda inferior 2)
-    #pygame.draw.rect(ventana, MELON_OSCURO, (ANCHO//7, ALTO//1.31, ANCHO//9, ALTO//13))
     dibujar_rectangulo_redondeado(ventana, MELON_CLARO, (ANCHO//7, ALTO//1.31, ANCHO//9, ALTO//13), 10)
 
     
-
-    # Uso de la función
-    #dibujar_rectangulo_redondeado(ventana, MELON_CLARO, (ANCHO//22, ALTO//5.5, ANCHO//4.6, ALTO//4.8), 10)
+    # SECCIONES DEL TABLERO
+    # ---- Parte de arriba ----
+    # Dibujar 1 recuadro de color rojo
+    pygame.draw.rect(ventana, AMARILLO, (ANCHO//3.22, ALTO//3.6, ANCHO//25.2, ALTO//3.6))
+    # Dibujar 1 recuadro de color amarillo al lado del anterior
+    pygame.draw.rect(ventana, ROJO, (ANCHO//2.85, ALTO//3.6, ANCHO//25.2, ALTO//3.6))
+    # Dibujar 1 recuadro de color rojo al lado del anterior
+    pygame.draw.rect(ventana, AMARILLO, (ANCHO//2.56, ALTO//3.6, ANCHO//25.2, ALTO//3.6))
+    # Dibujar 1 recuadro de color amarillo al lado del anterior
+    pygame.draw.rect(ventana, ROJO, (ANCHO//2.32, ALTO//3.6, ANCHO//25.2, ALTO//3.6))
+    # Dibujar 1 recuadro de color rojo al lado del anterior
+    pygame.draw.rect(ventana, AMARILLO, (ANCHO//2.125, ALTO//3.6, ANCHO//25.2, ALTO//3.6))
+    # Dibujar 1 recuadro de color amarillo al lado del anterior
+    pygame.draw.rect(ventana, ROJO, (ANCHO//1.96, ALTO//3.6, ANCHO//25.2, ALTO//3.6))
+    # Dibujar 1 recuadro de color rojo al lado del anterior
+    pygame.draw.rect(ventana, AMARILLO, (ANCHO//1.82, ALTO//3.6, ANCHO//25.2, ALTO//3.6))
+    # Dibujar 1 recuadro de color amarillo al lado del anterior
+    pygame.draw.rect(ventana, ROJO, (ANCHO//1.695, ALTO//3.6, ANCHO//25.2, ALTO//3.6))
+    # Dibujar 1 recuadro de color rojo al lado del anterior
+    pygame.draw.rect(ventana, AMARILLO, (ANCHO//1.587, ALTO//3.6, ANCHO//25.2, ALTO//3.6))
+    # Dibujar 1 recuadro de color amarillo al lado del anterior
+    pygame.draw.rect(ventana, ROJO, (ANCHO//1.493, ALTO//3.6, ANCHO//25.2, ALTO//3.6))
+    # Dibujar 1 recuadro de color rojo al lado del anterior
+    pygame.draw.rect(ventana, AMARILLO, (ANCHO//1.41, ALTO//3.6, ANCHO//25.2, ALTO//3.6))
+    # Dibujar 1 recuadro de color amarillo al lado del anterior
+    pygame.draw.rect(ventana, ROJO, (ANCHO//1.339, ALTO//3.6, ANCHO//25.2, ALTO//3.6))
+    
+    # ---- Parte de abajo ----
+    # Dibujar 1 recuadro de color rojo
+    pygame.draw.rect(ventana, ROJO, (ANCHO//3.22, ALTO//1.678, ANCHO//25.2, ALTO//3.6))
+    # Dibujar 1 recuadro de color amarillo al lado del anterior
+    pygame.draw.rect(ventana, AMARILLO, (ANCHO//2.85, ALTO//1.678, ANCHO//25.2, ALTO//3.6))
+    # Dibujar 1 recuadro de color rojo al lado del anterior
+    pygame.draw.rect(ventana, ROJO, (ANCHO//2.56, ALTO//1.678, ANCHO//25.2, ALTO//3.6))
+    # Dibujar 1 recuadro de color amarillo al lado del anterior
+    pygame.draw.rect(ventana, AMARILLO, (ANCHO//2.32, ALTO//1.678, ANCHO//25.2, ALTO//3.6))
+    # Dibujar 1 recuadro de color rojo al lado del anterior
+    pygame.draw.rect(ventana, ROJO, (ANCHO//2.125, ALTO//1.678, ANCHO//25.2, ALTO//3.6))
+    # Dibujar 1 recuadro de color amarillo al lado del anterior
+    pygame.draw.rect(ventana, AMARILLO, (ANCHO//1.96, ALTO//1.678, ANCHO//25.2, ALTO//3.6))
+    # Dibujar 1 recuadro de color rojo al lado del anterior
+    pygame.draw.rect(ventana, ROJO, (ANCHO//1.82, ALTO//1.678, ANCHO//25.2, ALTO//3.6))
+    # Dibujar 1 recuadro de color amarillo al lado del anterior
+    pygame.draw.rect(ventana, AMARILLO, (ANCHO//1.695, ALTO//1.678, ANCHO//25.2, ALTO//3.6))
+    # Dibujar 1 recuadro de color rojo al lado del anterior
+    pygame.draw.rect(ventana, ROJO, (ANCHO//1.587, ALTO//1.678, ANCHO//25.2, ALTO//3.6))
+    # Dibujar 1 recuadro de color amarillo al lado del anterior
+    pygame.draw.rect(ventana, AMARILLO, (ANCHO//1.493, ALTO//1.678, ANCHO//25.2, ALTO//3.6))
+    # Dibujar 1 recuadro de color rojo al lado del anterior
+    pygame.draw.rect(ventana, ROJO, (ANCHO//1.41, ALTO//1.678, ANCHO//25.2, ALTO//3.6))
+    # Dibujar 1 recuadro de color amarillo al lado del anterior
+    pygame.draw.rect(ventana, AMARILLO, (ANCHO//1.339, ALTO//1.678, ANCHO//25.2, ALTO//3.6))
 
 
     ''''
