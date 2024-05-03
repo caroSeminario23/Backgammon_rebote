@@ -18,6 +18,7 @@ ROJO = hex_to_rgb("#e47f83")
 PLOMO = hex_to_rgb("#FCFCFC")
 MELON_TRASLUCIDO = hex_to_rgb("D9D9D9") # Agregar 60% de opacidad "superficie_transparente.set_alpha(255 * 0.6)
 BEIGE = hex_to_rgb("#FEFAE4")
+NEGRO = hex_to_rgb("#000000")
 
 # Definir dimensiones de la ventana
 # Obtener las dimensiones de la pantalla
@@ -159,6 +160,56 @@ def dibujar_tablero():
     pygame.draw.rect(ventana, ROJO, (ANCHO//1.41, ALTO//1.678, ANCHO//25.2, ALTO//3.6))
     # Dibujar 1 recuadro de color amarillo al lado del anterior
     pygame.draw.rect(ventana, AMARILLO, (ANCHO//1.339, ALTO//1.678, ANCHO//25.2, ALTO//3.6))
+
+    # IMAGENES
+    # Importar imagen del dado
+    imagen_dado = pygame.image.load("imagenes/dado.png")
+    # Escalar la imagen
+    imagen_dado = pygame.transform.scale(imagen_dado, (ALTO//13, ALTO//13))
+    # Dibujar la imagen en la ventana
+    ventana.blit(imagen_dado, (ANCHO//17, ALTO//5))
+
+    # Importar imagen de la moneda
+    imagen_moneda = pygame.image.load("imagenes/moneda.png")
+    # Escalar la imagen
+    imagen_moneda = pygame.transform.scale(imagen_moneda, (ALTO//13, ALTO//13))
+    # Dibujar la imagen en la ventana
+    ventana.blit(imagen_moneda, (ANCHO//17, ALTO//3.5))
+
+    # Importar imagen del jugador 1
+    imagen_jugador1 = pygame.image.load("imagenes/jugador.png")
+    # Escalar la imagen
+    imagen_jugador1 = pygame.transform.scale(imagen_jugador1, (ALTO//13, ALTO//13))
+    # Dibujar la imagen en la ventana
+    ventana.blit(imagen_jugador1, (ANCHO//17, ALTO//2.3))
+
+    # Importar imagen del jugador 2
+    imagen_jugador2 = pygame.image.load("imagenes/jugador.png")
+    # Escalar la imagen
+    imagen_jugador2 = pygame.transform.scale(imagen_jugador2, (ALTO//13, ALTO//13))
+    # Dibujar la imagen en la ventana
+    ventana.blit(imagen_jugador2, (ANCHO//17, ALTO//1.9))
+
+
+    # AGREGAR TEXTO
+    # Importación de la fuente
+    fTexto1 = pygame.font.Font('fuentes/Inter-MediumItalic.otf', ALTO//50)
+    # Agregar el texto del valor del dado en la ventana
+    valor_dado = fTexto1.render("Valor obtenido:", True, NEGRO) # el primer argumento indica el texto, el segundo si se quiere suavizar el texto y el tercero el color
+    ventana.blit(valor_dado, (ANCHO//9, ALTO//4.4))
+
+    # Agregar el texto del valor de la moneda a la ventana
+    valor_moneda = fTexto1.render("Valor obtenido:", True, NEGRO)
+    ventana.blit(valor_moneda, (ANCHO//9, ALTO//3.2))
+
+    # JUGADOR 1
+    # Agregar el texto del valor de la moneda a la ventana
+    jugador1 = fTexto1.render("Valor obtenido:", True, NEGRO)
+    pseudonimo1 = fTexto1.render("Valor obtenido:", True, NEGRO)
+    color_fichas1 = fTexto1.render("Valor obtenido:", True, NEGRO)
+    ventana.blit(valor_moneda, (ANCHO//9, ALTO//3.2))
+    
+
 
 
     ''''
