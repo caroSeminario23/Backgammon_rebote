@@ -245,12 +245,6 @@ def dibujar_tablero():
     ventana.blit(fichas_liberadas2, (ANCHO//1.205, ALTO//1.665))
     ventana.blit(fichas_capturadas2, (ANCHO//1.21, ALTO//1.283))
 
-    ''''
-    for i in range(13):
-        color = ROJO if i % 2 == 0 else ROJO
-        pygame.draw.rect(ventana, color, (i * ANCHO // 12, ALTO // 3, ANCHO // 12, ALTO // 3))
-        pygame.draw.line(ventana, AMARILLO, (i * ANCHO // 12, 0), (i * ANCHO // 12, ALTO), 1)
-    '''
     pygame.display.update()
 
 # Bucle principal del juego
