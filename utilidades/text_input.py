@@ -3,7 +3,7 @@ import pygame.locals
 
 class TextInput: # Esta clase permite al usuario ingresar texto
     def __init__(self): # Inicializa la fuente y la cadena de texto
-        self.font = pygame.font.Font("/fuentes/Inter-MediumItalic.otf", 32) # Fuente de texto
+        self.font = pygame.font.Font("fuentes/Inter-MediumItalic.otf", 32) # Fuente de texto
         self.input_string = "" # Cadena de texto
         self.rendered = None # Texto renderizado
         self.update_text() # Actualiza el texto
@@ -21,6 +21,10 @@ class TextInput: # Esta clase permite al usuario ingresar texto
 
     def draw(self, screen): # Dibuja el texto en la pantalla
         screen.blit(self.rendered, (10, 10))
+
+    def drawPosition(self, surface, position):
+        # Código para dibujar el objeto TextInput en la posición especificada
+        surface.blit(self.rendered, position)
 
 '''
 def main(): # Función principal
