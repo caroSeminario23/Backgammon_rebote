@@ -245,7 +245,21 @@ def dibujar_tablero():
     ventana.blit(fichas_liberadas2, (ANCHO//1.205, ALTO//1.665))
     ventana.blit(fichas_capturadas2, (ANCHO//1.21, ALTO//1.283))
 
-    pygame.display.update()
+
+    # INDICADOR DE TURNO
+    fTexto5 = pygame.font.Font('fuentes/Inter-Bold.ttf', ALTO//30)
+    turno = fTexto5.render("Es turno del Jugador", True, NEGRO)
+    ventana.blit(turno, (ANCHO//1.9, ALTO//6))
+
+
+    
+    #pygame.display.update()
+
+# CRONOMETRO POR TURNO
+# Inicializar el cronómetro
+inicio_cronometro_turno = pygame.time.get_ticks() # devuelve el tiempo en milisegundos desde que se llamó al juego
+inicio_cronometro_juego = pygame.time.get_ticks()
+
 
 # Bucle principal del juego
 while True:
@@ -254,4 +268,53 @@ while True:
             pygame.quit()
             sys.exit()
 
+    # CRONOMETRO POR TURNO
+    # Calcular el tiempo restante
+    tiempo_transcurrido_turno = (pygame.time.get_ticks() - inicio_cronometro_turno) / 1000  # Convertir a segundos
+    tiempo_restante_turno = 60 - tiempo_transcurrido_turno  # 60 segundos = 1 minuto
+
+    # Si el tiempo restante es 0 o menos, terminar el juego
+    if tiempo_restante_turno <= 0:
+        print("¡Tiempo agotado por turno!")
+        #pygame.quit()
+        #sys.exit()
+
+
+    # CRONOMETRO GENERAL DEL JUEGO
+    # Calcular el tiempo restante
+    tiempo_transcurrido_juego = (pygame.time.get_ticks() - inicio_cronometro_juego) / 1000  # Convertir a segundos
+    tiempo_restante_juego = 1800 - tiempo_transcurrido_juego  # 1800 segundos = 30 minutos
+
+    # Si el tiempo restante es 0 o menos, terminar el juego
+    if tiempo_restante_juego <= 0:
+        print("¡Tiempo agotado! ¡Fin del juego!")
+        #pygame.quit()
+        #sys.exit()
+
     dibujar_tablero()
+
+    # CRONOMETRO POR TURNO
+    # Convertir el tiempo restante a formato mm:ss
+    minutos_turno = int(tiempo_restante_turno) // 60
+    segundos_turno = int(tiempo_restante_turno) % 60
+    tiempo_formateado_turno = "{:02d}:{:02d}".format(minutos_turno, segundos_turno)
+
+
+    # Renderizar el tiempo restante y dibujarlo en la ventana
+    fTexto6 = pygame.font.Font('fuentes/Inter-Bold.ttf', ALTO//30)
+    cronometro_turno = fTexto6.render(tiempo_formateado_turno, True, NEGRO)
+    ventana.blit(cronometro_turno, (ANCHO//6, ALTO//1.45))
+
+    # CRONOMETRO GENERAL DEL JUEGO
+    # Convertir el tiempo restante a formato mm:ss
+    minutos_juego = int(tiempo_restante_juego) // 60
+    segundos_juego = int(tiempo_restante_juego) % 60
+    tiempo_formateado_juego = "{:02d}:{:02d}".format(minutos_juego, segundos_juego)
+
+    # Renderizar el tiempo restante y dibujarlo en la ventana
+    cronometro_juego = fTexto6.render(tiempo_formateado_juego, True, NEGRO)
+    ventana.blit(cronometro_juego, (ANCHO//6, ALTO//1.28))
+
+    pygame.display.update()
+
+
