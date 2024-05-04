@@ -1,0 +1,11 @@
+{
+    "UITextEntryLine": {
+        "plomoEntrada": {
+            "colour": "#D9D9D9",
+            "text_colour": "#000000",
+            "caret_colour": "#006400",
+            "border_width": 0,
+            "border_colour": "#D9D9D9"
+        }
+    }
+}
