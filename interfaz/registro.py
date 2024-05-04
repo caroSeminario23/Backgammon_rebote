@@ -47,6 +47,40 @@ def dibujar_pantalla_Registro():
     # Dibujar un rectángulo plomo para pseudonimo 2
     dibujar_rectangulo_redondeado(ventana, PLOMO, (572, 195, 170, 34), 11)
 
+    # TEXTO
+    # Importación de fuentes
+    ftexto1 = pygame.font.Font('fuentes/Inter-ExtraBold.ttf', 32)
+    ftexto2 = pygame.font.Font('fuentes/Inter-ExtraBoldItalic.otf', 24)
+    ftexto3 = pygame.font.Font('fuentes/Inter-SemiBoldItalic.otf', 20)
+
+    # Agregar titulo
+    titulo = ftexto1.render("REGISTRO DE JUGADORES", True, VERDE)
+    ventana.blit(titulo, (189, 52))
+
+    # Agregar texto para jugador 1
+    texto_jugador1 = ftexto2.render("Jugador 1", True, NEGRO)
+    ventana.blit(texto_jugador1, (142, 131))
+
+    # Agregar texto para jugador 2
+    texto_jugador2 = ftexto2.render("Jugador 2", True, NEGRO)
+    ventana.blit(texto_jugador2, (498, 131))
+
+    # Agregar texto para pseudonimo 1
+    texto_jugador2 = ftexto3.render("- Pseudónimo:", True, NEGRO)
+    ventana.blit(texto_jugador2, (43, 200))
+
+    # Agregar texto para pseudonimo 2
+    texto_jugador2 = ftexto3.render("- Pseudónimo:", True, NEGRO)
+    ventana.blit(texto_jugador2, (399, 200))
+
+    # Agregar texto para color de fichas 1
+    texto_jugador2 = ftexto3.render("- Color de fichas:", True, NEGRO)
+    ventana.blit(texto_jugador2, (43, 247))
+
+    # Agregar texto para color de fichas 2
+    texto_jugador2 = ftexto3.render("- Color de fichas:", True, NEGRO)
+    ventana.blit(texto_jugador2, (399, 247))
+
 # Crear casilla de texto para pseudonimo 1
 texto_pseudonimo1 = pygame_gui.elements.UITextEntryLine(relative_rect=pygame.Rect((216, 195), (170, 34)), manager=manager, object_id='#plomoEntrada') # El primer parametro es la posición y el segundo el tamaño
 # Suponiendo que 'texto_pseudonimo1' es tu objeto UITextEntryLine
