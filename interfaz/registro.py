@@ -43,9 +43,9 @@ def dibujar_pantalla_Registro():
     # Dibujar un rectángulo con esquinas redondeadas de color verde
     dibujar_rectangulo_redondeado(ventana, AMARILLO, (27, 29, 746, 343), 11) 
     # Dibujar un rectángulo plomo para pseudonimo 1
-    dibujar_rectangulo_redondeado(ventana, PLOMO, (216, 195, 170, 34), 11)
+    #dibujar_rectangulo_redondeado(ventana, PLOMO, (216, 195, 170, 34), 11)
     # Dibujar un rectángulo plomo para pseudonimo 2
-    dibujar_rectangulo_redondeado(ventana, PLOMO, (572, 195, 170, 34), 11)
+    #dibujar_rectangulo_redondeado(ventana, PLOMO, (572, 195, 170, 34), 11)
 
     # TEXTO
     # Importación de fuentes
@@ -58,36 +58,59 @@ def dibujar_pantalla_Registro():
     ventana.blit(titulo, (189, 52))
 
     # Agregar texto para jugador 1
-    texto_jugador1 = ftexto2.render("Jugador 1", True, NEGRO)
-    ventana.blit(texto_jugador1, (142, 131))
+    jugador1 = ftexto2.render("Jugador 1", True, NEGRO)
+    ventana.blit(jugador1, (137, 108))
 
     # Agregar texto para jugador 2
-    texto_jugador2 = ftexto2.render("Jugador 2", True, NEGRO)
-    ventana.blit(texto_jugador2, (498, 131))
+    jugador2 = ftexto2.render("Jugador 2", True, NEGRO)
+    ventana.blit(jugador2, (497, 108))
 
     # Agregar texto para pseudonimo 1
-    texto_jugador2 = ftexto3.render("- Pseudónimo:", True, NEGRO)
-    ventana.blit(texto_jugador2, (43, 200))
+    pseudonimo1 = ftexto3.render("  - Pseudónimo:", True, NEGRO)
+    ventana.blit(pseudonimo1, (43, 166))
 
     # Agregar texto para pseudonimo 2
-    texto_jugador2 = ftexto3.render("- Pseudónimo:", True, NEGRO)
-    ventana.blit(texto_jugador2, (399, 200))
+    pseudonimo2 = ftexto3.render("  - Pseudónimo:", True, NEGRO)
+    ventana.blit(pseudonimo2, (399, 166))
 
-    # Agregar texto para color de fichas 1
-    texto_jugador2 = ftexto3.render("- Color de fichas:", True, NEGRO)
-    ventana.blit(texto_jugador2, (43, 247))
-
-    # Agregar texto para color de fichas 2
-    texto_jugador2 = ftexto3.render("- Color de fichas:", True, NEGRO)
-    ventana.blit(texto_jugador2, (399, 247))
+    # Agregar texto para color de fichas
+    color_fichas = ftexto3.render("Color de fichas:", True, NEGRO)
+    ventana.blit(color_fichas, (323, 224))
 
 # Crear casilla de texto para pseudonimo 1
-texto_pseudonimo1 = pygame_gui.elements.UITextEntryLine(relative_rect=pygame.Rect((216, 195), (170, 34)), manager=manager, object_id='#plomoEntrada') # El primer parametro es la posición y el segundo el tamaño
+texto_pseudonimo1 = pygame_gui.elements.UITextEntryLine(relative_rect=pygame.Rect((216, 161), (170, 34)), manager=manager, object_id='#plomoEntrada') # El primer parametro es la posición y el segundo el tamaño
 # Suponiendo que 'texto_pseudonimo1' es tu objeto UITextEntryLine
 
 # Crear casilla de texto para pseudonimo 1
-texto_pseudonimo2 = pygame_gui.elements.UITextEntryLine(relative_rect=pygame.Rect((572, 195), (170, 34)), manager=manager, object_id='#plomoEntrada') 
+texto_pseudonimo2 = pygame_gui.elements.UITextEntryLine(relative_rect=pygame.Rect((572, 161), (170, 34)), manager=manager, object_id='#plomoEntrada') 
 # Suponiendo que 'texto_pseudonimo1' es tu objeto UITextEntryLine
+
+'''
+# Crear un grupo de botones de opción
+option_group = pygame_gui.elements.ui_button_group.UIButtonGroup()
+
+# Crear los botones de opción
+option_amarillo = pygame_gui.elements.UIRadioButton(relative_rect=pygame.Rect((78, 276), (150, 50)),
+                                               text='Amarillo',
+                                               manager=manager,
+                                               button_group=option_group)
+option_rojo = pygame_gui.elements.UIRadioButton(relative_rect=pygame.Rect((238, 276), (150, 50)),
+                                                text='Rojo',
+                                                manager=manager,
+                                                button_group=option_group)
+'''
+
+# Crear los botones
+button_amarillo = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((218, 255), (170, 34)),
+                                               text='Amarillo',
+                                               manager=manager)
+
+button_rojo = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((412, 255), (170, 34)),
+                                           text='Rojo',
+                                           manager=manager)
+
+# Variable para almacenar la opción seleccionada
+selected_option = button_amarillo
 
 '''
 superficie_pseudonimo1 = texto_pseudonimo1.text_surface
@@ -101,12 +124,6 @@ if superficie_pseudonimo1 is not None:
 # Agregar la casilla de texto al administrador de interfaz de usuario
 #manager.add_ui_element(texto_pseudonimo1)
 #ventana.blit(superficie_pseudonimo1, (216, 195))
-    
-
-
-
-    
-
     
 
 
@@ -137,6 +154,16 @@ while is_running:
             if event.type == pygame_gui.UI_TEXT_ENTRY_FINISHED:
                 if event.ui_element == texto_pseudonimo2:
                     print(f"El usuario ingresó: {event.text}")
+        
+        if event.type == pygame.USEREVENT:
+            if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
+                if event.ui_element == button_amarillo:
+                    selected_option = 'Amarillo'
+                    button_amarillo.set_text('Escogido')
+                    print("El usuario seleccionó Amarillo")
+                elif event.ui_element == button_rojo:
+                    selected_option = 'Rojo'
+                    print("El usuario seleccionó Rojo")
 
         manager.process_events(event)
 
