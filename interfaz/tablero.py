@@ -1,6 +1,7 @@
 from ctypes.wintypes import RGB
 import pygame # Importar la librería Pygame para crear la interfaz
 import sys # Importar la librería sys para poder salir del juego
+from interfaz.ficha import Ficha
 
 # Inicializar Pygame
 pygame.init() # Inicializar Pygame para poder usar sus funciones
@@ -261,6 +262,26 @@ inicio_cronometro_turno = pygame.time.get_ticks() # devuelve el tiempo en milise
 inicio_cronometro_juego = pygame.time.get_ticks()
 
 
+# LISTA DE POSICIONES
+# Lista de posiciones a las que se puede mover una ficha
+posiciones_movimiento = [(0, 0), (0, 0), (0, 0), (0, 0), (0, 0), (0, 0), 
+                         (0, 0), (0, 0), (0, 0), (0, 0), (0, 0), (0, 0), 
+                         (0, 0), (0, 0), (0, 0), (0, 0), (0, 0), (0, 0), 
+                         (0, 0), (0, 0), (0, 0), (0, 0), (0, 0), (0, 0),]
+
+'''
+# Para comprobar si una posición está en la lista
+if (x, y) in posiciones_movimiento:
+    print("La ficha se puede mover a esta posición")
+
+# Para añadir una nueva posición a la lista
+posiciones_movimiento.append((x_nuevo, y_nuevo))
+
+# Para eliminar una posición de la lista
+posiciones_movimiento.remove((x_eliminar, y_eliminar))
+'''
+
+
 # Bucle principal del juego
 while True:
     for evento in pygame.event.get():
@@ -314,6 +335,28 @@ while True:
     # Renderizar el tiempo restante y dibujarlo en la ventana
     cronometro_juego = fTexto6.render(tiempo_formateado_juego, True, NEGRO)
     ventana.blit(cronometro_juego, (ANCHO//6, ALTO//1.28))
+
+
+    # FICHAS
+    # Fichas rojas
+    ficha1R = Ficha(ROJO, ANCHO//2.04, ALTO//3, 3)
+    ficha2R = Ficha(ROJO, ANCHO//3, ALTO//3, 5)
+    ficha3R = Ficha(ROJO, ANCHO//3.02, ALTO//1.28, 5)
+    ficha4R = Ficha(ROJO, ANCHO//1.305, ALTO//1.28, 2)
+    ficha1R.dibujar(ventana)
+    ficha2R.dibujar(ventana)
+    ficha3R.dibujar(ventana)
+    ficha4R.dibujar(ventana)
+
+    # Fichas amarillas
+    ficha1A = Ficha(AMARILLO, ANCHO//3, ALTO//3, 5)
+    ficha2A = Ficha(AMARILLO, ANCHO//1.305, ALTO//3, 2)
+    ficha3A = Ficha(AMARILLO, ANCHO//2.04, ALTO//1.28, 3)
+    ficha4A = Ficha(AMARILLO, ANCHO//1.755, ALTO//1.28, 5)
+    ficha1A.dibujar(ventana)
+    ficha2A.dibujar(ventana)
+    ficha3A.dibujar(ventana)
+    ficha4A.dibujar(ventana)
 
     pygame.display.update()
 
