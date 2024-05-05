@@ -6,10 +6,16 @@ class Ficha:
         self.x = x
         self.y = y
         self.nFichas = nFichas
+
+    def obtenerPosicion(self):
+        return [self.x, self.y]
     
-    def cambiarPosicion(self, nuevoX, nuevoY):
+    def cambiarPosicion(self, nuevoX, nuevoY, ventana):
         self.x = nuevoX
         self.y = nuevoY
+
+        # Volver a dibujar la ficha para reflejar el cambio
+        self.dibujar(ventana)
 
     def dibujar(self, ventana):
         negro = (0, 0, 0)
