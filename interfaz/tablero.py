@@ -264,10 +264,10 @@ inicio_cronometro_juego = pygame.time.get_ticks()
 
 # LISTA DE POSICIONES
 # Lista de posiciones a las que se puede mover una ficha
-posiciones_movimiento = [(0, 0), (0, 0), (0, 0), (0, 0), (0, 0), (0, 0), 
-                         (0, 0), (0, 0), (0, 0), (0, 0), (0, 0), (0, 0), 
-                         (0, 0), (0, 0), (0, 0), (0, 0), (0, 0), (0, 0), 
-                         (0, 0), (0, 0), (0, 0), (0, 0), (0, 0), (0, 0),]
+posiciones_tablero = [(ANCHO//3.02, ALTO//3), (ANCHO//2.7, ALTO//3), (ANCHO//2.44, ALTO//3), (ANCHO//2.22, ALTO//3), (ANCHO//2.04, ALTO//3), (ANCHO//1.89, ALTO//3), 
+                      (ANCHO//1.755, ALTO//3), (ANCHO//1.64, ALTO//3), (ANCHO//1.54, ALTO//3), (ANCHO//1.45, ALTO//3), (ANCHO//1.375, ALTO//3), (ANCHO//1.305, ALTO//3), 
+                      (ANCHO//3.02, ALTO//1.28), (ANCHO//2.7, ALTO//1.28), (ANCHO//2.44, ALTO//1.28), (ANCHO//2.22, ALTO//1.28), (ANCHO//2.04, ALTO//1.28), (ANCHO//1.89, ALTO//1.28), 
+                      (ANCHO//1.755, ALTO//1.28), (ANCHO//1.64, ALTO//1.28), (ANCHO//1.54, ALTO//1.28), (ANCHO//1.45, ALTO//1.28), (ANCHO//1.375, ALTO//1.28), (ANCHO//1.305, ALTO//1.28),]
 
 '''
 # Para comprobar si una posición está en la lista
@@ -339,20 +339,21 @@ while True:
 
     # FICHAS
     # Fichas rojas
-    ficha1R = Ficha(ROJO, ANCHO//2.04, ALTO//3, 3)
-    ficha2R = Ficha(ROJO, ANCHO//3, ALTO//3, 5)
-    ficha3R = Ficha(ROJO, ANCHO//3.02, ALTO//1.28, 5)
-    ficha4R = Ficha(ROJO, ANCHO//1.305, ALTO//1.28, 2)
+    #ficha1R = Ficha(ROJO, ANCHO//2.04, ALTO//3, 3)
+    ficha1R = Ficha(ROJO, posiciones_tablero[4][0], posiciones_tablero[4][1], 3)
+    ficha2R = Ficha(ROJO, posiciones_tablero[6][0], posiciones_tablero[6][1], 5)
+    ficha3R = Ficha(ROJO, posiciones_tablero[12][0], posiciones_tablero[12][1], 5)
+    ficha4R = Ficha(ROJO, posiciones_tablero[23][0], posiciones_tablero[23][1], 2)
     ficha1R.dibujar(ventana)
     ficha2R.dibujar(ventana)
     ficha3R.dibujar(ventana)
     ficha4R.dibujar(ventana)
 
     # Fichas amarillas
-    ficha1A = Ficha(AMARILLO, ANCHO//3, ALTO//3, 5)
-    ficha2A = Ficha(AMARILLO, ANCHO//1.305, ALTO//3, 2)
-    ficha3A = Ficha(AMARILLO, ANCHO//2.04, ALTO//1.28, 3)
-    ficha4A = Ficha(AMARILLO, ANCHO//1.755, ALTO//1.28, 5)
+    ficha1A = Ficha(AMARILLO, posiciones_tablero[0][0], posiciones_tablero[0][1], 5)
+    ficha2A = Ficha(AMARILLO, posiciones_tablero[11][0], posiciones_tablero[11][1], 2)
+    ficha3A = Ficha(AMARILLO, posiciones_tablero[16][0], posiciones_tablero[16][1], 3)
+    ficha4A = Ficha(AMARILLO, posiciones_tablero[18][0], posiciones_tablero[18][1], 5)
     ficha1A.dibujar(ventana)
     ficha2A.dibujar(ventana)
     ficha3A.dibujar(ventana)
