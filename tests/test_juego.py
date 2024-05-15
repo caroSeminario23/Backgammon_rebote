@@ -1,3 +1,6 @@
+#alternativa para "src"
+import sys
+sys.path.append('.')
 import unittest
 #from unittest.mock import Mock
 from src.juego import Juego
