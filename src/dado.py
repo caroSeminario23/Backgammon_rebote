@@ -5,3 +5,5 @@ class Dado:
 
     def lanzar(self): # Lanza el dado y devuelve un valor aleatorio
         return random.choice(self.valores) # Devuelve un valor aleatorio de la lista de valores
+    
+    

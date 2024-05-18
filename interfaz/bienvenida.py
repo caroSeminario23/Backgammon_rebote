@@ -2,6 +2,7 @@ import pygame
 import pygame_gui
 import sys
 from utilidades.colores import dibujar_rectangulo_redondeado, VERDE, AMARILLO, NEGRO
+from registro import dibujar_pantalla_Registro()
 
 # INICIALIZAR PYGAME
 pygame.init()

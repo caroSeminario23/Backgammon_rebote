@@ -1,5 +1,6 @@
 from ctypes.wintypes import RGB
 import pygame # Importar la librería Pygame para crear la interfaz
+import pygame_gui # Importar la librería Pygame GUI para crear la interfaz
 import sys # Importar la librería sys para poder salir del juego
 from interfaz.ficha import Ficha
 
@@ -29,6 +30,7 @@ ALTO = pantalla.current_h
 
 # Crear la ventana
 ventana = pygame.display.set_mode((ANCHO, ALTO))
+manager = pygame_gui.UIManager((ANCHO, ALTO))
 
 # Función para dibujar el tablero
 def dibujar_tablero():
@@ -280,6 +282,18 @@ posiciones_movimiento.append((x_nuevo, y_nuevo))
 posiciones_movimiento.remove((x_eliminar, y_eliminar))
 '''
 
+# Función para crear la ventana emergente de lanzar dado
+def mostrar_ventana_dado():
+    global dialog
+    dialog = pygame_gui.windows.UIMessageWindow(rect=pygame.Rect((300, 100), (300, 200)),
+                                                html_message='Lance el dado',
+                                                manager=manager,
+                                                window_title='Lanzar Dado')
+
+    lanzar_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((100, 100), (100, 50)),
+                                                text='Lanzar',
+                                                manager=manager,
+                                                container=dialog)
 
 # Bucle principal del juego
 while True:
