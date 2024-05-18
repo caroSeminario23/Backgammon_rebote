@@ -5,7 +5,7 @@ class Tablero:
 
     def estado_casilla(self, a, b): # Devuelve el estado de la casilla (a,b)
         return self.casillas[a][b]
-        pass
+        
 
     def actualizar_casilla(self, a, b, valor):
         self.casillas[a][b] = valor

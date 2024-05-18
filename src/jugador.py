@@ -10,9 +10,8 @@ class Jugador:
     def __init__(self, pseudonimo, colorFicha):
         self.pseudonimo = pseudonimo
         self.colorFicha = colorFicha
-        #self.fichas = [Ficha(color, 'o') for _ in range(15)]
     
     def jugar_turno(self, estado):
         valor_dado = Dado().lanzar()
-        valor_moneda = Moneda().lanzar_moneda()
-        return valor_dado, valor_moneda
+        valor_moneda = Moneda().lanzar()
+        return [valor_dado, valor_moneda]

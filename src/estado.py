@@ -1,11 +1,12 @@
 from src.fichas import Fichas
 from src.tablero import Tablero
 from src.moneda import Moneda
+from src.turno import Turno
 #import Fichas, Tablero, Moneda
 class Estado:
-    def __init__(self, turno):
+    def __init__(self):
         self.tablero = Tablero()  # T: matriz que representa el tablero
-        self.turno = turno  # t: turno
+        self.turno = Turno()  # t: turno
         self.fichas = Fichas() #[15,15,0,0,0,0,0,0]  # ndro, ndao, ndrf, ndaf, ndrc, ndac, ndrl, ndal: número de cada tipo de ficha
         self.moneda = Moneda()  # m: valor de la moneda 
         self.FR = [[0, 0, 0, 0, 3, 0, 5, 0, 0, 0, 0, 0],
