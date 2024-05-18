@@ -2,10 +2,12 @@ import pygame
 
 class Ficha:
     def __init__(self, color, x, y, nFichas):
+        self.color_original = color
         self.color = color
         self.x = x
         self.y = y
         self.nFichas = nFichas
+        self.rect = pygame.Rect(self.x, self.y, 50, 50)  # Asume que las fichas son rectángulos de 50x50
 
     def obtenerPosicion(self):
         return [self.x, self.y]
@@ -41,3 +43,21 @@ class Ficha:
 
         # Volver a dibujar la ficha para reflejar el cambio
         self.dibujar(ventana)
+
+    def cambiarPosicion(self, x, y, ventana):
+        self.x = x
+        self.y = y
+        self.rect.topleft = (x - 15, y - 15)
+        self.dibujar(ventana)
+
+    def seleccionar(self, seleccionado):
+        if seleccionado:
+            self.color = (255, 255, 255)  # Blanco
+        else:
+            self.color = self.color_original
+
+    #imprimir informacion de la ficha
+    def mostrarInformacion(self):
+        print(f"Color: {self.color}")
+        print(f"Posición: ({self.x}, {self.y})")
+        print(f"Número de fichas: {self.nFichas}")
