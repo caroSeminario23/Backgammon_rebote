@@ -1,88 +1,23 @@
 import pygame
 import pygame_gui
 import sys
+from utilidades.colores import dibujar_rectangulo_redondeado, VERDE, AMARILLO, NEGRO
 
-# Inicializar Pygame
+# INICIALIZAR PYGAME
 pygame.init()
 
-# Función para convertir un color en formato hexadecimal a RGB
-def hex_to_rgb(hex):
-    hex = hex.lstrip('#')
-    return tuple(int(hex[i:i+2], 16) for i in (0, 2, 4))
-
-# Definir colores
-NEGRO = hex_to_rgb("#000000")
-VERDE = hex_to_rgb("#a8c99e")
-PLOMO = hex_to_rgb("#D9D9D9")
-AMARILLO = hex_to_rgb("#efd8a4")
-
-# Crear una ventana
+# CREAR LA VENTANA
 ventana = pygame.display.set_mode((800, 400))
 
-# Crear un administrador de interfaz de usuario 
+# CREAR EL ADMINISTRADOR DE INTERFAZ DE USUARIO
 manager = pygame_gui.UIManager((800, 400))
 
-# Dibujar en la pantalla
-def dibujar_pantalla_Registro():
-    ventana.fill(VERDE)
-    #pygame.display.flip()
-    # Agregar un titulo a la ventana
-    pygame.display.set_caption("Registro de jugadores")
+# CREAR LOS RECUADROS DE TEXTO
+texto_pseudonimo1 = pygame_gui.elements.UITextEntryLine(relative_rect=pygame.Rect((216, 161), (170, 34)), manager=manager)
+texto_pseudonimo2 = pygame_gui.elements.UITextEntryLine(relative_rect=pygame.Rect((572, 161), (170, 34)), manager=manager)
 
-    # Función para dibujar un rectángulo con esquinas redondeadas
-    """Dibuja un rectángulo con esquinas redondeadas en Pygame."""
-    def dibujar_rectangulo_redondeado(surface, color, rect, radius):
-        x, y, width, height = rect
-        pygame.draw.circle(surface, color, (x+radius, y+radius), radius)
-        pygame.draw.circle(surface, color, (x+width-radius, y+radius), radius)
-        pygame.draw.circle(surface, color, (x+radius, y+height-radius), radius)
-        pygame.draw.circle(surface, color, (x+width-radius, y+height-radius), radius)
-        pygame.draw.rect(surface, color, (x, y+radius, width, height-2*radius))
-        pygame.draw.rect(surface, color, (x+radius, y, width-2*radius, height))
-
-    # Dibujar un rectángulo con esquinas redondeadas de color verde
-    dibujar_rectangulo_redondeado(ventana, AMARILLO, (27, 29, 746, 343), 11) 
-
-    # TEXTO
-    # Importación de fuentes
-    ftexto1 = pygame.font.Font('fuentes/Inter-ExtraBold.ttf', 32)
-    ftexto2 = pygame.font.Font('fuentes/Inter-ExtraBoldItalic.otf', 24)
-    ftexto3 = pygame.font.Font('fuentes/Inter-SemiBoldItalic.otf', 20)
-
-    # Agregar titulo
-    titulo = ftexto1.render("REGISTRO DE JUGADORES", True, VERDE)
-    ventana.blit(titulo, (189, 52))
-
-    # Agregar texto para jugador 1
-    jugador1 = ftexto2.render("Jugador 1", True, NEGRO)
-    ventana.blit(jugador1, (137, 108))
-
-    # Agregar texto para jugador 2
-    jugador2 = ftexto2.render("Jugador 2", True, NEGRO)
-    ventana.blit(jugador2, (497, 108))
-
-    # Agregar texto para pseudonimo 1
-    pseudonimo1 = ftexto3.render("  - Pseudónimo:", True, NEGRO)
-    ventana.blit(pseudonimo1, (43, 166))
-
-    # Agregar texto para pseudonimo 2
-    pseudonimo2 = ftexto3.render("  - Pseudónimo:", True, NEGRO)
-    ventana.blit(pseudonimo2, (399, 166))
-
-    # Agregar texto para color de fichas
-    color_fichas = ftexto3.render("Color de fichas:", True, NEGRO)
-    ventana.blit(color_fichas, (323, 224))
-
-# Crear casilla de texto para pseudonimo 1
-texto_pseudonimo1 = pygame_gui.elements.UITextEntryLine(relative_rect=pygame.Rect((216, 161), (170, 34)), manager=manager) # El primer parametro es la posición y el segundo el tamaño
-# Suponiendo que 'texto_pseudonimo1' es tu objeto UITextEntryLine
-
-# Crear casilla de texto para pseudonimo 1
-texto_pseudonimo2 = pygame_gui.elements.UITextEntryLine(relative_rect=pygame.Rect((572, 161), (170, 34)), manager=manager) 
-# Suponiendo que 'texto_pseudonimo1' es tu objeto UITextEntryLine
-
-
-# Crear los botones
+# CREAR LOS BOTONES
+# 1. COLOR DE FICHAS
 button_amarillo = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((218, 255), (170, 34)),
                                                text='Amarillo',
                                                manager=manager)
@@ -91,15 +26,58 @@ button_rojo = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((412, 255),
                                            text='Rojo',
                                            manager=manager)
 
-# Variable para almacenar la opción seleccionada
 selected_option = button_amarillo
 
-# Boton para registrar jugadores
+# 2. REGISTRO
 button_registrar = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((308, 320), (184, 33)),
                                                 text='Registrar',
                                                 manager=manager)
 
 selected_option2 = button_registrar
+
+
+# DIBUJAR EN LA PANTALLA
+def dibujar_pantalla_Registro():
+    # PINTAR LA VENTANA
+    ventana.fill(VERDE)
+
+    # AGREGAR TITULO A LA VENTANA
+    pygame.display.set_caption("Registro de jugadores")
+
+    # DIBUJAR RECTANGULO DEL TITULO
+    dibujar_rectangulo_redondeado(ventana, AMARILLO, (27, 29, 746, 343), 11) 
+
+    # IMPORTACION DE FUENTES
+    ftexto1 = pygame.font.Font('fuentes/Inter-ExtraBold.ttf', 32)
+    ftexto2 = pygame.font.Font('fuentes/Inter-ExtraBoldItalic.otf', 24)
+    ftexto3 = pygame.font.Font('fuentes/Inter-SemiBoldItalic.otf', 20)
+
+    # AGREGAR TEXTO 
+    # 1. DE TITULO
+    titulo = ftexto1.render("REGISTRO DE JUGADORES", True, VERDE)
+    ventana.blit(titulo, (189, 52))
+
+    # 2. DE JUGADOR 1
+    jugador1 = ftexto2.render("Jugador 1", True, NEGRO)
+    ventana.blit(jugador1, (137, 108))
+
+    # 3. DE JUGADOR 2
+    jugador2 = ftexto2.render("Jugador 2", True, NEGRO)
+    ventana.blit(jugador2, (497, 108))
+
+    # 4. DE PSEUDONIMO JUGADOR 1
+    pseudonimo1 = ftexto3.render("  - Pseudónimo:", True, NEGRO)
+    ventana.blit(pseudonimo1, (43, 166))
+
+    # 5. DE PSEUDONIMO JUGADOR 2
+    pseudonimo2 = ftexto3.render("  - Pseudónimo:", True, NEGRO)
+    ventana.blit(pseudonimo2, (399, 166))
+
+    # 6. DE COLOR DE FICHAS
+    color_fichas = ftexto3.render("Color de fichas:", True, NEGRO)
+    ventana.blit(color_fichas, (323, 224))
+
+
 
 clock = pygame.time.Clock() # Reloj de Pygame para controlar la velocidad de fotogramas
 is_running = True # Variable para controlar el bucle principal
@@ -118,11 +96,13 @@ while is_running:
         #if event.type == pygame.USEREVENT:
         if event.type == pygame_gui.UI_TEXT_ENTRY_FINISHED:
             if event.ui_element == texto_pseudonimo1:
+            #if event.ui_element == texto_pseudonimo1:
                 print(f"El usuario ingresó: {event.text}")
         
         #if event.type == pygame.USEREVENT:
         if event.type == pygame_gui.UI_TEXT_ENTRY_FINISHED:
             if event.ui_element == texto_pseudonimo2:
+            #if event.ui_element == texto_pseudonimo2:
                 print(f"El usuario ingresó: {event.text}")
         
         #if event.type == pygame.USEREVENT:
@@ -147,15 +127,11 @@ while is_running:
 
     dibujar_pantalla_Registro()
 
-        
-
     manager.update(time_delta)
 
     #ventana.fill((255, 255, 255))
 
     manager.draw_ui(ventana)
-
-    
 
     pygame.display.update()
 

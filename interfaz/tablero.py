@@ -1,6 +1,7 @@
 from ctypes.wintypes import RGB
 import pygame # Importar la librería Pygame para crear la interfaz
 import sys # Importar la librería sys para poder salir del juego
+from interfaz.ficha import Ficha
 
 # Inicializar Pygame
 pygame.init() # Inicializar Pygame para poder usar sus funciones
@@ -252,13 +253,32 @@ def dibujar_tablero():
     ventana.blit(turno, (ANCHO//1.9, ALTO//6))
 
 
-    
-    #pygame.display.update()
 
 # CRONOMETRO POR TURNO
 # Inicializar el cronómetro
 inicio_cronometro_turno = pygame.time.get_ticks() # devuelve el tiempo en milisegundos desde que se llamó al juego
 inicio_cronometro_juego = pygame.time.get_ticks()
+
+
+# LISTA DE POSICIONES
+# Lista de posiciones a las que se puede mover una ficha
+posiciones_tablero = [(ANCHO//3.02, ALTO//3), (ANCHO//2.7, ALTO//3), (ANCHO//2.44, ALTO//3), (ANCHO//2.22, ALTO//3), (ANCHO//2.04, ALTO//3), (ANCHO//1.89, ALTO//3), 
+                      (ANCHO//1.755, ALTO//3), (ANCHO//1.64, ALTO//3), (ANCHO//1.54, ALTO//3), (ANCHO//1.45, ALTO//3), (ANCHO//1.375, ALTO//3), (ANCHO//1.305, ALTO//3), 
+                      (ANCHO//3.02, ALTO//1.28), (ANCHO//2.7, ALTO//1.28), (ANCHO//2.44, ALTO//1.28), (ANCHO//2.22, ALTO//1.28), (ANCHO//2.04, ALTO//1.28), (ANCHO//1.89, ALTO//1.28), 
+                      (ANCHO//1.755, ALTO//1.28), (ANCHO//1.64, ALTO//1.28), (ANCHO//1.54, ALTO//1.28), (ANCHO//1.45, ALTO//1.28), (ANCHO//1.375, ALTO//1.28), (ANCHO//1.305, ALTO//1.28),]
+
+nFichasEnTablero = [[5, 0, 0, 0, 3, 0, 5, 0, 0, 0, 0, 2],[5, 0, 0, 0, 3, 0, 5, 0, 0, 0, 0, 2]]
+'''
+# Para comprobar si una posición está en la lista
+if (x, y) in posiciones_movimiento:
+    print("La ficha se puede mover a esta posición")
+
+# Para añadir una nueva posición a la lista
+posiciones_movimiento.append((x_nuevo, y_nuevo))
+
+# Para eliminar una posición de la lista
+posiciones_movimiento.remove((x_eliminar, y_eliminar))
+'''
 
 
 # Bucle principal del juego
@@ -267,6 +287,31 @@ while True:
         if evento.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
+        
+        if evento.type == pygame.KEYDOWN:
+            if evento.key == pygame.K_RETURN:  # K_RETURN es la tecla Enter
+                # MOVIMIENTO DE FICHA
+                FRAMES = 2
+                # Y una posición objetivo
+                objetivo = [posiciones_tablero[1][0], posiciones_tablero[1][1]]
+
+                # Calcular la distancia a moverse en cada eje
+                dx = (objetivo[0] - ficha1A.obtenerPosicion()[0]) / FRAMES
+                dy = (objetivo[1] - ficha1A.obtenerPosicion()[1]) / FRAMES
+
+                for i in range(FRAMES):
+                    # Mover la ficha un poco hacia el objetivo
+                    ficha1A.obtenerPosicion()[0] += dx
+                    ficha1A.obtenerPosicion()[1] += dy
+
+                    # Dibujar la ficha en su nueva posición
+                    ficha1A.cambiarPosicion(posiciones_tablero[1][0], posiciones_tablero[1][1], ventana)
+
+                    # Actualizar la pantalla
+                    pygame.display.update()
+
+                    # Esperar un poco para el siguiente frame
+                    pygame.time.wait(1000 // 50)
 
     # CRONOMETRO POR TURNO
     # Calcular el tiempo restante
@@ -315,6 +360,57 @@ while True:
     cronometro_juego = fTexto6.render(tiempo_formateado_juego, True, NEGRO)
     ventana.blit(cronometro_juego, (ANCHO//6, ALTO//1.28))
 
+
+    # FICHAS
+    # Fichas rojas
+    #ficha1R = Ficha(ROJO, ANCHO//2.04, ALTO//3, 3)
+    ficha1R = Ficha(ROJO, posiciones_tablero[4][0], posiciones_tablero[4][1], 3)
+    ficha2R = Ficha(ROJO, posiciones_tablero[6][0], posiciones_tablero[6][1], 5)
+    ficha3R = Ficha(ROJO, posiciones_tablero[12][0], posiciones_tablero[12][1], 5)
+    ficha4R = Ficha(ROJO, posiciones_tablero[23][0], posiciones_tablero[23][1], 2)
+    ficha1R.dibujar(ventana)
+    ficha2R.dibujar(ventana)
+    ficha3R.dibujar(ventana)
+    ficha4R.dibujar(ventana)
+
+    # Fichas amarillas
+    ficha1A = Ficha(AMARILLO, posiciones_tablero[0][0], posiciones_tablero[0][1], 5)
+    ficha2A = Ficha(AMARILLO, posiciones_tablero[11][0], posiciones_tablero[11][1], 2)
+    ficha3A = Ficha(AMARILLO, posiciones_tablero[16][0], posiciones_tablero[16][1], 3)
+    ficha4A = Ficha(AMARILLO, posiciones_tablero[18][0], posiciones_tablero[18][1], 5)
+    ficha1A.dibujar(ventana)
+    ficha2A.dibujar(ventana)
+    ficha3A.dibujar(ventana)
+    ficha4A.dibujar(ventana)
+
+
+    '''
+    # MOVIMIENTO DE FICHA
+    FRAMES = 2
+    # Y una posición objetivo
+    objetivo = [posiciones_tablero[1][0], posiciones_tablero[1][1]]
+
+    # Calcular la distancia a moverse en cada eje
+    dx = (objetivo[0] - ficha1A.obtenerPosicion()[0]) / FRAMES
+    dy = (objetivo[1] - ficha1A.obtenerPosicion()[1]) / FRAMES
+
+    # En tu bucle de juego
+    for i in range(FRAMES):
+        # Mover la ficha un poco hacia el objetivo
+        ficha1A.obtenerPosicion()[0] += dx
+        ficha1A.obtenerPosicion()[1] += dy
+
+        # Dibujar la ficha en su nueva posición
+        ficha1A.cambiarPosicion(posiciones_tablero[1][0], posiciones_tablero[1][1], ventana)
+
+        # Actualizar la pantalla
+        pygame.display.update()
+
+        # Esperar un poco para el siguiente frame
+        pygame.time.wait(1000 // 50)
+    '''
+
     pygame.display.update()
+    
 
 
