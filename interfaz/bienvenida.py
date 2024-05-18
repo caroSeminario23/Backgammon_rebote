@@ -2,7 +2,7 @@ import pygame
 import pygame_gui
 import sys
 from utilidades.colores import dibujar_rectangulo_redondeado, VERDE, AMARILLO, NEGRO
-from registro import dibujar_pantalla_Registro()
+from interfaz.registro import mostrar_pantalla_Registro
 
 # INICIALIZAR PYGAME
 pygame.init()
@@ -89,6 +89,9 @@ while is_running:
                 reset_buttons()
                 button_HH.set_text('SELECCIONADO')
                 print('Modo de juego: Humano-humano')
+                ventana2 = pygame.display.set_mode((800, 400))
+                manager2 = pygame_gui.UIManager((800, 400))
+                mostrar_pantalla_Registro(ventana2, manager2)
 
             elif event.ui_element == button_HM_principiante:
                 selected_option = "H-M Principiante"
