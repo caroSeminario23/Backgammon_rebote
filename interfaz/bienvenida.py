@@ -64,6 +64,13 @@ def dibujar_pantalla_Bienvenida():
     modo_juego = ftexto4.render("Humano-Máquina", True, NEGRO)
     ventana.blit(modo_juego, (470, 254))
 
+# Función para resetear los botones
+def reset_buttons():
+    button_HH.set_text('Humano-Humano')
+    button_HM_principiante.set_text('Principiante')
+    button_HM_normal.set_text('Normal')
+    button_HM_experto.set_text('Experto')
+
 clock = pygame.time.Clock()
 is_running = True
 
@@ -78,18 +85,25 @@ while is_running:
         if event.type == pygame_gui.UI_BUTTON_PRESSED:
             if event.ui_element == button_HH:
                 selected_option = "Humano-Humano"
+                reset_buttons()
                 button_HH.set_text('SELECCIONADO')
                 print('Modo de juego: Humano-humano')
+
             elif event.ui_element == button_HM_principiante:
                 selected_option = "H-M Principiante"
+                reset_buttons()
                 button_HM_principiante.set_text('SELECCIONADO')
                 print('Modo de juego: H-M Principiante')
+
             elif event.ui_element == button_HM_normal:
                 selected_option = "H-M Normal"
+                reset_buttons()
                 button_HM_normal.set_text('SELECCIONADO')
                 print('Modo de juego: H-M Normal')
+
             elif event.ui_element == button_HM_experto:
                 selected_option = "H-M Experto"
+                reset_buttons()
                 button_HM_experto.set_text('SELECCIONADO')
                 print('Modo de juego: H-M Experto')
         

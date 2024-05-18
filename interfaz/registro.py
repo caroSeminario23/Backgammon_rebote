@@ -77,8 +77,6 @@ def dibujar_pantalla_Registro():
     color_fichas = ftexto3.render("Color de fichas:", True, NEGRO)
     ventana.blit(color_fichas, (323, 224))
 
-
-
 clock = pygame.time.Clock() # Reloj de Pygame para controlar la velocidad de fotogramas
 is_running = True # Variable para controlar el bucle principal
 
@@ -89,29 +87,24 @@ while is_running:
     time_delta = clock.tick(60)/1000.0 # Actualizar el reloj de Pygame
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            #is_running = False
             pygame.quit()
             sys.exit()
 
-        #if event.type == pygame.USEREVENT:
         if event.type == pygame_gui.UI_TEXT_ENTRY_FINISHED:
             if event.ui_element == texto_pseudonimo1:
-            #if event.ui_element == texto_pseudonimo1:
                 print(f"El usuario ingresó: {event.text}")
         
-        #if event.type == pygame.USEREVENT:
         if event.type == pygame_gui.UI_TEXT_ENTRY_FINISHED:
             if event.ui_element == texto_pseudonimo2:
-            #if event.ui_element == texto_pseudonimo2:
                 print(f"El usuario ingresó: {event.text}")
         
-        #if event.type == pygame.USEREVENT:
         if event.type == pygame_gui.UI_BUTTON_PRESSED:
             if event.ui_element == button_amarillo:
                 selected_option = 'Amarillo'
                 button_amarillo.set_text('Jugador 1')
                 button_rojo.set_text('Jugador 2')
                 print("El usuario seleccionó Amarillo")
+
             elif event.ui_element == button_rojo:
                 selected_option = 'Rojo'
                 button_amarillo.set_text('Jugador 2')
@@ -129,11 +122,7 @@ while is_running:
 
     manager.update(time_delta)
 
-    #ventana.fill((255, 255, 255))
-
     manager.draw_ui(ventana)
 
     pygame.display.update()
-
-#pygame.quit()
 
