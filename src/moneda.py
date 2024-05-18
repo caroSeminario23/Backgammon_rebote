@@ -10,3 +10,6 @@ class Moneda:
     
     def esperar_lanzamiento(self): # Espera a que la moneda se detenga
         self.estado_actual = 'i' # Actualiza el estado de la moneda a inmóvil
+    
+    def mostrar_moneda(self):
+        print('Moneda:', self.estado_actual)

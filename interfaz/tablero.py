@@ -2,8 +2,15 @@ from ctypes.wintypes import RGB
 import pygame # Importar la librería Pygame para crear la interfaz
 import pygame_gui # Importar la librería Pygame GUI para crear la interfaz
 import sys # Importar la librería sys para poder salir del juego
+from pync import Notifier
+#from plyer import notification
+#import tkinter as tk # Importar la librería tkinter para crear la ventana de diálogo
+#from tkinter import messagebox # Importar la librería messagebox de tkinter para mostrar mensajes de diálogo
 from interfaz.ficha import Ficha
 from utilidades.colores import hex_to_rgb, AMARILLO, MELON_CLARO, MELON_OSCURO, ROJO, MELON_TRASLUCIDO, BEIGE, NEGRO, dibujar_rectangulo_redondeado
+from src.juego import Juego
+
+
 
 pseudonimo1, pseudonimo2, color1, color2 = '', '', '', ''
 
@@ -20,6 +27,11 @@ def setColores(cor1, cor2):
 def registrar_Datos_Jugadores():
     global pseudonimo1, pseudonimo2, color1, color2
     return pseudonimo1, pseudonimo2, color1, color2
+
+# Función para mostrar la ventana emergente
+def mostrar_turno(turno):
+    Notifier.notify(f'Es el turno de: {turno}', title='Turno Actual')
+
 
 # Funcion para mover una ficha
 def mover_ficha(ficha, objetivo, ventana, frames=2, delay=50): 
@@ -86,15 +98,15 @@ def mostrar_pantalla_Tablero(ventana, manager, ANCHO, ALTO):
     # Agregar el texto del valor de la moneda a la ventana
     valor_moneda = fTexto1.render("Valor obtenido:", True, NEGRO)
     
-
-    # JUGADOR 1
+    
     pseudo1, pseudo2, color1, color2 = registrar_Datos_Jugadores()
+
     fTexto2 = pygame.font.Font('fuentes/Inter-MediumItalic.otf', ALTO//60)
+    # JUGADOR 1
     jugador1 = fTexto1.render("JUGADOR 1", True, NEGRO)
     pseudonimo1 = fTexto2.render(f" - Pseudónimo: {pseudo1}", True, NEGRO)
     color_fichas1 = fTexto2.render(f" - Color de fichas: {color1}", True, NEGRO)
     
-
     # JUGADOR 2
     jugador2 = fTexto1.render("JUGADOR 2", True, NEGRO)
     pseudonimo2 = fTexto2.render(f" - Pseudónimo: {pseudo2}", True, NEGRO)
@@ -148,6 +160,13 @@ def mostrar_pantalla_Tablero(ventana, manager, ANCHO, ALTO):
     ]
 
     
+    # INICIAR JUEGO
+    juego = Juego()
+
+    turno_inicial = juego.obtener_estado().get_turno().get_turno_actual()
+    mostrar_turno(turno_inicial)
+
+
 
     # Bucle principal del juego
     while True:
@@ -175,7 +194,7 @@ def mostrar_pantalla_Tablero(ventana, manager, ANCHO, ALTO):
                             ficha_seleccionada = None
                             destino_seleccionado = None
                             break
-                        
+
 
         # CRONOMETRO POR TURNO
         # Calcular el tiempo restante

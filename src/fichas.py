@@ -65,3 +65,6 @@ class Fichas:
     # Muestra el estado de las fichas
     def __str__(self):
         return 'Fichas: ' + str(self.fichas)
+    
+    def mostrar_fichas(self):
+        print('Fichas:', self.fichas)
