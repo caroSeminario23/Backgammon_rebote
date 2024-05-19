@@ -2,6 +2,7 @@ import pygame, pygame_gui, sys
 from utils.colores import VERDE, AMARILLO, NEGRO
 from utils.figuras import dibujar_rectangulo_redondeado
 from view.tablero_GUI import mostrar_pantalla_Tablero, setPseudonimos, setColores 
+from controller.controlador_registro import Controlador_Registro
 
 J1_pseudonimo, J2_pseudonimo, J1_color, J2_color = '', '', '', ''
 
@@ -64,22 +65,26 @@ def mostrar_pantalla_Registro(ventana, manager):
 
     # Bucle principal del juego
     while is_running:
-        
         time_delta = clock.tick(60)/1000.0 # Actualizar el reloj de Pygame
         for event in pygame.event.get():
+            controlador = Controlador_Registro()
+
             if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
+                controlador.manejar_salida()
+                '''pygame.quit()
+                sys.exit()'''
 
             if event.type == pygame_gui.UI_TEXT_ENTRY_FINISHED:
                 if event.ui_element == texto_pseudonimo1:
-                    print(f"El usuario ingresó: {event.text}")
-                    J1_pseudonimo = texto_pseudonimo1.get_text()
+                    controlador.manejar_registro_pseudonimo1(event, texto_pseudonimo1)
+                    '''print(f"El usuario ingresó: {event.text}")
+                    J1_pseudonimo = texto_pseudonimo1.get_text()'''
             
-            if event.type == pygame_gui.UI_TEXT_ENTRY_FINISHED:
-                if event.ui_element == texto_pseudonimo2:
-                    print(f"El usuario ingresó: {event.text}")
-                    J2_pseudonimo = texto_pseudonimo2.get_text()
+                #if event.type == pygame_gui.UI_TEXT_ENTRY_FINISHED:
+                elif event.ui_element == texto_pseudonimo2:
+                    controlador.manejar_registro_pseudonimo2(event, texto_pseudonimo2)
+                    '''print(f"El usuario ingresó: {event.text}")
+                    J2_pseudonimo = texto_pseudonimo2.get_text()'''
             
             if event.type == pygame_gui.UI_BUTTON_PRESSED:
                 if event.ui_element == button_amarillo:

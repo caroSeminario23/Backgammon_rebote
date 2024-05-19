@@ -1,7 +1,7 @@
-import pygame, pygame_gui, sys
+import pygame, pygame_gui
 from utils.colores import VERDE, AMARILLO, NEGRO
 from utils.figuras import dibujar_rectangulo_redondeado
-from view.registro_GUI import mostrar_pantalla_Registro
+from controller.controlador_bienvenida import Controlador_Bienvenida
 
 # INICIALIZAR PYGAME
 pygame.init()
@@ -78,37 +78,30 @@ is_running = True
 while is_running:
     time_delta = clock.tick(60)/1000.0 # Actualizar el reloj de Pygame
     for event in pygame.event.get():
+        controlador = Controlador_Bienvenida()
         if event.type == pygame.QUIT:
-            pygame.quit()
-            sys.exit()
+            controlador.manejar_salida()
 
         if event.type == pygame_gui.UI_BUTTON_PRESSED:
             if event.ui_element == button_HH:
-                selected_option = "Humano-Humano"
                 reset_buttons()
                 button_HH.set_text('SELECCIONADO')
-                print('Modo de juego: Humano-humano')
-                ventana2 = pygame.display.set_mode((800, 400))
-                manager2 = pygame_gui.UIManager((800, 400))
-                mostrar_pantalla_Registro(ventana2, manager2)
+                controlador.manejar_click_HH()
 
             elif event.ui_element == button_HM_principiante:
-                selected_option = "H-M Principiante"
                 reset_buttons()
                 button_HM_principiante.set_text('SELECCIONADO')
-                print('Modo de juego: H-M Principiante')
+                controlador.manejar_click_HM_principiante()
 
             elif event.ui_element == button_HM_normal:
-                selected_option = "H-M Normal"
                 reset_buttons()
                 button_HM_normal.set_text('SELECCIONADO')
-                print('Modo de juego: H-M Normal')
+                controlador.manejar_click_HM_normal()
 
             elif event.ui_element == button_HM_experto:
-                selected_option = "H-M Experto"
                 reset_buttons()
                 button_HM_experto.set_text('SELECCIONADO')
-                print('Modo de juego: H-M Experto')
+                controlador.manejar_click_HM_experto()
         
         manager.process_events(event)
     
