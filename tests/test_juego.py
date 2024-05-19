@@ -1,3 +1,6 @@
+#alternativa para "src"
+import sys
+sys.path.append('.')
 import unittest
 #alternativa para "src"
 import sys

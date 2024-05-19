@@ -1,3 +1,7 @@
+#alternativa para "src"
+import sys
+sys.path.append('.')
+
 from src.jugador import Jugador
 from src.turno import Turno
 from src.estado import Estado

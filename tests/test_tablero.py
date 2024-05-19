@@ -1,3 +1,8 @@
+#alternativa para "src"
+import sys
+sys.path.append('.')
+
+
 import unittest
 from src.tablero import Tablero
 
