@@ -1,6 +1,7 @@
 from src.fichas import Fichas
 from src.tablero import Tablero
 from src.moneda import Moneda
+from src.turno import Turno
 #import Fichas, Tablero, Moneda
 class Estado:
     def __init__(self, turno):
