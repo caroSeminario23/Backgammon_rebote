@@ -130,23 +130,49 @@ class TestJuego(unittest.TestCase):
         self.assertEqual(self.juego.estado.estado_casilla_FR(1,0), 4 )
         self.assertEqual(self.juego.estado.estado_casilla_FR(0,3), 1 )
 
-
     
     def test_rdao(self): # Test para verificar que rdao devuelve 6
         self.juego.estado.turno=Turno('A')
         print(self.juego.estado.get_turno().get_turno_actual())
         self.juego.estado.moneda.lanzar_moneda()
         print(self.juego.estado.get_moneda().estado_actual)
-        self.juego.estado.get_tablero().actualizar_casilla(0,11,'dao')
-        self.juego.estado.get_tablero().actualizar_casilla(0,8,'v')
         self.juego.estado.get_fichas().get_ficha(5) == 0 
-        
-        self.juego.rdro(0, 11, 0, 8, 3)
+    
+        self.juego.rdao(0, 11, 0, 8, 3)
             # Verifica que hay fichas en las posiciones iniciales
         self.assertEqual(self.juego.estado.get_tablero().estado_casilla(0,11), 'dao')
         self.assertEqual(self.juego.estado.get_tablero().estado_casilla(0,8), 'dao')
-        self.assertEqual(self.juego.estado.estado_casilla_FA(0,11), 1 )
+        print(self.juego.estado.estado_casilla_FA(0,11))
+        self.assertEqual(self.juego.estado.estado_casilla_FA(0,11) , 1 )
         self.assertEqual(self.juego.estado.estado_casilla_FA(0,8), 1 )
+    
+    def test_rdao1(self): # Test para verificar que rdao devuelve 6
+        self.juego.estado.turno=Turno('A')
+        print(self.juego.estado.get_turno().get_turno_actual())
+        self.juego.estado.moneda.lanzar_moneda()
+        print(self.juego.estado.get_moneda().estado_actual)
+        self.juego.estado.get_fichas().get_ficha(5) == 0 
+    
+        self.juego.rdao(0, 0, 1, 3, 4)
+            # Verifica que hay fichas en las posiciones iniciales
+        self.assertEqual(self.juego.estado.get_tablero().estado_casilla(0,0), 'dao')
+        self.assertEqual(self.juego.estado.get_tablero().estado_casilla(1,3), 'dao')
+        self.assertEqual(self.juego.estado.estado_casilla_FA(0,0) ,4)
+        self.assertEqual(self.juego.estado.estado_casilla_FA(1,3), 1)
+    
+    def test_rdao2(self): # Test para verificar que rdao devuelve 6
+        self.juego.estado.turno=Turno('A')
+        print(self.juego.estado.get_turno().get_turno_actual())
+        self.juego.estado.moneda.lanzar_moneda()
+        print(self.juego.estado.get_moneda().estado_actual)
+        self.juego.estado.get_fichas().get_ficha(5) == 0 
+    
+        self.juego.rdao(1, 4, 1, 9, 5)
+            # Verifica que hay fichas en las posiciones iniciales
+        self.assertEqual(self.juego.estado.get_tablero().estado_casilla(1,4), 'dao')
+        self.assertEqual(self.juego.estado.get_tablero().estado_casilla(1,9), 'dao')
+        self.assertEqual(self.juego.estado.estado_casilla_FA(1,4) ,2)
+        self.assertEqual(self.juego.estado.estado_casilla_FA(1,9), 1 )
 
     def test_cdro(self): # Test para verificar que cdro devuelve 6
         self.juego.cdro(1, 2, 3, 4, 5)
