@@ -1,26 +1,12 @@
-import pygame
-import pygame_gui
-import sys
-import os
-from utils.colores import dibujar_rectangulo_redondeado, VERDE, AMARILLO, NEGRO
-from interfaz.tablero import mostrar_pantalla_Tablero, setPseudonimos, setColores #, registrar_Datos_Jugadores
+import pygame, pygame_gui, sys
+from utils.colores import VERDE, AMARILLO, NEGRO
+from utils.figuras import dibujar_rectangulo_redondeado
+from view.tablero_GUI import mostrar_pantalla_Tablero, setPseudonimos, setColores 
 
-J1_pseudonimo = ''
-J2_pseudonimo = ''
-J1_color = ''
-J2_color = ''
+J1_pseudonimo, J2_pseudonimo, J1_color, J2_color = '', '', '', ''
 
 def mostrar_pantalla_Registro(ventana, manager):
     global J1_pseudonimo, J2_pseudonimo, J1_color, J2_color
-
-    '''# INICIALIZAR PYGAME
-    pygame.init()
-
-    # CREAR LA VENTANA
-    ventana = pygame.display.set_mode((800, 400))
-
-    # CREAR EL ADMINISTRADOR DE INTERFAZ DE USUARIO
-    manager = pygame_gui.UIManager((800, 400))'''
 
     # CREAR LOS RECUADROS DE TEXTO
     texto_pseudonimo1 = pygame_gui.elements.UITextEntryLine(relative_rect=pygame.Rect((216, 161), (170, 34)), manager=manager)
@@ -112,14 +98,10 @@ def mostrar_pantalla_Registro(ventana, manager):
                     J1_color = 'R'
                     J2_color = 'A'
             
-            #if event.type == pygame.USEREVENT:
-            #if event.type == pygame_gui.UI_BUTTON_PRESSED:
-                if event.ui_element == button_registrar:
+                elif event.ui_element == button_registrar:
                     pseudo1, pseduo2, color1, color2 = registrar_Jugadores()
                     setPseudonimos(pseudo1, pseduo2)
                     setColores(color1, color2)
-                    #registrar_Jugadores()
-                    #registrar_Datos_Jugadores(pseudo1, pseduo2, color1, color2)
                     print("Se ha registrado a los jugadores")
 
                     # MEDIR PANTALLA DEL COMPUTADOR

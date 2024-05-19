@@ -1,16 +1,8 @@
-from ctypes.wintypes import RGB
-import pygame # Importar la librería Pygame para crear la interfaz
-import pygame_gui # Importar la librería Pygame GUI para crear la interfaz
-import sys # Importar la librería sys para poder salir del juego
+import pygame, sys
 from pync import Notifier
-#from plyer import notification
-#import tkinter as tk # Importar la librería tkinter para crear la ventana de diálogo
-#from tkinter import messagebox # Importar la librería messagebox de tkinter para mostrar mensajes de diálogo
-from interfaz.ficha import Ficha
-from utils.colores import hex_to_rgb, AMARILLO, MELON_CLARO, MELON_OSCURO, ROJO, MELON_TRASLUCIDO, BEIGE, NEGRO, dibujar_rectangulo_redondeado
-from src.juego import Juego
-
-
+from utils.colores import AMARILLO, MELON_CLARO, MELON_OSCURO, ROJO, MELON_TRASLUCIDO, BEIGE, NEGRO
+from utils.figuras import dibujar_rectangulo_redondeado
+from model.ficha import Ficha
 
 pseudonimo1, pseudonimo2, color1, color2 = '', '', '', ''
 
@@ -27,11 +19,6 @@ def setColores(cor1, cor2):
 def registrar_Datos_Jugadores():
     global pseudonimo1, pseudonimo2, color1, color2
     return pseudonimo1, pseudonimo2, color1, color2
-
-# Función para mostrar la ventana emergente
-def mostrar_turno(turno):
-    Notifier.notify(f'Es el turno de: {turno}', title='Turno Actual')
-
 
 # Funcion para mover una ficha
 def mover_ficha(ficha, objetivo, ventana, frames=2, delay=50): 
@@ -50,6 +37,7 @@ def mover_ficha(ficha, objetivo, ventana, frames=2, delay=50):
         # Esperar un breve período de tiempo antes de la siguiente iteración
         pygame.time.wait(delay)
 
+
 def mostrar_pantalla_Tablero(ventana, manager, ANCHO, ALTO):
     # Agregar un titulo a la ventana
     pygame.display.set_caption("Backgammon rebote")
@@ -62,7 +50,6 @@ def mostrar_pantalla_Tablero(ventana, manager, ANCHO, ALTO):
 
     # TABLERO DE JUEGO
     # Dibujar 1 recuadro de color melon claro (derecha superior)
-    # Crear una nueva superficie con el tamaño del rectángulo
     superficie_transparente = pygame.Surface((ANCHO//2.1, ALTO//1.68)) # Tamaño del rectángulo
     # Establecer el nivel de transparencia (alpha) de la superficie
     superficie_transparente.set_alpha(255 * 0.6)  # 60% de transparencia
@@ -160,14 +147,6 @@ def mostrar_pantalla_Tablero(ventana, manager, ANCHO, ALTO):
     ]
 
     
-    # INICIAR JUEGO
-    juego = Juego()
-
-    turno_inicial = juego.obtener_estado().get_turno().get_turno_actual()
-    mostrar_turno(turno_inicial)
-
-
-
     # Bucle principal del juego
     while True:
         for evento in pygame.event.get():
@@ -388,6 +367,3 @@ def mostrar_pantalla_Tablero(ventana, manager, ANCHO, ALTO):
             ficha.dibujar(ventana)
 
         pygame.display.update()
-        
-
-

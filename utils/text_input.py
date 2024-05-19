@@ -25,27 +25,3 @@ class TextInput: # Esta clase permite al usuario ingresar texto
     def drawPosition(self, surface, position):
         # Código para dibujar el objeto TextInput en la posición especificada
         surface.blit(self.rendered, position)
-
-'''
-def main(): # Función principal
-    pygame.init() # Inicializa Pygame
-    screen = pygame.display.set_mode((800, 600)) # Crea una ventana
-    clock = pygame.time.Clock() # Reloj
-    text_input = TextInput() # Crea un objeto TextInput
-
-    while True: # Bucle principal
-        events = pygame.event.get()
-        for event in events:
-            if event.type == pygame.QUIT:
-                return
-            text_input.handle_event(event)
-
-        screen.fill((225, 225, 225))
-        text_input.draw(screen)
-
-        pygame.display.update()
-        clock.tick(30)
-
-if __name__ == "__main__":
-    main()
-'''

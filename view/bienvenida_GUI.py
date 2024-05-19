@@ -1,8 +1,7 @@
-import pygame
-import pygame_gui
-import sys
-from utils.colores import dibujar_rectangulo_redondeado, VERDE, AMARILLO, NEGRO
-from interfaz.registro import mostrar_pantalla_Registro
+import pygame, pygame_gui, sys
+from utils.colores import VERDE, AMARILLO, NEGRO
+from utils.figuras import dibujar_rectangulo_redondeado
+from view.registro_GUI import mostrar_pantalla_Registro
 
 # INICIALIZAR PYGAME
 pygame.init()
