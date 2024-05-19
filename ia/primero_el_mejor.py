@@ -27,7 +27,7 @@ def primero_el_mejor(inicio, objetivo, grafo):
     # Si no se encontró el objetivo, retornar un mensaje de error
     return "No se encontró el objetivo"
 
-# Ejemplo de uso
+'''# Ejemplo de uso
 inicio = (0, 0)
 objetivo = (4, 4)
 grafo = {
@@ -59,3 +59,4 @@ grafo = {
 }
 
 print(primero_el_mejor(inicio, objetivo, grafo))
+'''

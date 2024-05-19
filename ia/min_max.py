@@ -41,7 +41,7 @@ def minimax(estado, profundidad, es_maximizando):
             mejor_valor = min(mejor_valor, valor)
         return mejor_valor
 
-# Ejemplo de uso
+'''# Ejemplo de uso
 estado_inicial = [["X", "O", "X"],
                   ["O", "O", "X"],
                   ["", "", ""]]
@@ -56,4 +56,4 @@ for movimiento in generar_movimientos(estado_inicial, MAX):
         mejor_valor = valor
         mejor_movimiento = movimiento
 
-print("El mejor movimiento es:", mejor_movimiento)
+print("El mejor movimiento es:", mejor_movimiento)'''
