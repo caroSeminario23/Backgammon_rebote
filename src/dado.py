@@ -1,4 +1,5 @@
 import random
+
 class Dado: 
     def __init__(self): 
         # Inicializa un dado ordinario con valores del 1 al 6
