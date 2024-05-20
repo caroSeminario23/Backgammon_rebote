@@ -10,11 +10,14 @@
 # 9. Mostrar mensaje de victoria o continuar jugando
 # 10. Finalizar el juego
 
+from pync import Notifier
+
 from interfaz.bienvenida2 import Bienvenida2
 from interfaz.registro2 import Registro2
 from controller.controlador_bienvenida2 import C_Bienvenida2
 from controller.controlador_registro2 import C_Registro2
 from model.jugador import Jugador
+from model.turno import Turno
 
 
 def main():
@@ -46,16 +49,18 @@ def main():
     else:
         print('No se han registrado todos los jugadores.')
 
-    '''# Elección del turno
-    turno = None
+    # Elección del turno
+    turno = Turno('indefinido')
 
-    while turno not in ['R', 'A']:
+    while turno.get_turno_actual() not in ['R', 'A']:
         if modo_juego == 'HH':
-            turno = eleccion_turno()
+            turno = Turno()
         else:
             turno = Turno(jugador1.get_colorFicha())
+    
+    turno.notificar()
 
-    # Iniciar el juego
+    '''# Iniciar el juego
     print('Iniciando el juego...')
     interfaz_tablero = mostrar_tablero()
 
