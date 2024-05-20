@@ -27,6 +27,16 @@ class Tablero2:
                             (self.ancho//3.02, self.alto//1.28), (self.ancho//2.7, self.alto//1.28), (self.ancho//2.44, self.alto//1.28), (self.ancho//2.22, self.alto//1.28), (self.ancho//2.04, self.alto//1.28), (self.ancho//1.89, self.alto//1.28), 
                             (self.ancho//1.755, self.alto//1.28), (self.ancho//1.64, self.alto//1.28), (self.ancho//1.54, self.alto//1.28), (self.ancho//1.45, self.alto//1.28), (self.ancho//1.375, self.alto//1.28), (self.ancho//1.305, self.alto//1.28),]
 
+        self.posiciones_fichas = [
+            [
+                (self.ancho//3.02, self.alto//3), (self.ancho//2.7, self.alto//3), (self.ancho//2.44, self.alto//3), (self.ancho//2.22, self.alto//3), (self.ancho//2.04, self.alto//3), (self.ancho//1.89, self.alto//3),
+                (self.ancho//1.755, self.alto//3), (self.ancho//1.64, self.alto//3), (self.ancho//1.54, self.alto//3), (self.ancho//1.45, self.alto//3), (self.ancho//1.375, self.alto//3), (self.ancho//1.305, self.alto//3)
+            ],
+            [
+                (self.ancho//3.02, self.alto//1.28), (self.ancho//2.7, self.alto//1.28), (self.ancho//2.44, self.alto//1.28), (self.ancho//2.22, self.alto//1.28), (self.ancho//2.04, self.alto//1.28), (self.ancho//1.89, self.alto//1.28),
+                (self.ancho//1.755, self.alto//1.28), (self.ancho//1.64, self.alto//1.28), (self.ancho//1.54, self.alto//1.28), (self.ancho//1.45, self.alto//1.28), (self.ancho//1.375, self.alto//1.28), (self.ancho//1.305, self.alto//1.28)
+
+            ]]
         self.nFichasEnTablero = [[5, 0, 0, 0, 3, 0, 5, 0, 0, 0, 0, 2],[5, 0, 0, 0, 3, 0, 5, 0, 0, 0, 0, 2]]
 
         # Fichas
@@ -38,7 +48,8 @@ class Tablero2:
             Ficha(AMARILLO, self.posiciones_tablero[0][0], self.posiciones_tablero[0][1], 5),
             Ficha(AMARILLO, self.posiciones_tablero[11][0], self.posiciones_tablero[11][1], 2),
             Ficha(AMARILLO, self.posiciones_tablero[16][0], self.posiciones_tablero[16][1], 3),
-            Ficha(AMARILLO, self.posiciones_tablero[18][0], self.posiciones_tablero[18][1], 5)
+            Ficha(AMARILLO, self.posiciones_tablero[18][0], self.posiciones_tablero[18][1], 5),
+            Ficha(ROJO, self.posiciones_fichas[0][0][0], self.posiciones_fichas[0][0][1], 10)
         ]
 
 
@@ -280,7 +291,7 @@ class Tablero2:
             if tiempo_restante_turno <= 0:
                 print("¡Tiempo agotado por turno!")
 
-            # CRONOMETRO GENERAL DEL JUEGO
+            '''# CRONOMETRO GENERAL DEL JUEGO
             # Calcular el tiempo restante
             tiempo_transcurrido_juego = (pygame.time.get_ticks() - inicio_cronometro_juego) / 1000  # Convertir a segundos
             tiempo_restante_juego = 1800 - tiempo_transcurrido_juego  # 1800 segundos = 30 minutos
@@ -308,7 +319,7 @@ class Tablero2:
 
             # Renderizar el tiempo restante y dibujarlo en la ventana
             cronometro_juego = fTexto6.render(tiempo_formateado_juego, True, NEGRO)
-            self.ventana.blit(cronometro_juego, (self.ancho//6, self.alto//1.28))
+            self.ventana.blit(cronometro_juego, (self.ancho//6, self.alto//1.28))'''
 
             for ficha in self.fichas:
                 ficha.dibujar(self.ventana)
