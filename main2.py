@@ -35,19 +35,14 @@ def main():
     # Registro de jugadores y seleccion de color de ficha
     jugador1, jugador2 = None, None
     interfaz_registro = Registro2(800, 400)
-    controlador_registro = C_Registro2(interfaz_registro)
+    controlador_registro = C_Registro2(interfaz_registro, modo_juego)
 
-    if modo_juego == 'HH':
-        while jugador1 is None and jugador2 is None:
-            jugador1, jugador2 = interfaz_registro.mostrar_pantalla(controlador_registro)
-    else:
-        while jugador1 is None:
-            jugador2 = Jugador('CPU', None)
-            jugador1, _ = interfaz_registro.mostrar_pantalla(controlador_registro)
+    while jugador1 is None and jugador2 is None:
+        jugador1, jugador2 = interfaz_registro.mostrar_pantalla(controlador_registro)
 
     if jugador1 is not None and jugador2 is not None:
         print('Jugadores registrados:', jugador1.get_pseudonimo(), ' y ', jugador2.get_pseudonimo())
-        print('Color de fichas:', '\nJ1: ', jugador1.get_colorFicha(), '\nJ1: ', jugador2.get_colorFicha())
+        print('Color de fichas:', '\nJ1: ', jugador1.get_colorFicha(), '\nJ2: ', jugador2.get_colorFicha())
     else:
         print('No se han registrado todos los jugadores.')
 
