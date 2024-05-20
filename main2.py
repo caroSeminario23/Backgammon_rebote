@@ -16,10 +16,9 @@ from controller.controlador_bienvenida2 import C_Bienvenida2
 from controller.controlador_registro2 import C_Registro2
 from model.jugador import Jugador
 
-jugador1, jugador2 = None, None
 
 def main():
-    global jugador1, jugador2
+    #global jugador1, jugador2
 
     print('BIENVENIDO A BACKGAMMON REBOTE')
     interfaz_bienvenida = Bienvenida2(878, 432)
@@ -34,23 +33,20 @@ def main():
     print('Modo de juego seleccionado:', modo_juego)
     
     # Registro de jugadores
-    #jugador1, jugador2 = None, None
+    jugador1, jugador2 = None, None
     interfaz_registro = Registro2(800, 400)
     controlador_registro = C_Registro2(interfaz_registro)
-    #interfaz_registro.mostrar_pantalla()
 
     if modo_juego == 'HH':
         while jugador1 is None and jugador2 is None:
             jugador1, jugador2 = interfaz_registro.mostrar_pantalla(controlador_registro)
-            jugador1.mostrar()
-            jugador2.mostrar()
     else:
         while jugador1 is None:
             jugador2 = Jugador('CPU', None)
             jugador1, _ = interfaz_registro.mostrar_pantalla(controlador_registro)
 
     if jugador1 is not None and jugador2 is not None:
-        print('Jugadores registrados:', jugador1.mostrar(), jugador2.mostrar())
+        print('Jugadores registrados:', jugador1.get_pseudonimo(), ' y ', jugador2.get_pseudonimo())
     else:
         print('No se han registrado todos los jugadores.')
 
