@@ -92,13 +92,9 @@ class Registro2:
                 if jugadores is not None:
                     self.jugador1, self.jugador2 = jugadores
                     if self.jugador1 is not None and self.jugador2 is not None:
-                        
                         return self.jugador1, self.jugador2
-
-                '''if event.type in [pygame_gui.UI_TEXT_ENTRY_FINISHED, pygame_gui.UI_BUTTON_PRESSED]:
-                    self.jugador1, self.jugador2 = controlador.registrar_jugadores(event)
-                    if self.jugador1 is not None and self.jugador2 is not None:
-                        return self.jugador1, self.jugador2'''
+                    elif self.jugador1 is not None and self.jugador2.get_colorFicha() is not None:
+                        return self.jugador1
 
             # 1. PINTAR LA VENTANA
             self.ventana.fill(VERDE)

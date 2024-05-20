@@ -32,7 +32,7 @@ def main():
     
     print('Modo de juego seleccionado:', modo_juego)
     
-    # Registro de jugadores
+    # Registro de jugadores y seleccion de color de ficha
     jugador1, jugador2 = None, None
     interfaz_registro = Registro2(800, 400)
     controlador_registro = C_Registro2(interfaz_registro)
@@ -47,16 +47,11 @@ def main():
 
     if jugador1 is not None and jugador2 is not None:
         print('Jugadores registrados:', jugador1.get_pseudonimo(), ' y ', jugador2.get_pseudonimo())
+        print('Color de fichas:', '\nJ1: ', jugador1.get_colorFicha(), '\nJ1: ', jugador2.get_colorFicha())
     else:
         print('No se han registrado todos los jugadores.')
 
-    '''# Seleccionar color de ficha
-    color_ficha_J1, color_ficha_J2 = None, None
-
-    while color_ficha not in ['R', 'A']:
-        color_ficha_J1, color_ficha_J2 = eleccion_colores_ficha()
-
-    # Elección del turno
+    '''# Elección del turno
     turno = None
 
     while turno not in ['R', 'A']:

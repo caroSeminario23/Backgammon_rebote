@@ -8,8 +8,6 @@ class C_Registro2:
         self.vista = vista
     
     def registrar_jugadores(self, event):
-        #j1, j2 = '', ''
-
         if event.type == pygame_gui.UI_TEXT_ENTRY_FINISHED:
             if event.ui_element == self.vista.texto_pseudonimo1:
                 print(f"El usuario ingresó: {event.text}")
