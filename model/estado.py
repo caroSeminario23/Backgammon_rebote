@@ -4,16 +4,35 @@ from model.n_fichas import N_Fichas
 from model.moneda import Moneda
 from model.matriz_FR import Matriz_FR
 from model.matriz_FA import Matriz_FA
+from model.dado import Dado
 
 class Estado:
     # Inicializa el estado del juego
-    def __init__(self):
+    '''def __init__(self):
         self.tablero = Tablero()  # T: matriz que representa el tablero
         self.turno = Turno()  # t: turno
         self.n_fichas = N_Fichas() #[15,15,0,0,0,0,0,0]  # ndro, ndao, ndrf, ndaf, ndrc, ndac, ndrl, ndal: número de cada tipo de ficha
         self.moneda = Moneda()  # m: valor de la moneda 
         self.FR = Matriz_FR() # FR: matriz que representa el número de fichas rojas por casilla del tablero
         self.FA = Matriz_FA() # FA: matriz que representa el número de fichas amarillas por casilla del tablero
+    '''
+    def __init__(self):
+        self.tablero = Tablero()
+        self.turno = None
+        self.n_fichas = N_Fichas()
+        self.moneda = None
+        self.dado = None
+        self.FR = Matriz_FR()
+        self.FA = Matriz_FA()
+
+    def set_turno(self, turno):
+        self.turno = turno
+
+    def set_moneda(self, moneda):
+        self.moneda = moneda
+    
+    def set_dado(self, dado):
+        self.dado = dado
 
     # getters
     def get_tablero(self):
