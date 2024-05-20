@@ -11,17 +11,18 @@
 # 10. Finalizar el juego
 
 from pync import Notifier
+import pygame
 
 from interfaz.bienvenida2 import Bienvenida2
 from interfaz.registro2 import Registro2
+from interfaz.tablero2 import Tablero2
 from controller.controlador_bienvenida2 import C_Bienvenida2
 from controller.controlador_registro2 import C_Registro2
 from model.jugador import Jugador
 from model.turno import Turno
-
+from model.estado import Estado
 
 def main():
-    #global jugador1, jugador2
 
     print('BIENVENIDO A BACKGAMMON REBOTE')
     interfaz_bienvenida = Bienvenida2(878, 432)
@@ -60,9 +61,13 @@ def main():
     
     turno.notificar()
 
-    '''# Iniciar el juego
+    # Iniciar el juego
     print('Iniciando el juego...')
-    interfaz_tablero = mostrar_tablero()
+
+    ANCHO, ALTO = pygame.display.list_modes()[0]
+
+    interfaz_tablero = Tablero2(ALTO, ANCHO)
+    interfaz_tablero.mostrar_pantalla(jugador1, jugador2, turno)
 
     estado_inicial = Estado()
     estado_actual = estado_inicial
@@ -70,7 +75,7 @@ def main():
     # Verificar si algún jugador cumple el estado meta
     ganador = None
 
-    while ganador not in ['R', 'A']:
+    '''while ganador not in ['R', 'A']:
         ganador = verificar_estado_meta(estado_actual)
 
         if ganador not in ['R', 'A']:
