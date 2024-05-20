@@ -53,19 +53,19 @@ class Juego:
     def adro(self, a, b, n):
         # Calcular valor de d 
         if a == 0:
-            d = b - n
-        elif a == 1:
             d = b + n
+        elif a == 1:
+            d = b - n
             if d<0 :
                 d = n - b - 1
 
         # Calcular valor de c
-        if b-n>= 0 and b-n <= 11 and a == 0:
+        if b+n>= 0 and b+n <= 11 and a == 0:
             c = 0
-        elif b+n >= 0 and b+n <= 11 and a == 1:
+        elif b-n >= 0 and b-n <= 11 and a == 1:
             c = 1
-        elif b-n < 0 and a == 0:
-            c = 1
+        elif b-n < 0 and a == 1:
+            c = 0
 
 
         # Verificar si el movimiento es válido
@@ -78,11 +78,11 @@ class Juego:
                 valor_casilla = 'dro'
 
             # Actualizar casilla (c,d)
-            if (c >= 1 and c <= 6) and (d == 2):
+            if (d >= 0 and d <= 5) and (c == 0):
                 valor_casilla_2 = 'dro'
-            elif (c >= 1 and c <= 12) and (d == 1):
+            elif (d >= 0 and d <= 11) and (c == 1):
                 valor_casilla_2 = 'dro'
-            elif (c >= 7 and c <= 12) and (d == 2):
+            elif (d >= 6 and d <= 11) and (c == 0):
                 valor_casilla_2 = 'drf'
 
             # Aplicar actualizaciones
@@ -112,10 +112,10 @@ class Juego:
     # Verificar si adro es válido
     def movimiento_adro_valido(self, a, b, c, d, n): # Verificar si un movimiento es válido
         if (self.estado.get_turno().get_turno_actual() == 'R' and 
-            self.estado.get_moneda == 'a' and 
+            self.estado.get_moneda().estado_actual == 'a' and 
             self.estado.get_tablero().estado_casilla(a,b) == 'dro' and 
             (self.estado.get_tablero().estado_casilla(c,d) == 'v' or self.estado.get_tablero().estado_casilla(c,d) == 'dro') and 
-            self.estado.get_fichas(4) == 0 and (c >= 0 or c <= 1) and (d >= 0 or d <= 11) and (n >= 1 or n <= 6)):
+            self.estado.get_fichas().get_ficha(4) == 0 and (c >= 0 or c <= 1) and (d >= 0 or d <= 11) and (n >= 1 or n <= 6)):
             return True
         else:
             return False
@@ -124,21 +124,23 @@ class Juego:
     # Avanzar dao de (a,b) a (c,d) según “n” posiciones -> adao(a,b,c,d,n)
     def adao(self, a, b, n): 
         # Calcular valor de d 
-        if a == 0:
+        if a == 1:
             d = b + n
-        elif a == 1:
+        elif a == 0:
             d = b - n
             if d<0 :
                 d = n - b - 1
 
         # Calcular valor de c
-        if b+n>= 0 and b+n <= 11 and a == 0:
+        if b-n>= 0 and b-n <= 11 and a == 0:
             c = 0
-        elif b-n >= 0 and b-n <= 11 and a == 1:
+        elif b+n >= 0 and b+n <= 11 and a == 1:
             c = 1
-        elif b-n < 0 and a == 1:
-            c = 0
+        elif b-n < 0 and a == 0:
+            c = 1
 
+        #print("VALOR DE A: "+str(a)+" VAlor de B: "+str(b)+" v. de C: "+str(c)+" V. de D: "+str(d))
+        
         if self.movimiento_adao_valido(a,b,c,d,n) == True:
             # ACTUALIZAR TABLERO
             # Actualizar casilla (a,b)
@@ -148,11 +150,11 @@ class Juego:
                 valor_casilla = 'dao'
 
             # Actualizar casilla (c,d)
-            if (d >= 0 and d <= 5) and (c == 0):
+            if (d >= 0 and d <= 5) and (c == 1):
                 valor_casilla_2 = 'dao'
-            elif (d >= 0 and d <= 11) and (c == 1):
+            elif (d >= 0 and d <= 11) and (c == 0):
                 valor_casilla_2 = 'dao'
-            elif (d >= 6 and d <= 11) and (c == 0):
+            elif (d >= 6 and d <= 11) and (c == 1):
                 valor_casilla_2 = 'daf'
 
             # Aplicar actualizaciones
@@ -176,6 +178,8 @@ class Juego:
 
             # Se indica que el movimiento fue exitoso   
             print('Movimiento exitoso_R2')
+            #for fila in self.estado.tablero.casillas:
+            #    print(fila)
         else:
             print('Movimiento no válido_R2')
 
@@ -193,11 +197,11 @@ class Juego:
     # REGLA 3
     # Avanzar drf de (a,b) a (c,d) según “n” posiciones -> adrf(a,b,c,d,n)
     def adrf(self, a, b, n):
-        # Calcular valor de c
-        d = b+n
         # Calcular valor de d
-        c = 1
-    
+        d = b+n
+        # Calcular valor de c
+        c = 0
+        
         if self.movimiento_adrf_valido(a,b,c,d,n) == True:
             # ACTUALIZAR TABLERO
             # Actualizar casilla (a,b)
@@ -217,6 +221,7 @@ class Juego:
             # ACTUALIZAR TIPOS DE FICHAS
             fichas_2 = self.estado.get_fichas()
             if tablero_2.estado_casilla(c, d) == 'drf':
+                #DUDAS:SERIA LO MISMO ADICIONAR Y LUEGO ELIMINAR
                 fichas_2.adicionar_ficha_drf()
                 fichas_2.eliminar_ficha_drf()
 
@@ -239,7 +244,7 @@ class Juego:
             self.estado.get_moneda().estado_actual == 'a' and 
             self.estado.get_tablero().estado_casilla(a,b) == 'drf' and 
             (self.estado.get_tablero().estado_casilla(c,d) == 'v' or self.estado.get_tablero().estado_casilla(c,d) == 'drf') and 
-            self.estado.get_fichas().get_ficha(4) == 0 and (d >= 6 or d <= 11) and (c == 1) and (n >= 1 or n <= 6)):
+            self.estado.get_fichas().get_ficha(4) == 0 and (d >= 6 or d <= 11) and (c == 0) and (n >= 1 or n <= 6)):
             return True
         else:
             return False
@@ -250,7 +255,7 @@ class Juego:
         # Calcular valor de d
         d = b+n
         # Calcular valor de c
-        c = 0
+        c = 1
 
         if self.movimiento_adaf_valido(a,b,c,d,n) == True:
             # ACTUALIZAR TABLERO
@@ -271,6 +276,7 @@ class Juego:
             # ACTUALIZAR TIPOS DE FICHAS
             fichas_2 = self.estado.get_fichas()
             if tablero_2.estado_casilla(c, d) == 'daf':
+                #DUDAS:SERIA LO MISMO ADICIONAR Y LUEGO ELIMINAR
                 fichas_2.adicionar_ficha_daf()
                 fichas_2.eliminar_ficha_daf()
 
@@ -286,16 +292,18 @@ class Juego:
             print('Movimiento exitoso_R4')
         else:
             print('Movimiento no válido_R4')
+
     # Verificar si adaf es válido
     def movimiento_adaf_valido(self, a, b, c, d, n): # Verificar si un movimiento es válido
         if (self.estado.get_turno().get_turno_actual() == 'A' and 
             self.estado.get_moneda().estado_actual == 'a' and 
             self.estado.get_tablero().estado_casilla(a,b) == 'daf' and 
             (self.estado.get_tablero().estado_casilla(c,d) == 'v' or self.estado.get_tablero().estado_casilla(c,d) == 'daf') and 
-            self.estado.get_fichas().get_ficha(5) == 0 and (d >= 6 or d <= 11) and (c == 0) and (n >= 1 or n <= 6)):
+            self.estado.get_fichas().get_ficha(5) == 0 and (d >= 6 or d <= 11) and (c == 1) and (n >= 1 or n <= 6)):
             return True
         else:
             return False
+
 
     # REGLA 5
     # Retroceder dro de (a,b) a (c,d) según “n” posiciones -> rdro(a,b,c,d,n)
@@ -309,23 +317,24 @@ class Juego:
             return True
         else:
             return False
-    
+
     def rdro(self, a, b, c, d ,n):
     # Calcular valor de d
-        if a == 0:
-            d = b + n
-        elif a == 1:
-            d = b - n
-            if d<0 :
-                d = n - b - 1
+        if a == 1:
+            d = b+n
+        elif a == 0:
+            d = b-n
+            if d < 0:
+                d = n-b-1
 
         # Calcular valor de c
-        if b+n>= 0 and b+n <= 11 and a == 0:
-            c = 0
-        elif b-n >= 0 and b-n <= 11 and a == 1:
+        if b+n >= 0 and b+n <= 11 and a == 1:
             c = 1
-        elif b-n < 0 and a == 1:
+        elif b-n >= 0 and b-n <= 11 and a == 0:
             c = 0
+        elif b-n < 0 and a == 0:
+            c = 1
+
 
         if self.movimiento_rdro_valido(a,b,c,d,n) == True:
             # ACTUALIZAR TABLERO
@@ -359,28 +368,28 @@ class Juego:
             self.estado.actualizar_estado(tablero_2, 'A', fichas_2 , self.estado.moneda.esperar_lanzamiento() , FR_2, self.estado.get_FA)
 
             # Se indica que el movimiento fue exitoso
-            print('Movimiento exitoso')
+            print('Movimiento exitoso_R5')
         else:
-            print('Movimiento no válido')
+            print('Movimiento no válido_R5')
 
     # REGLA 6
     # Retroceder dao de (a,b) a (c,d) según “n” posiciones -> rdao(a,b,c,d,n)
     def rdao(self, a, b, c, d, n):
         # Calcular valor de d
-        if a == 1:
-            d = b+n
-        elif a == 0:
-            d = b-n
-            if d < 0:
-                d = n-b-1
+        if a == 0:
+            d = b + n
+        elif a == 1:
+            d = b - n
+            if d<0 :
+                d = n - b - 1
 
         # Calcular valor de c
-        if b+n >= 0 and b+n <= 11 and a == 1:
-            c = 1
-        elif b-n >= 0 and b-n <= 11 and a == 0:
+        if b+n>= 0 and b+n <= 11 and a == 0:
             c = 0
-        elif b-n < 0 and a == 0:
+        elif b-n >= 0 and b-n <= 11 and a == 1:
             c = 1
+        elif b-n < 0 and a == 1:
+            c = 0
 
         if self.movimiento_rdao_valido(a,b,c,d,n) == True:
             # ACTUALIZAR TABLERO
@@ -413,9 +422,9 @@ class Juego:
             self.estado.actualizar_estado(tablero_2, 'R', fichas_2 , self.estado.moneda.esperar_lanzamiento() , self.estado.get_FR, FA_2)
 
             # Se indica que el movimiento fue exitoso
-            print('Movimiento exitoso')
+            print('Movimiento exitoso_R6')
         else:
-            print('Movimiento no válido')
+            print('Movimiento no válido_R6')
 
     # Verificar si rdao es válido
     def movimiento_rdao_valido(self, a, b, c, d, n): # Verificar si un movimiento es válido
@@ -432,20 +441,20 @@ class Juego:
     # Capturar con dro de (a,b) a dao de (c,d) según “n” posiciones -> cdro(a,b,c,d,n)
     def cdro(self, a, b, c, d, n):
       # Calcular valor de d
-        if a == 1:
-            d = b+n
-        elif a == 0:
-            d = b-n
-            if d < 0:
-                d = n-b-1
+        if a == 0:
+            d = b + n
+        elif a == 1:
+            d = b - n
+            if d<0 :
+                d = n - b - 1
 
         # Calcular valor de c
-        if b+n >= 0 and b+n <= 11 and a == 1:
-            c = 1
-        elif b-n >= 0 and b-n <= 11 and a == 0:
+        if b+n>= 0 and b+n <= 11 and a == 0:
             c = 0
-        elif b-n < 0 and a == 0:
+        elif b-n >= 0 and b-n <= 11 and a == 1:
             c = 1
+        elif b-n < 0 and a == 1:
+            c = 0
 
         if self.movimiento_cdro_valido(a,b,c,d,n) == True:
             # ACTUALIZAR TABLERO
@@ -481,21 +490,23 @@ class Juego:
             self.estado.actualizar_estado(tablero_2, 'A', fichas_2 , self.estado.moneda.esperar_lanzamiento(), FR_2, FA_2)
 
             # Se indica que el movimiento fue exitoso
-            print('Movimiento exitoso')
+            print('Movimiento exitoso_R7')
         else:
-            print('Movimiento no válido')
+            print('Movimiento no válido_R7')
 
-    # Verificar si cdro es válido
     def movimiento_cdro_valido(self, a, b, c, d, n): # Verificar si un movimiento es válido
-        if (self.estado.get_turno().get_turno_actual() == 'R' and self.estado.get_moneda().estado_actual == 'a' and 
-            self.estado.get_tablero().estado_casilla(a,b) == 'dro' and 
-            self.estado.get_tablero().estado_casilla(c,d) == 'dao' and self.estado.estado_casilla_FA(c,d) == 1
-            and self.estado.get_fichas().get_ficha(4)== 0 and (c >= 0 or c <= 1) and (d >= 0 or d <= 11) and (n >= 1 or n <= 6)):
-            return True
-        else:
-            return False
-
-
+            if (self.estado.get_turno().get_turno_actual() == 'R' and 
+                self.estado.get_moneda().estado_actual == 'a' and 
+                self.estado.get_tablero().estado_casilla(a, b) == 'dro' and 
+                self.estado.get_tablero().estado_casilla(c, d) == 'dao' and 
+                self.estado.estado_casilla_FA(c, d) == 1 and 
+                self.estado.get_fichas().get_ficha(4) == 0 and 
+                (0 <= c <= 1) and 
+                (0 <= d <= 11) and 
+                (1 <= n <= 6)):
+                return True
+            else:
+                return False
     # REGLA 8
     # Capturar con dao de (a,b) a dro de (c,d) según “n” posiciones -> cdao(a,b,c,d,n)
     def cdao(self, a, b, c, d, n):
