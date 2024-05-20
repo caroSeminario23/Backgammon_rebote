@@ -5,7 +5,7 @@ from utils.figuras import dibujar_rectangulo_redondeado
 from interfaz.ficha import Ficha
 
 class Tablero2:
-    def __init__(self, alto, ancho):
+    def __init__(self, alto, ancho, tablero, fr, fa):
         # INICIALIZAR PYGAME
         pygame.init()
 
@@ -39,19 +39,49 @@ class Tablero2:
             ]]
         self.nFichasEnTablero = [[5, 0, 0, 0, 3, 0, 5, 0, 0, 0, 0, 2],[5, 0, 0, 0, 3, 0, 5, 0, 0, 0, 0, 2]]
 
-        # Fichas
-        self.fichas = [
-            Ficha(ROJO, self.posiciones_tablero[4][0], self.posiciones_tablero[4][1], 3),
-            Ficha(ROJO, self.posiciones_tablero[6][0], self.posiciones_tablero[6][1], 5),
-            Ficha(ROJO, self.posiciones_tablero[12][0], self.posiciones_tablero[12][1], 5),
-            Ficha(ROJO, self.posiciones_tablero[23][0], self.posiciones_tablero[23][1], 2),
-            Ficha(AMARILLO, self.posiciones_tablero[0][0], self.posiciones_tablero[0][1], 5),
-            Ficha(AMARILLO, self.posiciones_tablero[11][0], self.posiciones_tablero[11][1], 2),
-            Ficha(AMARILLO, self.posiciones_tablero[16][0], self.posiciones_tablero[16][1], 3),
-            Ficha(AMARILLO, self.posiciones_tablero[18][0], self.posiciones_tablero[18][1], 5),
-            Ficha(ROJO, self.posiciones_fichas[0][0][0], self.posiciones_fichas[0][0][1], 10)
-        ]
+        tablero.obtener_casillas()
+        tablero_01 = []
+        tablero_p1, tablero_p2 = [], []
+        
+        for i in range(12):
+            if tablero.estado_casilla(0, i) == 'v':
+                tablero_p1.append(0)
+            # Si es rojo
+            elif tablero.estado_casilla(0, i) in ['dro', 'drf']:
+                tablero_p1.append(1)
+            # Si es amarillo
+            elif tablero.estado_casilla(0, i) in ['dao', 'daf']:
+                tablero_p1.append(2)
+        
+        for i in range(12):
+            if tablero.estado_casilla(1, i) == 'v':
+                tablero_p2.append(0)
+            # Si es rojo
+            elif tablero.estado_casilla(0, i) in ['dro', 'drf']:
+                tablero_p2.append(1)
+            # Si es amarillo
+            elif tablero.estado_casilla(0, i) in ['dao', 'daf']:
+                tablero_p2.append(2)
+        
+        tablero_01 = [tablero_p1, tablero_p2]
+        
+        print(str(tablero_01))
 
+        m=0
+        for i in tablero_01[0]:
+            if i == 1:
+                self.fichas.append(Ficha(ROJO, self.posiciones_fichas[0][m][0], self.posiciones_fichas[0][m][1], 7))
+            elif i == 2:
+                self.fichas.append(Ficha(ROJO, self.posiciones_fichas[0][m][0], self.posiciones_fichas[0][m][1], 7))
+            m+=1
+
+        n=0
+        for i in tablero_01[1]:
+            if i == 1:
+                self.fichas.append(Ficha(AMARILLO, self.posiciones_fichas[1][n][0], self.posiciones_fichas[1][n][1], 7))
+            elif i == 2:
+                self.fichas.append(Ficha(AMARILLO, self.posiciones_fichas[1][n][0], self.posiciones_fichas[1][n][1], 7))
+            n+=1
 
         # CREAR LA VENTANA Y EL ADMINISTRADOR DE INTERFAZ
         self.ventana = pygame.display.set_mode((self.ancho, self.alto))
