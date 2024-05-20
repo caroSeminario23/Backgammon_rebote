@@ -10,29 +10,51 @@
 # 9. Mostrar mensaje de victoria o continuar jugando
 # 10. Finalizar el juego
 
+from interfaz.bienvenida2 import Bienvenida2
+from interfaz.registro2 import Registro2
+from controller.controlador_bienvenida2 import C_Bienvenida2
+from controller.controlador_registro2 import C_Registro2
+from model.jugador import Jugador
+
+jugador1, jugador2 = None, None
+
 def main():
+    global jugador1, jugador2
+
     print('BIENVENIDO A BACKGAMMON REBOTE')
-    interfaz_bienvenida = mostrar_pantalla_bienvenida()
+    interfaz_bienvenida = Bienvenida2(878, 432)
+    controlador_bienvenida = C_Bienvenida2(interfaz_bienvenida)
 
     # Seleccionar modo de juego
     modo_juego = None
 
     while modo_juego not in ['HH', 'fácil', 'medio', 'difícil']:
-        modo_juego = eleccion_modo_juego()
+        modo_juego = interfaz_bienvenida.mostrar_pantalla(controlador_bienvenida)
+    
+    print('Modo de juego seleccionado:', modo_juego)
     
     # Registro de jugadores
-    jugador1, jugador2 = '', ''
-    interfaz_registro = mostrar_pantalla_registro()
+    #jugador1, jugador2 = None, None
+    interfaz_registro = Registro2(800, 400)
+    controlador_registro = C_Registro2(interfaz_registro)
+    #interfaz_registro.mostrar_pantalla()
 
     if modo_juego == 'HH':
-        while jugador1 == '' and jugador2 == '':
-            jugador1, jugador2 = registro_jugadores()
+        while jugador1 is None and jugador2 is None:
+            jugador1, jugador2 = interfaz_registro.mostrar_pantalla(controlador_registro)
+            jugador1.mostrar()
+            jugador2.mostrar()
     else:
-        while jugador1 == '':
-            jugador2 = 'CPU'
-            jugador1 = registro_jugador()
+        while jugador1 is None:
+            jugador2 = Jugador('CPU', None)
+            jugador1, _ = interfaz_registro.mostrar_pantalla(controlador_registro)
 
-    # Seleccionar color de ficha
+    if jugador1 is not None and jugador2 is not None:
+        print('Jugadores registrados:', jugador1.mostrar(), jugador2.mostrar())
+    else:
+        print('No se han registrado todos los jugadores.')
+
+    '''# Seleccionar color de ficha
     color_ficha_J1, color_ficha_J2 = None, None
 
     while color_ficha not in ['R', 'A']:
@@ -79,7 +101,10 @@ def main():
             estado_actual = mover_fichas(estado_actual)
     
     # Mostrar mensaje de victoria o continuar jugando
-    mostrar_mensaje_victoria()
+    mostrar_mensaje_victoria()'''
 
     # Finalizar el juego
     print('Fin del juego')
+
+if __name__ == "__main__":
+    main()
