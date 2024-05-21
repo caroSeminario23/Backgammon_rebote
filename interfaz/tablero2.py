@@ -67,18 +67,20 @@ class Tablero2:
         
         print(str(tablero_01))
 
+        self.fichas = []
+
         m=0
         for i in tablero_01[0]:
             if i == 1:
                 self.fichas.append(Ficha(ROJO, self.posiciones_fichas[0][m][0], self.posiciones_fichas[0][m][1], 7))
             elif i == 2:
-                self.fichas.append(Ficha(ROJO, self.posiciones_fichas[0][m][0], self.posiciones_fichas[0][m][1], 7))
+                self.fichas.append(Ficha(AMARILLO, self.posiciones_fichas[0][m][0], self.posiciones_fichas[0][m][1], 7))
             m+=1
 
         n=0
         for i in tablero_01[1]:
             if i == 1:
-                self.fichas.append(Ficha(AMARILLO, self.posiciones_fichas[1][n][0], self.posiciones_fichas[1][n][1], 7))
+                self.fichas.append(Ficha(ROJO, self.posiciones_fichas[1][n][0], self.posiciones_fichas[1][n][1], 7))
             elif i == 2:
                 self.fichas.append(Ficha(AMARILLO, self.posiciones_fichas[1][n][0], self.posiciones_fichas[1][n][1], 7))
             n+=1
