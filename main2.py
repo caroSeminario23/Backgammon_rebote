@@ -69,9 +69,6 @@ def main():
     estado_actual = estado_inicial
     
     interfaz_tablero = Tablero2(ALTO, ANCHO, estado_actual.get_tablero(), estado_actual.get_FR(), estado_actual.get_FA())
-
-    
-
     interfaz_tablero.mostrar_pantalla(jugador1, jugador2, turno)
 
     # Verificar si algún jugador cumple el estado meta
