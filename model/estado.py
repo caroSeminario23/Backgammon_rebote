@@ -46,6 +46,10 @@ class Estado:
     def get_n_fichas(self):
         """Devuelve las fichas del juego"""
         return self.n_fichas
+
+    def get_dado(self):
+        """Devuelve el valor del dado"""
+        return self.dado
     
     def get_moneda(self):
         """Devuelve el valor de la moneda"""

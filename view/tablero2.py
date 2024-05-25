@@ -81,8 +81,8 @@ class Tablero2:
         imagen_jugador2 = pygame.transform.scale(imagen_jugador2, (self.alto//13, self.alto//13))
 
         # AGREGAR TEXTO
-        valor_dado = self.fTexto1.render("Valor obtenido:", True, NEGRO) 
-        valor_moneda = self.fTexto1.render("Valor obtenido:", True, NEGRO)
+        valor_dado = self.fTexto1.render(f"Valor obtenido: {estado.get_dado()}", True, NEGRO) 
+        valor_moneda = self.fTexto1.render(f"Valor obtenido: {estado.get_moneda()}", True, NEGRO)
 
         # JUGADOR 1
         jugador1 = self.fTexto1.render("JUGADOR 1", True, NEGRO)
@@ -151,10 +151,13 @@ class Tablero2:
         # INDICADOR DE TURNO
         turno = self.fTexto5.render(f"Es turno de las fichas {estado.get_turno().get_turno_actual()}", True, NEGRO)
 
+        reloj = pygame.time.Clock()
+
         corriendo = True
         while corriendo:
-            time_delta = clock.tick(60)/1000.0 
-
+            #time_delta = clock.tick(60)/1000.0 
+            
+            reloj.tick(60)
 
             # PINTAR LA PANTALLA
             self.ventana.fill(BEIGE)
@@ -370,10 +373,30 @@ class Tablero2:
                                 break
                     else:
                         print('Ya hay una ficha seleccionada')
-                        self.ficha_seleccionada.cambiarPosicion(0, 0, self)
+                        pos2 = pygame.mouse.get_pos()
+                        self.ficha_seleccionada.cambiarPosicion(pos[0], pos[1], self)
                         self.ficha_seleccionada.seleccionar(False)
                         self.ficha_seleccionada = None
+                
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_RETURN:
+                        print('Enter presionado')
+                        # Lanzar el dado y la moneda
+                        dado, moneda = Dado(), Moneda()
+
+                        dado.lanzar()
+                        moneda.lanzar()
+
+                        controlador_juego = Controlador2()
+                        controlador_juego.notificar_valor_dado_moneda(dado, moneda)
+
+                        #Registrar el turno y lanzamiento del dado y la moneda
+                        estado.set_dado(dado)
+                        estado.set_moneda(moneda)
+                        valor_dado = self.fTexto1.render(f"Valor obtenido: {estado.get_dado().get_valor_actual()}", True, NEGRO)
+                        valor_moneda = self.fTexto1.render(f"Valor obtenido: {estado.get_moneda().get_valor_actual()}", True, NEGRO)
                         
+
 
                 #self.manager.process_events(event)
 
