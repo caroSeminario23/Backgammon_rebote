@@ -7,7 +7,8 @@ class Ficha:
         self.x = x
         self.y = y
         self.nFichas = nFichas
-        self.rect = pygame.Rect(self.x, self.y, 50, 50)  # Asume que las fichas son rectángulos de 50x50
+        self.rect = pygame.Rect(self.x-25, self.y-25, 50, 50)  # Asume que las fichas son rectángulos de 50x50
+        self.imagen_fondo = None
 
     def obtenerPosicion(self):
         return [self.x, self.y]
@@ -15,6 +16,7 @@ class Ficha:
     def cambiarPosicion(self, nuevoX, nuevoY, ventana):
         self.x = nuevoX
         self.y = nuevoY
+        self.rect.topleft = (nuevoX - 25, nuevoY - 25)
 
         # Volver a dibujar la ficha para reflejar el cambio
         self.dibujar(ventana)
@@ -29,8 +31,10 @@ class Ficha:
         pygame.draw.circle(ventana, negro, (self.x, self.y), 22)
 
         if self.color == "ROJO":
+            #pygame.draw.circle(ventana, negro, (self.x, self.y), 22)
             pygame.draw.circle(ventana, self.color, (self.x, self.y), 20) # El primer parametro es la ventana, el segundo es el color y el tercero es la posición
         else:
+            #pygame.draw.circle(ventana, negro, (self.x, self.y), 22)
             pygame.draw.circle(ventana, self.color, (self.x, self.y), 20)
         
         # Dibujar el texto en la ventana
@@ -42,11 +46,11 @@ class Ficha:
         # Volver a dibujar la ficha para reflejar el cambio
         self.dibujar(ventana)
 
-    def cambiarPosicion(self, x, y, ventana):
+    '''def cambiarPosicion(self, x, y, ventana):
         self.x = x
         self.y = y
         self.rect.topleft = (x - 15, y - 15)
-        self.dibujar(ventana)
+        self.dibujar(ventana)'''
 
     def seleccionar(self, seleccionado):
         if seleccionado:
@@ -59,3 +63,14 @@ class Ficha:
         print(f"Color: {self.color}")
         print(f"Posición: ({self.x}, {self.y})")
         print(f"Número de fichas: {self.nFichas}")
+
+    def guardar_fondo(self, ventana):
+        if self.imagen_fondo is None:
+            self.imagen_fondo = pygame.Surface((self.rect.width, self.rect.height))
+        self.imagen_fondo.blit(ventana, (0, 0), self.rect)
+
+    def get_imagen_fondo(self):
+        return self.imagen_fondo
+    
+    def get_rect(self):
+        return self.rect

@@ -2,7 +2,7 @@ import pygame, pygame_gui
 
 from utils.colores import MELON_OSCURO, ROJO, AMARILLO, NEGRO, BEIGE, MELON_CLARO, MELON_TRASLUCIDO
 from utils.figuras import dibujar_rectangulo_redondeado
-from interfaz.ficha import Ficha
+from view.ficha import Ficha
 
 class Tablero2:
     def __init__(self, alto, ancho):
@@ -378,24 +378,19 @@ class Tablero2:
                 fichas = controlador.mover_ficha(event, estado)
                 self.fichas = fichas
 
-            
-
-            '''for ficha in self.fichas:
-                ficha.dibujar(self.ventana)'''
-            
-            # Dibujar todas las fichas
-            updated_rects = []
-            for ficha in self.fichas:
-                # Borrar la ficha en su posición anterior
-                old_rect = ficha.obtener_rect()
-                self.ventana.blit(ficha.imagen_fondo, old_rect)
-                updated_rects.append(old_rect)
+                # Borrar las fichas dibujadas previamente
+                for ficha in self.fichas:
+                    if ficha.get_imagen_fondo():
+                        self.ventana.blit(ficha.get_imagen_fondo(), ficha.get_rect().topleft)
                 
-                # Dibujar la ficha en su nueva posición
-                ficha.dibujar(self.ventana)
-                updated_rects.append(ficha.obtener_rect())
+                # Vaciamos el arreglo de fichas para "borrar" las fichas dibujadas
+                self.fichas.clear()
+
+                for ficha in fichas:
+                    ficha.guardar_fondo(self.ventana)
+                    ficha.dibujar(self.ventana)
+                    self.fichas.append(ficha)
             
-            pygame.display.update(updated_rects)
-            #pygame.display.update()
+            pygame.display.update()
 
         return estado

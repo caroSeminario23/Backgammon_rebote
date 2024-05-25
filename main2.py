@@ -93,13 +93,13 @@ def main():
 
             dado.lanzar()
             moneda.lanzar()
-            controlador_juego.notificar_valor_dado_moneda(dado, moneda)
-
-
+            
             # Registrar el turno y lanzamiento del dado y la moneda
             estado_actual.set_turno(turno)
             estado_actual.set_dado(dado)
             estado_actual.set_moneda(moneda)
+
+            controlador_juego.notificar_valor_dado_moneda(dado, moneda)
 
             # Mover fichas según reglas de juego
             estado_actual = interfaz_tablero.actualizar_pantalla(controlador_tablero, estado_actual)
