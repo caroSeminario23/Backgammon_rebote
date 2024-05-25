@@ -1,23 +1,35 @@
 import pygame
 
-from view.tablero2 import Tablero2
+#from view.tablero2 import Tablero2
 
 class C_Tablero2:
-    def __init__(self, vista: Tablero2):
+    def __init__(self, vista):
         self.vista = vista
         self.ficha_seleccionada = None
     
     def mover_ficha(self, event, estado):
+        turno_actual = estado.get_turno().get_turno_actual()
+        print('Turno actual:', turno_actual)
+
+        #for event in pygame.event.get():
         if event.type == pygame.MOUSEBUTTONDOWN:
             pos = pygame.mouse.get_pos()
 
             if self.ficha_seleccionada is None:
                 for ficha in self.vista.fichas:
                     if ficha.rect.collidepoint(pos): # Si la ficha fue clickeada
-                        self.ficha_seleccionada = ficha
-                        ficha.seleccionar(True) # Seleccionar ficha
-                        #ficha_seleccionada.set_selected(True) # Seleccionar ficha
-                        break
+                        fColor = None
+                        if ficha.get_color() == 'ROJO':
+                            fColor = 'R'
+                        else:
+                            fColor = 'A'
+
+                        if fColor == turno_actual: # Si la ficha pertenece al jugador actual
+                            self.ficha_seleccionada = ficha
+                            ficha.seleccionar(True) # Seleccionar ficha
+                            break
+                        else:
+                            print('Solo puedes mover fichas de tu color')
             else:
                 for casilla in estado.get_tablero().obtener_casillas():
                     if casilla.rect.collidepoint(pos): # Si la casilla fue clickeada
@@ -44,5 +56,5 @@ class C_Tablero2:
         else:
             pass
 
-        return self.vista.fichas
+        return print('hola')
             

@@ -12,6 +12,7 @@
 
 from pync import Notifier
 import pygame
+from pygame.locals import QUIT
 
 from view.bienvenida2 import Bienvenida2
 from view.registro2 import Registro2
@@ -73,20 +74,26 @@ def main():
     estado_inicial = Estado()
     estado_actual = estado_inicial
     estado_actual.set_turno(turno)
+    estado_actual.get_turno().mostrar_turno()
     
     interfaz_tablero = Tablero2(ALTO, ANCHO)
-    interfaz_tablero.mostrar_pantalla(jugador1, jugador2, estado_actual.get_turno(), estado_actual.get_tablero(), estado_actual.get_FR(), estado_actual.get_FA())
+    ganador = interfaz_tablero.mostrar_pantalla(jugador1, jugador2, estado_actual)
+    #interfaz_tablero.mostrar_pantalla(jugador1, jugador2, estado_actual.get_turno(), estado_actual.get_tablero(), estado_actual.get_FR(), estado_actual.get_FA(), estado_actual)
 
     # Verificar si algún jugador cumple el estado meta
     controlador_juego = Controlador2()
-    ganador = controlador_juego.verificar_estado_meta(estado_actual)
+    #ganador = controlador_juego.verificar_estado_meta(estado_actual)
+    '''ganador = None
 
     controlador_tablero = C_Tablero2(interfaz_tablero)
+    print('hola1')
 
     while ganador not in ['R', 'A']:
+        print('hola2')
         if ganador not in ['R', 'A']:
             # Indicar de quien es el turno
             turno.notificar()
+            print('hola3')
 
             # Lanzar el dado y la moneda
             dado, moneda = Dado(), Moneda()
@@ -105,7 +112,7 @@ def main():
             estado_actual = interfaz_tablero.actualizar_pantalla(controlador_tablero, estado_actual)
             #estado_actual = controlador_tablero.mover_ficha(estado_actual)
         
-        ganador = controlador_juego.verificar_estado_meta(estado_actual)
+        ganador = controlador_juego.verificar_estado_meta(estado_actual)'''
     
     # Mostrar mensaje de victoria o continuar jugando
     controlador_juego.mostrar_mensaje_victoria(ganador)

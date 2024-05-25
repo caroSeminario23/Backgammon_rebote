@@ -3,6 +3,11 @@ import pygame, pygame_gui
 from utils.colores import MELON_OSCURO, ROJO, AMARILLO, NEGRO, BEIGE, MELON_CLARO, MELON_TRASLUCIDO
 from utils.figuras import dibujar_rectangulo_redondeado
 from view.ficha import Ficha
+from controller.controlador2 import Controlador2
+from controller.controlador_tablero2 import C_Tablero2
+from model.dado import Dado
+from model.moneda import Moneda
+from model.estado import Estado
 
 class Tablero2:
     def __init__(self, alto, ancho):
@@ -20,13 +25,6 @@ class Tablero2:
         self.fTexto4 = pygame.font.Font('fuentes/Inter-Bold.ttf', self.alto//50)
         self.fTexto5 = pygame.font.Font('fuentes/Inter-Bold.ttf', self.alto//30)
 
-        # LISTA DE POSICIONES
-        # Lista de posiciones a las que se puede mover una ficha
-        '''self.posiciones_tablero = [(self.ancho//3.02, self.alto//3), (self.ancho//2.7, self.alto//3), (self.ancho//2.44, self.alto//3), (self.ancho//2.22, self.alto//3), (self.ancho//2.04, self.alto//3), (self.ancho//1.89, self.alto//3), 
-                            (self.ancho//1.755, self.alto//3), (self.ancho//1.64, self.alto//3), (self.ancho//1.54, self.alto//3), (self.ancho//1.45, self.alto//3), (self.ancho//1.375, self.alto//3), (self.ancho//1.305, self.alto//3), 
-                            (self.ancho//3.02, self.alto//1.28), (self.ancho//2.7, self.alto//1.28), (self.ancho//2.44, self.alto//1.28), (self.ancho//2.22, self.alto//1.28), (self.ancho//2.04, self.alto//1.28), (self.ancho//1.89, self.alto//1.28), 
-                            (self.ancho//1.755, self.alto//1.28), (self.ancho//1.64, self.alto//1.28), (self.ancho//1.54, self.alto//1.28), (self.ancho//1.45, self.alto//1.28), (self.ancho//1.375, self.alto//1.28), (self.ancho//1.305, self.alto//1.28),]
-        '''
         self.posiciones_fichas = [
             [
                 (self.ancho//3.02, self.alto//3), (self.ancho//2.7, self.alto//3), (self.ancho//2.44, self.alto//3), (self.ancho//2.22, self.alto//3), (self.ancho//2.04, self.alto//3), (self.ancho//1.89, self.alto//3),
@@ -41,54 +39,49 @@ class Tablero2:
 
         self.fichas = []
 
+        self.ganador = None
+
+        self.ficha_seleccionada = None
+
         # CREAR LA VENTANA Y EL ADMINISTRADOR DE INTERFAZ
         self.ventana = pygame.display.set_mode((self.ancho, self.alto))
-        self.manager = pygame_gui.UIManager((self.ancho, self.alto))
+        #self.manager = pygame_gui.UIManager((self.ancho, self.alto))
 
         # AGREGAR UN TITULO A LA VENTANA
         pygame.display.set_caption("Backgammon rebote")
 
         
-    def mostrar_pantalla(self, j1, j2, turno_actual, tablero, fr, fa):
+    def mostrar_pantalla(self, j1, j2, estado):
         # Reloj de Pygame
         clock = pygame.time.Clock()
 
         # AGREGAR TEXTO
-        # Agregar un texto en la ventana
         titulo = self.fTitulo.render("BACKGAMMON REBOTE", True, MELON_OSCURO)
 
         # TABLERO DE JUEGO
         # Tamaño del rectángulo
         superficie_transparente = pygame.Surface((self.ancho//2.1, self.alto//1.68))
-        # 60% de transparencia 
         superficie_transparente.set_alpha(255 * 0.6) 
 
         # IMAGENES
         # Importar imagen del dado
         imagen_dado = pygame.image.load("imagenes/dado.png")
-        # Escalar la imagen
         imagen_dado = pygame.transform.scale(imagen_dado, (self.alto//13, self.alto//13))
 
         # Importar imagen de la moneda
         imagen_moneda = pygame.image.load("imagenes/moneda.png")
-        # Escalar la imagen
         imagen_moneda = pygame.transform.scale(imagen_moneda, (self.alto//13, self.alto//13))
 
         # Importar imagen del jugador 1
         imagen_jugador1 = pygame.image.load("imagenes/jugador.png")
-        # Escalar la imagen
         imagen_jugador1 = pygame.transform.scale(imagen_jugador1, (self.alto//13, self.alto//13))
         
         # Importar imagen del jugador 2
         imagen_jugador2 = pygame.image.load("imagenes/jugador.png")
-        # Escalar la imagen
         imagen_jugador2 = pygame.transform.scale(imagen_jugador2, (self.alto//13, self.alto//13))
 
         # AGREGAR TEXTO
-        # Agregar el texto del valor del dado en la ventana
-        valor_dado = self.fTexto1.render("Valor obtenido:", True, NEGRO) # el primer argumento indica el texto, el segundo si se quiere suavizar el texto y el tercero el color
-        
-        # Agregar el texto del valor de la moneda a la ventana
+        valor_dado = self.fTexto1.render("Valor obtenido:", True, NEGRO) 
         valor_moneda = self.fTexto1.render("Valor obtenido:", True, NEGRO)
 
         # JUGADOR 1
@@ -111,29 +104,28 @@ class Tablero2:
         fichas_liberadas2 = self.fTexto4.render("Fichas liberadas", True, NEGRO)
         fichas_capturadas2 = self.fTexto4.render("Fichas capturadas", True, NEGRO)
 
-
-        tablero.obtener_casillas()
+        estado.get_tablero().obtener_casillas()
         tablero_01 = []
         tablero_p1, tablero_p2 = [], []
         
         for i in range(12):
-            if tablero.estado_casilla(0, i) == 'v':
+            if estado.get_tablero().estado_casilla(0, i) == 'v':
                 tablero_p1.append(0)
             # Si es rojo
-            elif tablero.estado_casilla(0, i) in ['dro', 'drf']:
+            elif estado.get_tablero().estado_casilla(0, i) in ['dro', 'drf']:
                 tablero_p1.append(1)
             # Si es amarillo
-            elif tablero.estado_casilla(0, i) in ['dao', 'daf']:
+            elif estado.get_tablero().estado_casilla(0, i) in ['dao', 'daf']:
                 tablero_p1.append(2)
         
         for i in range(12):
-            if tablero.estado_casilla(1, i) == 'v':
+            if estado.get_tablero().estado_casilla(1, i) == 'v':
                 tablero_p2.append(0)
             # Si es rojo
-            elif tablero.estado_casilla(0, i) in ['dro', 'drf']:
+            elif estado.get_tablero().estado_casilla(0, i) in ['dro', 'drf']:
                 tablero_p2.append(1)
             # Si es amarillo
-            elif tablero.estado_casilla(0, i) in ['dao', 'daf']:
+            elif estado.get_tablero().estado_casilla(0, i) in ['dao', 'daf']:
                 tablero_p2.append(2)
         
         tablero_01 = [tablero_p1, tablero_p2]
@@ -156,20 +148,13 @@ class Tablero2:
                 self.fichas.append(Ficha(AMARILLO, self.posiciones_fichas[1][n][0], self.posiciones_fichas[1][n][1], 7))
             n+=1
 
-
-
         # INDICADOR DE TURNO
-        turno = self.fTexto5.render(f"Es turno de las fichas {turno_actual.get_turno_actual()}", True, NEGRO)
-
+        turno = self.fTexto5.render(f"Es turno de las fichas {estado.get_turno().get_turno_actual()}", True, NEGRO)
 
         corriendo = True
         while corriendo:
             time_delta = clock.tick(60)/1000.0 
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    corriendo = False
 
-                self.manager.process_events(event)
 
             # PINTAR LA PANTALLA
             self.ventana.fill(BEIGE)
@@ -360,7 +345,84 @@ class Tablero2:
             for ficha in self.fichas:
                 ficha.dibujar(self.ventana)
 
+            #print('hola0')
+
+            #Mover fichas
+                
+
+
+
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    corriendo = False
+
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    pos = pygame.mouse.get_pos() # Obtener la posicion del mouse
+                    print('Acabas de hacer click')
+                    print(pos)
+                    if self.ficha_seleccionada is None:
+                        print('No hay ninguna ficha seleccionada')
+                        for ficha in self.fichas:
+                            if ficha.rect.collidepoint(pos):
+                                self.ficha_seleccionada = ficha
+                                self.ficha_seleccionada.seleccionar(True)
+                                self.ficha_seleccionada.mostrarInformacion()
+                                break
+                    else:
+                        print('Ya hay una ficha seleccionada')
+                        self.ficha_seleccionada.cambiarPosicion(0, 0, self)
+                        self.ficha_seleccionada.seleccionar(False)
+                        self.ficha_seleccionada = None
+                        
+
+                #self.manager.process_events(event)
+
+                '''controlador = C_Tablero2(self)
+                controlador.mover_ficha(event, estado)'''
+
+            
+
             pygame.display.update()
+
+            '''while self.ganador not in ['R', 'A']:
+                print('hola2')
+                if self.ganador not in ['R', 'A']:
+                    # Indicar de quien es el turno
+                    estado.get_turno().notificar()
+                    print('hola3')
+
+                    # Lanzar el dado y la moneda
+                    dado, moneda = Dado(), Moneda()
+
+                    dado.lanzar()
+                    moneda.lanzar()
+
+                    controlador_juego = Controlador2()
+
+                    controlador_juego.notificar_valor_dado_moneda(dado, moneda)
+                    print('hola4')
+                    
+                    #Registrar el turno y lanzamiento del dado y la moneda
+                    #estado.set_turno(turno_actual)
+                    estado.set_dado(dado)
+                    estado.set_moneda(moneda)
+
+
+                    # Mover fichas según reglas de juego
+                    print('Seleccione una ficha de su color para moverla')
+                    controlador_tablero = C_Tablero2(self)
+                    #estado = self.actualizar_pantalla(controlador_tablero, estado)
+                    print('jam')
+                    controlador_tablero.mover_ficha(event, estado)
+                    print('caro')
+                
+                ganador = controlador_juego.verificar_estado_meta()
+            
+            # Mostrar mensaje de victoria o continuar jugando
+            #controlador_juego.mostrar_mensaje_victoria(ganador)
+
+            return self.ganador'''
+        pygame.quit()
 
     def actualizar_pantalla(self, controlador, estado):
         clock = pygame.time.Clock()
@@ -372,7 +434,7 @@ class Tablero2:
                 if event.type == pygame.QUIT:
                     corriendo = False
 
-                self.manager.process_events(event)
+                #self.manager.process_events(event)
 
                 # Mover las fichas
                 fichas = controlador.mover_ficha(event, estado)

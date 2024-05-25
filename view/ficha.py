@@ -7,7 +7,7 @@ class Ficha:
         self.x = x
         self.y = y
         self.nFichas = nFichas
-        self.rect = pygame.Rect(self.x-25, self.y-25, 50, 50)  # Asume que las fichas son rectángulos de 50x50
+        self.rect = pygame.Rect(self.x, self.y, 50, 50)  # Asume que las fichas son rectángulos de 50x50
         self.imagen_fondo = None
 
     def obtenerPosicion(self):
@@ -19,7 +19,7 @@ class Ficha:
         self.rect.topleft = (nuevoX - 25, nuevoY - 25)
 
         # Volver a dibujar la ficha para reflejar el cambio
-        self.dibujar(ventana)
+        #self.dibujar(ventana)
 
     def dibujar(self, ventana):
         negro = (0, 0, 0)
