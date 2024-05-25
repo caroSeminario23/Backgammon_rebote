@@ -6,7 +6,7 @@ from pync import Notifier
 #from plyer import notification
 #import tkinter as tk # Importar la librería tkinter para crear la ventana de diálogo
 #from tkinter import messagebox # Importar la librería messagebox de tkinter para mostrar mensajes de diálogo
-from view.ficha import Ficha
+from interfaz.ficha import Ficha
 from utils.colores import hex_to_rgb, AMARILLO, MELON_CLARO, MELON_OSCURO, ROJO, MELON_TRASLUCIDO, BEIGE, NEGRO, dibujar_rectangulo_redondeado
 from src.juego import Juego
 
