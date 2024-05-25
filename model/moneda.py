@@ -9,7 +9,7 @@ class Moneda:
     
     # Lanza la moneda y devuelve un estado aleatorio a: avanzar, r: retroceder
     def lanzar(self): 
-        return random(self.valores)
+        self.valor_actual = random.choice(self.valores)
     
     # Espera a que la moneda se detenga
     def esperar_lanzamiento(self): 

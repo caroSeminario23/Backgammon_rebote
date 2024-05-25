@@ -1,6 +1,6 @@
 import pygame, pygame_gui
 
-from interfaz.bienvenida2 import Bienvenida2
+from view.bienvenida2 import Bienvenida2
 
 class C_Bienvenida2:
     def __init__(self, vista: Bienvenida2):

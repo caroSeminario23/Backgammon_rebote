@@ -5,7 +5,7 @@ from utils.figuras import dibujar_rectangulo_redondeado
 from interfaz.ficha import Ficha
 
 class Tablero2:
-    def __init__(self, alto, ancho, tablero, fr, fa):
+    def __init__(self, alto, ancho):
         # INICIALIZAR PYGAME
         pygame.init()
 
@@ -22,11 +22,11 @@ class Tablero2:
 
         # LISTA DE POSICIONES
         # Lista de posiciones a las que se puede mover una ficha
-        self.posiciones_tablero = [(self.ancho//3.02, self.alto//3), (self.ancho//2.7, self.alto//3), (self.ancho//2.44, self.alto//3), (self.ancho//2.22, self.alto//3), (self.ancho//2.04, self.alto//3), (self.ancho//1.89, self.alto//3), 
+        '''self.posiciones_tablero = [(self.ancho//3.02, self.alto//3), (self.ancho//2.7, self.alto//3), (self.ancho//2.44, self.alto//3), (self.ancho//2.22, self.alto//3), (self.ancho//2.04, self.alto//3), (self.ancho//1.89, self.alto//3), 
                             (self.ancho//1.755, self.alto//3), (self.ancho//1.64, self.alto//3), (self.ancho//1.54, self.alto//3), (self.ancho//1.45, self.alto//3), (self.ancho//1.375, self.alto//3), (self.ancho//1.305, self.alto//3), 
                             (self.ancho//3.02, self.alto//1.28), (self.ancho//2.7, self.alto//1.28), (self.ancho//2.44, self.alto//1.28), (self.ancho//2.22, self.alto//1.28), (self.ancho//2.04, self.alto//1.28), (self.ancho//1.89, self.alto//1.28), 
                             (self.ancho//1.755, self.alto//1.28), (self.ancho//1.64, self.alto//1.28), (self.ancho//1.54, self.alto//1.28), (self.ancho//1.45, self.alto//1.28), (self.ancho//1.375, self.alto//1.28), (self.ancho//1.305, self.alto//1.28),]
-
+        '''
         self.posiciones_fichas = [
             [
                 (self.ancho//3.02, self.alto//3), (self.ancho//2.7, self.alto//3), (self.ancho//2.44, self.alto//3), (self.ancho//2.22, self.alto//3), (self.ancho//2.04, self.alto//3), (self.ancho//1.89, self.alto//3),
@@ -39,51 +39,7 @@ class Tablero2:
             ]]
         self.nFichasEnTablero = [[5, 0, 0, 0, 3, 0, 5, 0, 0, 0, 0, 2],[5, 0, 0, 0, 3, 0, 5, 0, 0, 0, 0, 2]]
 
-        tablero.obtener_casillas()
-        tablero_01 = []
-        tablero_p1, tablero_p2 = [], []
-        
-        for i in range(12):
-            if tablero.estado_casilla(0, i) == 'v':
-                tablero_p1.append(0)
-            # Si es rojo
-            elif tablero.estado_casilla(0, i) in ['dro', 'drf']:
-                tablero_p1.append(1)
-            # Si es amarillo
-            elif tablero.estado_casilla(0, i) in ['dao', 'daf']:
-                tablero_p1.append(2)
-        
-        for i in range(12):
-            if tablero.estado_casilla(1, i) == 'v':
-                tablero_p2.append(0)
-            # Si es rojo
-            elif tablero.estado_casilla(0, i) in ['dro', 'drf']:
-                tablero_p2.append(1)
-            # Si es amarillo
-            elif tablero.estado_casilla(0, i) in ['dao', 'daf']:
-                tablero_p2.append(2)
-        
-        tablero_01 = [tablero_p1, tablero_p2]
-        
-        print(str(tablero_01))
-
         self.fichas = []
-
-        m=0
-        for i in tablero_01[0]:
-            if i == 1:
-                self.fichas.append(Ficha(ROJO, self.posiciones_fichas[0][m][0], self.posiciones_fichas[0][m][1], 7))
-            elif i == 2:
-                self.fichas.append(Ficha(AMARILLO, self.posiciones_fichas[0][m][0], self.posiciones_fichas[0][m][1], 7))
-            m+=1
-
-        n=0
-        for i in tablero_01[1]:
-            if i == 1:
-                self.fichas.append(Ficha(ROJO, self.posiciones_fichas[1][n][0], self.posiciones_fichas[1][n][1], 7))
-            elif i == 2:
-                self.fichas.append(Ficha(AMARILLO, self.posiciones_fichas[1][n][0], self.posiciones_fichas[1][n][1], 7))
-            n+=1
 
         # CREAR LA VENTANA Y EL ADMINISTRADOR DE INTERFAZ
         self.ventana = pygame.display.set_mode((self.ancho, self.alto))
@@ -93,7 +49,7 @@ class Tablero2:
         pygame.display.set_caption("Backgammon rebote")
 
         
-    def mostrar_pantalla(self, j1, j2, turno_actual):
+    def mostrar_pantalla(self, j1, j2, turno_actual, tablero, fr, fa):
         # Reloj de Pygame
         clock = pygame.time.Clock()
 
@@ -154,6 +110,53 @@ class Tablero2:
         fichas_capturadas1 = self.fTexto4.render("Fichas capturadas", True, NEGRO)
         fichas_liberadas2 = self.fTexto4.render("Fichas liberadas", True, NEGRO)
         fichas_capturadas2 = self.fTexto4.render("Fichas capturadas", True, NEGRO)
+
+
+        tablero.obtener_casillas()
+        tablero_01 = []
+        tablero_p1, tablero_p2 = [], []
+        
+        for i in range(12):
+            if tablero.estado_casilla(0, i) == 'v':
+                tablero_p1.append(0)
+            # Si es rojo
+            elif tablero.estado_casilla(0, i) in ['dro', 'drf']:
+                tablero_p1.append(1)
+            # Si es amarillo
+            elif tablero.estado_casilla(0, i) in ['dao', 'daf']:
+                tablero_p1.append(2)
+        
+        for i in range(12):
+            if tablero.estado_casilla(1, i) == 'v':
+                tablero_p2.append(0)
+            # Si es rojo
+            elif tablero.estado_casilla(0, i) in ['dro', 'drf']:
+                tablero_p2.append(1)
+            # Si es amarillo
+            elif tablero.estado_casilla(0, i) in ['dao', 'daf']:
+                tablero_p2.append(2)
+        
+        tablero_01 = [tablero_p1, tablero_p2]
+            
+        print(str(tablero_01))
+
+        m=0
+        for i in tablero_01[0]:
+            if i == 1:
+                self.fichas.append(Ficha(ROJO, self.posiciones_fichas[0][m][0], self.posiciones_fichas[0][m][1], 7))
+            elif i == 2:
+                self.fichas.append(Ficha(AMARILLO, self.posiciones_fichas[0][m][0], self.posiciones_fichas[0][m][1], 7))
+            m+=1
+
+        n=0
+        for i in tablero_01[1]:
+            if i == 1:
+                self.fichas.append(Ficha(ROJO, self.posiciones_fichas[1][n][0], self.posiciones_fichas[1][n][1], 7))
+            elif i == 2:
+                self.fichas.append(Ficha(AMARILLO, self.posiciones_fichas[1][n][0], self.posiciones_fichas[1][n][1], 7))
+            n+=1
+
+
 
         # INDICADOR DE TURNO
         turno = self.fTexto5.render(f"Es turno de las fichas {turno_actual.get_turno_actual()}", True, NEGRO)
@@ -353,7 +356,46 @@ class Tablero2:
             cronometro_juego = fTexto6.render(tiempo_formateado_juego, True, NEGRO)
             self.ventana.blit(cronometro_juego, (self.ancho//6, self.alto//1.28))'''
 
+            
             for ficha in self.fichas:
                 ficha.dibujar(self.ventana)
 
             pygame.display.update()
+
+    def actualizar_pantalla(self, controlador, estado):
+        clock = pygame.time.Clock()
+        corriendo = True
+
+        while corriendo:
+            time_delta = clock.tick(60)/1000.0
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    corriendo = False
+
+                self.manager.process_events(event)
+
+                # Mover las fichas
+                fichas = controlador.mover_ficha(event, estado)
+                self.fichas = fichas
+
+            
+
+            '''for ficha in self.fichas:
+                ficha.dibujar(self.ventana)'''
+            
+            # Dibujar todas las fichas
+            updated_rects = []
+            for ficha in self.fichas:
+                # Borrar la ficha en su posición anterior
+                old_rect = ficha.obtener_rect()
+                self.ventana.blit(ficha.imagen_fondo, old_rect)
+                updated_rects.append(old_rect)
+                
+                # Dibujar la ficha en su nueva posición
+                ficha.dibujar(self.ventana)
+                updated_rects.append(ficha.obtener_rect())
+            
+            pygame.display.update(updated_rects)
+            #pygame.display.update()
+
+        return estado

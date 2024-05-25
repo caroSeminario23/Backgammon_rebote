@@ -1,6 +1,6 @@
 import pygame_gui
 
-from interfaz.registro2 import Registro2
+from view.registro2 import Registro2
 from model.jugador import Jugador
 
 class C_Registro2:

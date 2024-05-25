@@ -9,7 +9,7 @@ class Dado:
 
     # Lanza el dado y devuelve un valor aleatorio
     def lanzar(self): 
-        return random.choice(self.valores) # Devuelve un valor aleatorio de la lista de valores
+        self.valor_actual = random.choice(self.valores) # Devuelve un valor aleatorio de la lista de valores
     
     # Muestra el valor del dado
     def mostrar(self):
@@ -18,3 +18,6 @@ class Dado:
     # getter
     def get_valores(self):
         return self.valores
+    
+    def get_valor_actual(self):
+        return self.valor_actual
