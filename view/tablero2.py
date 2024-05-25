@@ -5,6 +5,7 @@ from utils.figuras import dibujar_rectangulo_redondeado
 from view.ficha import Ficha
 from controller.controlador2 import Controlador2
 from controller.controlador_tablero2 import C_Tablero2
+from controller.reglas import mover_ADRO
 from model.dado import Dado
 from model.moneda import Moneda
 from model.estado import Estado
@@ -373,10 +374,13 @@ class Tablero2:
                                 break
                     else:
                         print('Ya hay una ficha seleccionada')
-                        pos2 = pygame.mouse.get_pos()
-                        self.ficha_seleccionada.cambiarPosicion(pos[0], pos[1], self)
-                        self.ficha_seleccionada.seleccionar(False)
-                        self.ficha_seleccionada = None
+                        #pos2 = pygame.mouse.get_pos()
+                        x, y = mover_ADRO(self.ficha_seleccionada, estado, self.posiciones_fichas)
+                        if x != -1 and y != -1:
+                            pos = (x, y)
+                            self.ficha_seleccionada.cambiarPosicion(pos[0], pos[1], self)
+                            self.ficha_seleccionada.seleccionar(False)
+                            self.ficha_seleccionada = None
                 
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_RETURN:
