@@ -375,10 +375,17 @@ class Tablero2:
                     else:
                         print('Ya hay una ficha seleccionada')
                         #pos2 = pygame.mouse.get_pos()
-                        x, y = mover_ADRO(self.ficha_seleccionada, estado, self.posiciones_fichas)
+                        x, y, estado = mover_ADRO(self.ficha_seleccionada, estado, self.posiciones_fichas)
                         if x != -1 and y != -1:
                             pos = (x, y)
-                            self.ficha_seleccionada.cambiarPosicion(pos[0], pos[1], self)
+                            print(pos)
+                            print(pos[0], pos[1])
+                            xn = self.posiciones_fichas[pos[0]][pos[1]][0]
+                            yn = self.posiciones_fichas[pos[0]][pos[1]][1]
+                            self.ficha_seleccionada.cambiarPosicion(xn, yn, self)
+                            self.ficha_seleccionada.seleccionar(False)
+                            self.ficha_seleccionada = None
+                        else:
                             self.ficha_seleccionada.seleccionar(False)
                             self.ficha_seleccionada = None
                 
