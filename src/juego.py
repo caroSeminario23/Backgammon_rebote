@@ -856,19 +856,21 @@ class Juego:
     # REGLA 8
     # Capturar con dao de (a,b) a dro de (c,d) según “n” posiciones -> cdao(a,b,c,d,n)
     def cdao(self, a, b, c, d, n):
-        # Calcular valor de c
-        if b == 2:
-            c = a-n
-        elif b == 1:
-            c = a+n
-        elif b == 2 and n == 1:
-            c = a
+         # Calcular valor de d
+        if a == 1:
+            d = b + n
+        elif a == 2:
+            d = b - n
+            if d<=0 :
+                d = n - b + 1
         
-        # Calcular valor de d
-        if a-n >= 1:
-            d = b
-        elif a-n < 1:
-            d = b+1
+        # Calcular valor de c
+        if b+n>= 1 and b+n <= 12 and a == 1:
+            c = 1
+        elif b-n >= 1 and b-n <= 12 and a == 2:
+            c = 2
+        elif b-n < 0 and a == 2:
+            c = 1
 
         if self.movimiento_cdao_valido(a,b,c,d,n) == True:
             # ACTUALIZAR TABLERO
@@ -904,15 +906,21 @@ class Juego:
             self.estado.actualizar_estado(tablero_2, 'R', fichas_2 , self.moneda.esperar_lanzamiento(), FR_2, FA_2)
 
             # Se indica que el movimiento fue exitoso
-            print('Movimiento exitoso')
+            print('Movimiento exitoso_R8')
         else:
-            print('Movimiento no válido')
+            print('Movimiento no válido_R8')
     
     # Verificar si cdao es válido
     def movimiento_cdao_valido(self, a, b, c, d, n): # Verificar si un movimiento es válido
-        if (self.estado.get_turno == 'A' and self.estado.get_moneda == 'a' and self.estado.get_tablero.estado_casilla(a,b) == 'dao' and 
-            self.estado.get_tablero.estado_casilla(c,d) == 'dro' and self.estado.estado_casilla_FR(c,d) == 1
-            and self.estado.get_fichas[5] == 0 and (c >= 1 or c <= 12) and (d >= 1 or d <= 2) and (n >= 1 or n <= 6)):
+        if(self.estado.get_turno == 'A' and 
+            self.estado.get_moneda == 'a' and 
+            self.estado.get_tablero.estado_casilla(a,b) == 'dao' and 
+            self.estado.get_tablero.estado_casilla(c,d) == 'dro' and 
+            self.estado.estado_casilla_FR(c,d) == 1 and 
+            self.estado.get_fichas[5] == 0 and 
+            (1 <= c <= 2) and 
+            (1 <= d <= 12) and 
+            (1 <= n <= 6)):
             return True
         else:
             return False
