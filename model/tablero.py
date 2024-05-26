@@ -24,11 +24,15 @@ class Tablero:
             self.casillas[a][b] = 'drf'
     
     # Convierte la casilla (a,b) en ordinaria
-    def convertir_en_ordinaria(self, a, b):
+    def convertir_en_ordinaria(self, a, b, color):
         if self.casillas[a][b] == 'daf':
             self.casillas[a][b] = 'dao'
         elif self.casillas[a][b] == 'drf':
             self.casillas[a][b] = 'dro'
+        elif self.casillas[a][b] == 'v' and color == 'R':
+            self.casillas[a][b] = 'dro'
+        elif self.casillas[a][b] == 'v' and color == 'A':
+            self.casillas[a][b] = 'dao'
     
     # Convierte la casilla (a,b) en capturada
     def convertir_en_capturada(self, a, b):

@@ -75,10 +75,10 @@ class Estado:
     # Muestra el estado actual del juego
     def mostrar_estado(self): 
         print('\n-------------------')
-        print(self.tablero.mostrar_tablero())
-        print(self.turno.mostrar_turno())
-        print(self.n_fichas.mostrar_n_fichas())
-        print(self.moneda.mostrar_moneda())
-        print(self.FR.mostrar_FR())
-        print(self.FA.mostrar_FA())
+        self.tablero.mostrar_tablero()
+        self.turno.mostrar_turno()
+        self.n_fichas.mostrar_n_fichas()
+        self.moneda.mostrar_moneda()
+        self.FR.mostrar_FR()
+        self.FA.mostrar_FA()
         print('-------------------')

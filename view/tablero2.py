@@ -315,45 +315,9 @@ class Tablero2:
             if tiempo_restante_turno <= 0:
                 print("¡Tiempo agotado por turno!")
 
-            '''# CRONOMETRO GENERAL DEL JUEGO
-            # Calcular el tiempo restante
-            tiempo_transcurrido_juego = (pygame.time.get_ticks() - inicio_cronometro_juego) / 1000  # Convertir a segundos
-            tiempo_restante_juego = 1800 - tiempo_transcurrido_juego  # 1800 segundos = 30 minutos
-
-            # Si el tiempo restante es 0 o menos, terminar el juego
-            if tiempo_restante_juego <= 0:
-                print("¡Tiempo agotado! ¡Fin del juego!")
-
-            # Convertir el tiempo restante a formato mm:ss
-            minutos_turno = int(tiempo_restante_turno) // 60
-            segundos_turno = int(tiempo_restante_turno) % 60
-            tiempo_formateado_turno = "{:02d}:{:02d}".format(minutos_turno, segundos_turno)
-
-
-            # Renderizar el tiempo restante y dibujarlo en la ventana
-            fTexto6 = pygame.font.Font('fuentes/Inter-Bold.ttf', self.alto//30)
-            cronometro_turno = fTexto6.render(tiempo_formateado_turno, True, NEGRO)
-            self.ventana.blit(cronometro_turno, (self.ancho//6, self.alto//1.45))
-
-            # CRONOMETRO GENERAL DEL JUEGO
-            # Convertir el tiempo restante a formato mm:ss
-            minutos_juego = int(tiempo_restante_juego) // 60
-            segundos_juego = int(tiempo_restante_juego) % 60
-            tiempo_formateado_juego = "{:02d}:{:02d}".format(minutos_juego, segundos_juego)
-
-            # Renderizar el tiempo restante y dibujarlo en la ventana
-            cronometro_juego = fTexto6.render(tiempo_formateado_juego, True, NEGRO)
-            self.ventana.blit(cronometro_juego, (self.ancho//6, self.alto//1.28))'''
-
             
             for ficha in self.fichas:
                 ficha.dibujar(self.ventana)
-
-            #print('hola0')
-
-            #Mover fichas
-                
-
 
 
             for event in pygame.event.get():
@@ -392,28 +356,58 @@ class Tablero2:
                                 self.ficha_seleccionada = None
                                 estado.get_tablero().mostrar_tablero()
                                 turno = self.fTexto5.render(f"Es turno de las fichas {estado.get_turno().get_turno_actual()}", True, NEGRO)
+
+                                tablero_01 = []
+                                tablero_p1, tablero_p2 = [], []
+                                
+                                for i in range(12):
+                                    if estado.get_tablero().estado_casilla(0, i) == 'v':
+                                        tablero_p1.append(0)
+                                    # Si es rojo
+                                    elif estado.get_tablero().estado_casilla(0, i) in ['dro', 'drf']:
+                                        tablero_p1.append(1)
+                                    # Si es amarillo
+                                    elif estado.get_tablero().estado_casilla(0, i) in ['dao', 'daf']:
+                                        tablero_p1.append(2)
+        
+                                for i in range(12):
+                                    if estado.get_tablero().estado_casilla(1, i) == 'v':
+                                        tablero_p2.append(0)
+                                    # Si es rojo
+                                    elif estado.get_tablero().estado_casilla(1, i) in ['dro', 'drf']:
+                                        tablero_p2.append(1)
+                                    # Si es amarillo
+                                    elif estado.get_tablero().estado_casilla(1, i) in ['dao', 'daf']:
+                                        tablero_p2.append(2)
+                                
+                                tablero_01 = [tablero_p1, tablero_p2]
+                                    
+                                print(str(tablero_01))
+
+                                # DIBUJADO DE LAS FICHAS
+                                for fila in range(2):
+                                    estado.get_FA().mostrar_FA()
+                                    estado.get_FR().mostrar_FR()
+                                    m = 0
+                                    for i in tablero_01[fila]:
+                                        print(m)
+                                        if i == 1:
+                                            self.fichas.append(Ficha(ROJO, self.posiciones_fichas[fila][m][0], self.posiciones_fichas[fila][m][1], estado.get_FR().estado_casilla_FR(fila, m))) #self.FR[fila][n]
+                                            print(estado.get_FR().estado_casilla_FR(fila, m))
+                                        elif i == 2:
+                                            self.fichas.append(Ficha(AMARILLO, self.posiciones_fichas[fila][m][0], self.posiciones_fichas[fila][m][1], estado.get_FA().estado_casilla_FA(fila, m))) #self.FR[fila][n]
+                                            print(estado.get_FA().estado_casilla_FA(fila, m))
+                                        m += 1
+
+
+
+
                             else:
                                 self.ficha_seleccionada.seleccionar(False)
                                 self.ficha_seleccionada = None
                 
                 elif modo_juego == 'fácil':
-                    '''# TURNO DE LA MAQUINA
-                    # Lanzar el dado y la moneda
-                    dado, moneda = Dado(), Moneda()
-
-                    dado.lanzar()
-                    moneda.lanzar()
-
-                    controlador_juego = Controlador2()
-                    controlador_juego.notificar_valor_dado_moneda(dado, moneda)
-
-                    #Registrar el turno y lanzamiento del dado y la moneda
-                    estado.set_dado(dado)
-                    estado.set_moneda(moneda)
-                    valor_dado = self.fTexto1.render(f"Valor obtenido: {estado.get_dado().get_valor_actual()}", True, NEGRO)
-                    valor_moneda = self.fTexto1.render(f"Valor obtenido: {estado.get_moneda().get_valor_actual()}", True, NEGRO)
                     
-                    print(estado.get_turno().get_turno_actual())'''
                     turno_humano = estado.get_turno().get_turno_actual()
                     if turno_humano == 'R':
                         if event.type == pygame.MOUSEBUTTONDOWN:
@@ -480,40 +474,6 @@ class Tablero2:
                                     self.ficha_seleccionada.seleccionar(False)
                                     self.ficha_seleccionada = None
                         
-
-
-                        # TURNO DE LA MAQUINA
-                        '''# Lanzar el dado y la moneda
-                        dado, moneda = Dado(), Moneda()
-
-                        dado.lanzar()
-                        moneda.lanzar()
-
-                        controlador_juego = Controlador2()
-                        controlador_juego.notificar_valor_dado_moneda(dado, moneda)
-
-                        #Registrar el turno y lanzamiento del dado y la moneda
-                        estado.set_dado(dado)
-                        estado.set_moneda(moneda)
-                        valor_dado = self.fTexto1.render(f"Valor obtenido: {estado.get_dado().get_valor_actual()}", True, NEGRO)
-                        valor_moneda = self.fTexto1.render(f"Valor obtenido: {estado.get_moneda().get_valor_actual()}", True, NEGRO)'''
-
-                        '''if (estado.get_turno().get_turno_actual() == 'A'):
-                            x, y, estado = mover_ficha(estado, AMARILLO, self.posiciones_fichas, self.fichas)
-                            if x != -1 and y != -1:
-                                pos = (x, y)
-                                print(pos)
-                                print(pos[0], pos[1])
-                                xn = self.posiciones_fichas[pos[0]][pos[1]][0]
-                                yn = self.posiciones_fichas[pos[0]][pos[1]][1]
-                                self.ficha_seleccionada.cambiarPosicion(xn, yn, self)
-                                self.ficha_seleccionada.seleccionar(False)
-                                self.ficha_seleccionada = None
-                                estado.get_tablero().mostrar_tablero()
-                                turno = self.fTexto5.render(f"Es turno de las fichas {estado.get_turno().get_turno_actual()}", True, NEGRO)
-                            else:
-                                self.ficha_seleccionada.seleccionar(False)
-                                self.ficha_seleccionada = None'''
                     pass
                 
                 if event.type == pygame.KEYDOWN:
@@ -535,54 +495,9 @@ class Tablero2:
                         valor_moneda = self.fTexto1.render(f"Valor obtenido: {estado.get_moneda().get_valor_actual()}", True, NEGRO)
                         
 
-
-                #self.manager.process_events(event)
-
-                '''controlador = C_Tablero2(self)
-                controlador.mover_ficha(event, estado)'''
-
-            
-
             pygame.display.update()
 
-            '''while self.ganador not in ['R', 'A']:
-                print('hola2')
-                if self.ganador not in ['R', 'A']:
-                    # Indicar de quien es el turno
-                    estado.get_turno().notificar()
-                    print('hola3')
-
-                    # Lanzar el dado y la moneda
-                    dado, moneda = Dado(), Moneda()
-
-                    dado.lanzar()
-                    moneda.lanzar()
-
-                    controlador_juego = Controlador2()
-
-                    controlador_juego.notificar_valor_dado_moneda(dado, moneda)
-                    print('hola4')
-                    
-                    #Registrar el turno y lanzamiento del dado y la moneda
-                    #estado.set_turno(turno_actual)
-                    estado.set_dado(dado)
-                    estado.set_moneda(moneda)
-
-
-                    # Mover fichas según reglas de juego
-                    print('Seleccione una ficha de su color para moverla')
-                    controlador_tablero = C_Tablero2(self)
-                    #estado = self.actualizar_pantalla(controlador_tablero, estado)
-                    print('jam')
-                    controlador_tablero.mover_ficha(event, estado)
-                    print('caro')
-                
-                ganador = controlador_juego.verificar_estado_meta()
             
-            # Mostrar mensaje de victoria o continuar jugando
-            #controlador_juego.mostrar_mensaje_victoria(ganador)
-
-            return self.ganador'''
         pygame.quit()
 
     def actualizar_pantalla(self, controlador, estado):

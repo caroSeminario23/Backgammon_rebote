@@ -155,6 +155,7 @@ def mover_ADRO(ficha, estado, posiciones):
         else:
             print(f'La coordenada {coord} no está cerca de ninguna posición en self.posiciones_fichas')
 
+        print("Ficha antigua: ", a, b)
         estadoN = actualizar_estado_ADRO(estado, a, b, posX, posY)
         print(posX, posY, estadoN.get_tablero().estado_casilla(posX, posY))
         estadoN.get_tablero().mostrar_tablero()
@@ -171,21 +172,30 @@ def actualizar_estado_ADRO(estado, xi, yi, xf, yf):
 
     # Actualizar tablero
     # Casilla de origen
+    print("Antigua: ", xi, yi, "Nueva: ", xf, yf)
     estado.get_FR().eliminar_ficha_FR(xi, yi)
     if estado.get_FR().estado_casilla_FR(xi,yi) == 0:
         estado.get_tablero().convertir_en_vacia(xi, yi)
+        print("estoy dentro 1")
     else:
-        estado.get_tablero().convertir_en_ordinaria(xi, yi)
+        estado.get_tablero().convertir_en_ordinaria(xi, yi, 'R')
+        print("estoy dentro 2")
     
     # Casilla de destino
     estado.get_FR().adicionar_ficha_FR(xf, yf)
+    #estadoN = estado.actualizar_estado(tablero, turnoN, estado.get_n_fichas(), monedaN, FRn, estado.get_FA())
     if xf==0 and yf>=0 and yf<=11:
-        estado.get_tablero().convertir_en_ordinaria(xf, yf)
+        estado.get_tablero().convertir_en_ordinaria(xf, yf, 'R')
+        print("estoy dentro 3")
     elif xf==1 and yf>=0 and yf<=5:
-        estado.get_tablero().convertir_en_ordinaria(xf, yf)
+        estado.get_tablero().convertir_en_ordinaria(xf, yf, 'R')
+        print("estoy dentro 4")
     elif xf==1 and yf>=6 and yf<=11:
         estado.get_tablero().convertir_en_finalista(xf, yf)
-
+        print("estoy dentro 5")
+    
+    #estadoN2 = estadoN.actualizar_estado(tablero2, turnoN, estadoN.get_n_fichas(), monedaN, FRn, estadoN.get_FA())
+    estado.mostrar_estado()
     return estado
 
 # ==================
@@ -350,16 +360,16 @@ def actualizar_estado_ADAO(estado, xi, yi, xf, yf):
         if estado.get_FA().estado_casilla_FA(xi,yi) == 0:
             estado.get_tablero().convertir_en_vacia(xi, yi)
         else:
-            estado.get_tablero().convertir_en_ordinaria(xi, yi)
+            estado.get_tablero().convertir_en_ordinaria(xi, yi, 'A')
         
         # Casilla de destino
         estado.get_FA().adicionar_ficha_FA(xf, yf)
         if xf==0 and yf>=0 and yf<=5:
-            estado.get_tablero().convertir_en_ordinaria(xf, yf)
+            estado.get_tablero().convertir_en_ordinaria(xf, yf, 'A')
         elif xf==0 and yf>=6 and yf<=11:
             estado.get_tablero().convertir_en_finalista(xf, yf)
         elif xf==1 and yf>=0 and yf<=11:
-            estado.get_tablero().convertir_en_ordinaria(xf, yf)
+            estado.get_tablero().convertir_en_ordinaria(xf, yf, 'A')
     
         return estado
 
