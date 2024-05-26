@@ -5,7 +5,7 @@ from utils.figuras import dibujar_rectangulo_redondeado
 from view.ficha import Ficha
 from controller.controlador2 import Controlador2
 from controller.controlador_tablero2 import C_Tablero2
-from controller.reglas import mover_ADRO
+from controller.reglas import mover_ADRO, mover_ADAO
 from model.dado import Dado
 from model.moneda import Moneda
 from model.estado import Estado
@@ -371,11 +371,15 @@ class Tablero2:
                                 self.ficha_seleccionada = ficha
                                 self.ficha_seleccionada.seleccionar(True)
                                 self.ficha_seleccionada.mostrarInformacion()
+                                print(self.ficha_seleccionada.get_regla())
                                 break
                     else:
                         print('Ya hay una ficha seleccionada')
-                        #pos2 = pygame.mouse.get_pos()
-                        x, y, estado = mover_ADRO(self.ficha_seleccionada, estado, self.posiciones_fichas)
+                        if self.ficha_seleccionada.get_regla() == "ADRO":
+                            x, y, estado = mover_ADRO(self.ficha_seleccionada, estado, self.posiciones_fichas)
+                        elif self.ficha_seleccionada.get_regla() == "ADAO":
+                            x, y, estado = mover_ADAO(self.ficha_seleccionada, estado, self.posiciones_fichas)
+
                         if x != -1 and y != -1:
                             pos = (x, y)
                             print(pos)
@@ -385,6 +389,8 @@ class Tablero2:
                             self.ficha_seleccionada.cambiarPosicion(xn, yn, self)
                             self.ficha_seleccionada.seleccionar(False)
                             self.ficha_seleccionada = None
+                            estado.get_tablero().mostrar_tablero()
+                            turno = self.fTexto5.render(f"Es turno de las fichas {estado.get_turno().get_turno_actual()}", True, NEGRO)
                         else:
                             self.ficha_seleccionada.seleccionar(False)
                             self.ficha_seleccionada = None

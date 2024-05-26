@@ -1,7 +1,9 @@
 import pygame
 
+from utils.colores import ROJO, AMARILLO
+
 class Ficha:
-    def __init__(self, color, x, y, nFichas):
+    def __init__(self, color, x, y, nFichas, regla=None):
         self.color_original = color
         self.color = color
         self.x = x
@@ -9,6 +11,11 @@ class Ficha:
         self.nFichas = nFichas
         self.rect = pygame.Rect(self.x, self.y, 50, 50)  # Asume que las fichas son rectángulos de 50x50
         self.imagen_fondo = None
+
+        if self.color == ROJO:
+            self.regla = "ADRO"
+        elif self.color == AMARILLO:
+            self.regla = "ADAO"
 
     def obtenerPosicion(self):
         return [self.x, self.y]
@@ -74,3 +81,6 @@ class Ficha:
     
     def get_rect(self):
         return self.rect
+    
+    def get_regla(self):
+        return self.regla
