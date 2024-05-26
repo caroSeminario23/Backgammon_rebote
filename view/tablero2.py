@@ -123,17 +123,17 @@ class Tablero2:
             if estado.get_tablero().estado_casilla(1, i) == 'v':
                 tablero_p2.append(0)
             # Si es rojo
-            elif estado.get_tablero().estado_casilla(0, i) in ['dro', 'drf']:
+            elif estado.get_tablero().estado_casilla(1, i) in ['dro', 'drf']:
                 tablero_p2.append(1)
             # Si es amarillo
-            elif estado.get_tablero().estado_casilla(0, i) in ['dao', 'daf']:
+            elif estado.get_tablero().estado_casilla(1, i) in ['dao', 'daf']:
                 tablero_p2.append(2)
         
         tablero_01 = [tablero_p1, tablero_p2]
             
         print(str(tablero_01))
 
-        m=0
+        '''m=0
         for i in tablero_01[0]:
             if i == 1:
                 self.fichas.append(Ficha(ROJO, self.posiciones_fichas[0][m][0], self.posiciones_fichas[0][m][1], 7))
@@ -147,7 +147,46 @@ class Tablero2:
                 self.fichas.append(Ficha(ROJO, self.posiciones_fichas[1][n][0], self.posiciones_fichas[1][n][1], 7))
             elif i == 2:
                 self.fichas.append(Ficha(AMARILLO, self.posiciones_fichas[1][n][0], self.posiciones_fichas[1][n][1], 7))
-            n+=1
+            n+=1'''
+        
+        
+        for fila in range(2):
+            estado.get_FA().mostrar_FA()
+            estado.get_FR().mostrar_FR()
+            m = 0
+            n = 0
+            for i in tablero_01[fila]:
+                print(m)
+                if i == 1:
+                    self.fichas.append(Ficha(ROJO, self.posiciones_fichas[fila][m][0], self.posiciones_fichas[fila][m][1], estado.get_FR().estado_casilla_FR(fila, m))) #self.FR[fila][n]
+                    print(estado.get_FR().estado_casilla_FR(fila, m))
+                elif i == 2:
+                    self.fichas.append(Ficha(AMARILLO, self.posiciones_fichas[fila][m][0], self.posiciones_fichas[fila][m][1], estado.get_FA().estado_casilla_FA(fila, m))) #self.FR[fila][n]
+                    print(estado.get_FA().estado_casilla_FA(fila, m))
+                m += 1
+                #n += 1
+
+        '''for fila in range(len(tablero_01)):
+            for columna in range(len(tablero_01[fila])):
+                if isinstance(tablero_01[fila][columna], list):
+                    for k, i in enumerate(tablero_01[fila][columna]):
+                        print(f"Fila {fila}, Columna {columna}, k {k}, Valor {i}, Posición {self.posiciones_fichas[fila][columna]}")
+                        if i == 1:
+                            print(f"Añadiendo ficha ROJA en Fila {fila}, Columna {columna}, k {k}")
+                            self.fichas.append(Ficha(ROJO, self.posiciones_fichas[fila][columna][0], self.posiciones_fichas[fila][columna][1], estado.get_FR().estado_casilla_FR(fila, columna, k)))
+                        elif i == 2:
+                            print(f"Añadiendo ficha AMARILLA en Fila {fila}, Columna {columna}, k {k}")
+                            self.fichas.append(Ficha(AMARILLO, self.posiciones_fichas[fila][columna][0], self.posiciones_fichas[fila][columna][1], estado.get_FA().estado_casilla_FA(fila, columna, k)))
+                else:
+                    i = tablero_01[fila][columna]
+                    print(f"Fila {fila}, Columna {columna}, Valor {i}, Posición {self.posiciones_fichas[fila][columna]}")
+                    if i == 1:
+                        print(f"Añadiendo ficha ROJA en Fila {fila}, Columna {columna}")
+                        self.fichas.append(Ficha(ROJO, self.posiciones_fichas[fila][columna][0], self.posiciones_fichas[fila][columna][1], estado.get_FR().estado_casilla_FR(fila, columna)))
+                    elif i == 2:
+                        print(f"Añadiendo ficha AMARILLA en Fila {fila}, Columna {columna}")
+                        self.fichas.append(Ficha(AMARILLO, self.posiciones_fichas[fila][columna][0], self.posiciones_fichas[fila][columna][1], estado.get_FA().estado_casilla_FA(fila, columna)))'''
+
 
         # INDICADOR DE TURNO
         turno = self.fTexto5.render(f"Es turno de las fichas {estado.get_turno().get_turno_actual()}", True, NEGRO)
