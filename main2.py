@@ -77,7 +77,7 @@ def main():
     estado_actual.get_turno().mostrar_turno()
     
     interfaz_tablero = Tablero2(ALTO, ANCHO)
-    ganador = interfaz_tablero.mostrar_pantalla(jugador1, jugador2, estado_actual)
+    ganador = interfaz_tablero.mostrar_pantalla(jugador1, jugador2, estado_actual, modo_juego)
     #interfaz_tablero.mostrar_pantalla(jugador1, jugador2, estado_actual.get_turno(), estado_actual.get_tablero(), estado_actual.get_FR(), estado_actual.get_FA(), estado_actual)
 
     # Verificar si algún jugador cumple el estado meta

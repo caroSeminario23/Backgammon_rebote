@@ -6,6 +6,7 @@ from view.ficha import Ficha
 from controller.controlador2 import Controlador2
 from controller.controlador_tablero2 import C_Tablero2
 from controller.reglas import mover_ADRO, mover_ADAO
+from ia.no_deterministico import mover_ficha
 from model.dado import Dado
 from model.moneda import Moneda
 from model.estado import Estado
@@ -52,7 +53,7 @@ class Tablero2:
         pygame.display.set_caption("Backgammon rebote")
 
         
-    def mostrar_pantalla(self, j1, j2, estado):
+    def mostrar_pantalla(self, j1, j2, estado, modo_juego):
         # Reloj de Pygame
         clock = pygame.time.Clock()
 
@@ -358,27 +359,112 @@ class Tablero2:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     corriendo = False
+                
+                if modo_juego == 'HH':
+                    if event.type == pygame.MOUSEBUTTONDOWN:
+                        pos = pygame.mouse.get_pos() # Obtener la posicion del mouse
+                        print('Acabas de hacer click')
+                        print(pos)
+                        if self.ficha_seleccionada is None:
+                            print('No hay ninguna ficha seleccionada')
+                            for ficha in self.fichas:
+                                if ficha.rect.collidepoint(pos):
+                                    self.ficha_seleccionada = ficha
+                                    self.ficha_seleccionada.seleccionar(True)
+                                    self.ficha_seleccionada.mostrarInformacion()
+                                    print(self.ficha_seleccionada.get_regla())
+                                    break
+                        else:
+                            print('Ya hay una ficha seleccionada')
+                            if self.ficha_seleccionada.get_regla() == "ADRO":
+                                x, y, estado = mover_ADRO(self.ficha_seleccionada, estado, self.posiciones_fichas)
+                            elif self.ficha_seleccionada.get_regla() == "ADAO":
+                                x, y, estado = mover_ADAO(self.ficha_seleccionada, estado, self.posiciones_fichas)
 
-                if event.type == pygame.MOUSEBUTTONDOWN:
-                    pos = pygame.mouse.get_pos() # Obtener la posicion del mouse
-                    print('Acabas de hacer click')
-                    print(pos)
-                    if self.ficha_seleccionada is None:
-                        print('No hay ninguna ficha seleccionada')
-                        for ficha in self.fichas:
-                            if ficha.rect.collidepoint(pos):
-                                self.ficha_seleccionada = ficha
-                                self.ficha_seleccionada.seleccionar(True)
-                                self.ficha_seleccionada.mostrarInformacion()
-                                print(self.ficha_seleccionada.get_regla())
-                                break
-                    else:
-                        print('Ya hay una ficha seleccionada')
-                        if self.ficha_seleccionada.get_regla() == "ADRO":
-                            x, y, estado = mover_ADRO(self.ficha_seleccionada, estado, self.posiciones_fichas)
-                        elif self.ficha_seleccionada.get_regla() == "ADAO":
-                            x, y, estado = mover_ADAO(self.ficha_seleccionada, estado, self.posiciones_fichas)
+                            if x != -1 and y != -1:
+                                pos = (x, y)
+                                print(pos)
+                                print(pos[0], pos[1])
+                                xn = self.posiciones_fichas[pos[0]][pos[1]][0]
+                                yn = self.posiciones_fichas[pos[0]][pos[1]][1]
+                                self.ficha_seleccionada.cambiarPosicion(xn, yn, self)
+                                self.ficha_seleccionada.seleccionar(False)
+                                self.ficha_seleccionada = None
+                                estado.get_tablero().mostrar_tablero()
+                                turno = self.fTexto5.render(f"Es turno de las fichas {estado.get_turno().get_turno_actual()}", True, NEGRO)
+                            else:
+                                self.ficha_seleccionada.seleccionar(False)
+                                self.ficha_seleccionada = None
+                
+                elif modo_juego == 'fácil':
+                    # TURNO DE LA MAQUINA
+                    # Lanzar el dado y la moneda
+                    dado, moneda = Dado(), Moneda()
 
+                    dado.lanzar()
+                    moneda.lanzar()
+
+                    controlador_juego = Controlador2()
+                    controlador_juego.notificar_valor_dado_moneda(dado, moneda)
+
+                    #Registrar el turno y lanzamiento del dado y la moneda
+                    estado.set_dado(dado)
+                    estado.set_moneda(moneda)
+                    valor_dado = self.fTexto1.render(f"Valor obtenido: {estado.get_dado().get_valor_actual()}", True, NEGRO)
+                    valor_moneda = self.fTexto1.render(f"Valor obtenido: {estado.get_moneda().get_valor_actual()}", True, NEGRO)
+                    
+                    
+                    turno_humano = estado.get_turno().get_turno_actual()
+                    if turno_humano == 'R':
+                        if event.type == pygame.MOUSEBUTTONDOWN:
+                            pos = pygame.mouse.get_pos() # Obtener la posicion del mouse
+                            print('Acabas de hacer click')
+                            print(pos)
+                            if self.ficha_seleccionada is None:
+                                print('No hay ninguna ficha seleccionada')
+                                for ficha in self.fichas:
+                                    if ficha.rect.collidepoint(pos):
+                                        self.ficha_seleccionada = ficha
+                                        self.ficha_seleccionada.seleccionar(True)
+                                        self.ficha_seleccionada.mostrarInformacion()
+                                        print(self.ficha_seleccionada.get_regla())
+                                        break
+                            else:
+                                print('Ya hay una ficha seleccionada')
+                                x, y, estado = mover_ADRO(self.ficha_seleccionada, estado, self.posiciones_fichas)
+
+                                if x != -1 and y != -1:
+                                    pos = (x, y)
+                                    print(pos)
+                                    print(pos[0], pos[1])
+                                    xn = self.posiciones_fichas[pos[0]][pos[1]][0]
+                                    yn = self.posiciones_fichas[pos[0]][pos[1]][1]
+                                    self.ficha_seleccionada.cambiarPosicion(xn, yn, self)
+                                    self.ficha_seleccionada.seleccionar(False)
+                                    self.ficha_seleccionada = None
+                                    estado.get_tablero().mostrar_tablero()
+                                    turno = self.fTexto5.render(f"Es turno de las fichas {estado.get_turno().get_turno_actual()}", True, NEGRO)
+                                else:
+                                    self.ficha_seleccionada.seleccionar(False)
+                                    self.ficha_seleccionada = None
+                        
+                        # TURNO DE LA MAQUINA
+                        '''# Lanzar el dado y la moneda
+                        dado, moneda = Dado(), Moneda()
+
+                        dado.lanzar()
+                        moneda.lanzar()
+
+                        controlador_juego = Controlador2()
+                        controlador_juego.notificar_valor_dado_moneda(dado, moneda)
+
+                        #Registrar el turno y lanzamiento del dado y la moneda
+                        estado.set_dado(dado)
+                        estado.set_moneda(moneda)
+                        valor_dado = self.fTexto1.render(f"Valor obtenido: {estado.get_dado().get_valor_actual()}", True, NEGRO)
+                        valor_moneda = self.fTexto1.render(f"Valor obtenido: {estado.get_moneda().get_valor_actual()}", True, NEGRO)'''
+
+                        x, y, estado = mover_ficha(estado, AMARILLO, self.posiciones_fichas, self.fichas)
                         if x != -1 and y != -1:
                             pos = (x, y)
                             print(pos)
@@ -390,9 +476,10 @@ class Tablero2:
                             self.ficha_seleccionada = None
                             estado.get_tablero().mostrar_tablero()
                             turno = self.fTexto5.render(f"Es turno de las fichas {estado.get_turno().get_turno_actual()}", True, NEGRO)
-                        else:
+                        '''else:
                             self.ficha_seleccionada.seleccionar(False)
-                            self.ficha_seleccionada = None
+                            self.ficha_seleccionada = None'''
+                    pass
                 
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_RETURN:

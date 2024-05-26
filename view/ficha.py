@@ -84,3 +84,6 @@ class Ficha:
     
     def get_regla(self):
         return self.regla
+    
+    def get_color(self):
+        return self.color
