@@ -1,33 +1,50 @@
-import pygame, pygame_gui
+import pygame
 
 from utils.colores import MELON_OSCURO, ROJO, AMARILLO, NEGRO, BEIGE, MELON_CLARO, MELON_TRASLUCIDO
 from utils.figuras import dibujar_rectangulo_redondeado
 from view.ficha import Ficha
 from controller.controlador2 import Controlador2
-from controller.controlador_tablero2 import C_Tablero2
+#from controller.controlador_tablero2 import C_Tablero2
 from controller.reglas import mover_ADRO, mover_ADAO
 from ia.no_deterministico import mover_ficha
 from model.dado import Dado
 from model.moneda import Moneda
-from model.estado import Estado
+#from model.estado import Estado
 
 class Tablero2:
     def __init__(self, alto, ancho):
         # INICIALIZAR PYGAME
         pygame.init()
 
+        # DIMENSIONES
         self.alto = alto
         self.ancho = ancho
 
         # IMPORTACION DE FUENTES
+        self.cargar_fuente()
+
+        # POSICIONES DE LAS FICHAS
+        self.posiciones_fichas = self.generar_posiciones_fichas()
+
+        # ELEMENTOS
+        self.fichas = []
+        self.ganador = None
+        self.ficha_seleccionada = None
+
+        # CREAR LA VENTANA 
+        self.ventana = pygame.display.set_mode((self.ancho, self.alto))
+        pygame.display.set_caption("Backgammon rebote")
+
+    def cargar_fuente(self):
         self.fTitulo = pygame.font.Font('fuentes/Inter-ExtraBold.ttf', self.alto//15)
         self.fTexto1 = pygame.font.Font('fuentes/Inter-MediumItalic.otf', self.alto//50)
         self.fTexto2 = pygame.font.Font('fuentes/Inter-MediumItalic.otf', self.alto//60)
         self.fTexto3 = pygame.font.Font('fuentes/Inter-ExtraBold.ttf', self.alto//50)
         self.fTexto4 = pygame.font.Font('fuentes/Inter-Bold.ttf', self.alto//50)
         self.fTexto5 = pygame.font.Font('fuentes/Inter-Bold.ttf', self.alto//30)
-
-        self.posiciones_fichas = [
+    
+    def generar_posiciones_fichas(self):
+        return [
             [
                 (self.ancho//3.02, self.alto//3), (self.ancho//2.7, self.alto//3), (self.ancho//2.44, self.alto//3), (self.ancho//2.22, self.alto//3), (self.ancho//2.04, self.alto//3), (self.ancho//1.89, self.alto//3),
                 (self.ancho//1.755, self.alto//3), (self.ancho//1.64, self.alto//3), (self.ancho//1.54, self.alto//3), (self.ancho//1.45, self.alto//3), (self.ancho//1.375, self.alto//3), (self.ancho//1.305, self.alto//3)
@@ -35,77 +52,20 @@ class Tablero2:
             [
                 (self.ancho//3.02, self.alto//1.28), (self.ancho//2.7, self.alto//1.28), (self.ancho//2.44, self.alto//1.28), (self.ancho//2.22, self.alto//1.28), (self.ancho//2.04, self.alto//1.28), (self.ancho//1.89, self.alto//1.28),
                 (self.ancho//1.755, self.alto//1.28), (self.ancho//1.64, self.alto//1.28), (self.ancho//1.54, self.alto//1.28), (self.ancho//1.45, self.alto//1.28), (self.ancho//1.375, self.alto//1.28), (self.ancho//1.305, self.alto//1.28)
-
-            ]]
-        self.nFichasEnTablero = [[5, 0, 0, 0, 3, 0, 5, 0, 0, 0, 0, 2],[5, 0, 0, 0, 3, 0, 5, 0, 0, 0, 0, 2]]
-
-        self.fichas = []
-
-        self.ganador = None
-
-        self.ficha_seleccionada = None
-
-        # CREAR LA VENTANA Y EL ADMINISTRADOR DE INTERFAZ
-        self.ventana = pygame.display.set_mode((self.ancho, self.alto))
-        #self.manager = pygame_gui.UIManager((self.ancho, self.alto))
-
-        # AGREGAR UN TITULO A LA VENTANA
-        pygame.display.set_caption("Backgammon rebote")
-
+            ]
+        ]
         
-    def mostrar_pantalla(self, j1, j2, estado, modo_juego):
-        # Reloj de Pygame
-        clock = pygame.time.Clock()
+    def cargar_imagen(self, ruta, escala):
+        imagen = pygame.image.load(ruta)
+        return pygame.transform.scale(imagen, escala)
+    
+    def cargar_imagenes(self):
+        self.imagen_dado = self.cargar_imagen("imagenes/dado.png", (self.alto//13, self.alto//13))
+        self.imagen_moneda = self.cargar_imagen("imagenes/moneda.png", (self.alto//13, self.alto//13))
+        self.imagen_jugador1 = self.cargar_imagen("imagenes/jugador.png", (self.alto//13, self.alto//13))
+        self.imagen_jugador2 = self.cargar_imagen("imagenes/jugador.png", (self.alto//13, self.alto//13))
 
-        # AGREGAR TEXTO
-        titulo = self.fTitulo.render("BACKGAMMON REBOTE", True, MELON_OSCURO)
-
-        # TABLERO DE JUEGO
-        # Tamaño del rectángulo
-        superficie_transparente = pygame.Surface((self.ancho//2.1, self.alto//1.68))
-        superficie_transparente.set_alpha(255 * 0.6) 
-
-        # IMAGENES
-        # Importar imagen del dado
-        imagen_dado = pygame.image.load("imagenes/dado.png")
-        imagen_dado = pygame.transform.scale(imagen_dado, (self.alto//13, self.alto//13))
-
-        # Importar imagen de la moneda
-        imagen_moneda = pygame.image.load("imagenes/moneda.png")
-        imagen_moneda = pygame.transform.scale(imagen_moneda, (self.alto//13, self.alto//13))
-
-        # Importar imagen del jugador 1
-        imagen_jugador1 = pygame.image.load("imagenes/jugador.png")
-        imagen_jugador1 = pygame.transform.scale(imagen_jugador1, (self.alto//13, self.alto//13))
-        
-        # Importar imagen del jugador 2
-        imagen_jugador2 = pygame.image.load("imagenes/jugador.png")
-        imagen_jugador2 = pygame.transform.scale(imagen_jugador2, (self.alto//13, self.alto//13))
-
-        # AGREGAR TEXTO
-        valor_dado = self.fTexto1.render(f"Valor obtenido: {estado.get_dado()}", True, NEGRO) 
-        valor_moneda = self.fTexto1.render(f"Valor obtenido: {estado.get_moneda()}", True, NEGRO)
-
-        # JUGADOR 1
-        jugador1 = self.fTexto1.render("JUGADOR 1", True, NEGRO)
-        pseudonimo1 = self.fTexto2.render(f" - Pseudónimo: {j1.get_pseudonimo()}", True, NEGRO)
-        color_fichas1 = self.fTexto2.render(f" - Color de fichas: {j1.get_colorFicha()}", True, NEGRO)
-        
-        # JUGADOR 2
-        jugador2 = self.fTexto1.render("JUGADOR 2", True, NEGRO)
-        pseudonimo2 = self.fTexto2.render(f" - Pseudónimo: {j2.get_pseudonimo()}", True, NEGRO)
-        color_fichas2 = self.fTexto2.render(f" - Color de fichas: {j2.get_colorFicha()}", True, NEGRO)
-
-        tiempo_turno1 = self.fTexto3.render("TIEMPO", True, NEGRO)
-        tiempo_turno2 = self.fTexto3.render("POR TURNO", True, NEGRO)
-        tiempo_juego1 = self.fTexto3.render("TIEMPO", True, NEGRO)
-        tiempo_juego2 = self.fTexto3.render("DE JUEGO", True, NEGRO)
-
-        fichas_liberadas1 = self.fTexto4.render("Fichas liberadas", True, NEGRO)
-        fichas_capturadas1 = self.fTexto4.render("Fichas capturadas", True, NEGRO)
-        fichas_liberadas2 = self.fTexto4.render("Fichas liberadas", True, NEGRO)
-        fichas_capturadas2 = self.fTexto4.render("Fichas capturadas", True, NEGRO)
-
+    def identificar_fichas(self, estado):
         estado.get_tablero().obtener_casillas()
         tablero_01 = []
         tablero_p1, tablero_p2 = [], []
@@ -131,10 +91,9 @@ class Tablero2:
                 tablero_p2.append(2)
         
         tablero_01 = [tablero_p1, tablero_p2]
-            
-        print(str(tablero_01))
+        return tablero_01
 
-        # DIBUJADO DE LAS FICHAS
+    def dibujar_fichas(self, estado, tablero_01):
         for fila in range(2):
             estado.get_FA().mostrar_FA()
             estado.get_FR().mostrar_FR()
@@ -142,145 +101,110 @@ class Tablero2:
             for i in tablero_01[fila]:
                 print(m)
                 if i == 1:
-                    self.fichas.append(Ficha(ROJO, self.posiciones_fichas[fila][m][0], self.posiciones_fichas[fila][m][1], estado.get_FR().estado_casilla_FR(fila, m))) #self.FR[fila][n]
+                    self.fichas.append(Ficha(ROJO, self.posiciones_fichas[fila][m][0], self.posiciones_fichas[fila][m][1], estado.get_FR().estado_casilla_FR(fila, m))) 
                     print(estado.get_FR().estado_casilla_FR(fila, m))
                 elif i == 2:
-                    self.fichas.append(Ficha(AMARILLO, self.posiciones_fichas[fila][m][0], self.posiciones_fichas[fila][m][1], estado.get_FA().estado_casilla_FA(fila, m))) #self.FR[fila][n]
+                    self.fichas.append(Ficha(AMARILLO, self.posiciones_fichas[fila][m][0], self.posiciones_fichas[fila][m][1], estado.get_FA().estado_casilla_FA(fila, m))) 
                     print(estado.get_FA().estado_casilla_FA(fila, m))
                 m += 1
 
-        # INDICADOR DE TURNO
-        turno = self.fTexto5.render(f"Es turno de las fichas {estado.get_turno().get_turno_actual()}", True, NEGRO)
+    def mostrar_pantalla(self, j1, j2, estado, modo_juego):
+        # CARGAR IMÁGENES
+        self.cargar_imagenes()
 
+        # RELOJ DE PYGAME
         reloj = pygame.time.Clock()
 
+        # AGREGAR TEXTO
+        titulo = self.fTitulo.render("BACKGAMMON REBOTE", True, MELON_OSCURO)
+        valor_dado = self.fTexto1.render(f"Valor obtenido: {estado.get_dado()}", True, NEGRO) 
+        valor_moneda = self.fTexto1.render(f"Valor obtenido: {estado.get_moneda()}", True, NEGRO)
+        jugador1 = self.fTexto1.render("JUGADOR 1", True, NEGRO)
+        pseudonimo1 = self.fTexto2.render(f" - Pseudónimo: {j1.get_pseudonimo()}", True, NEGRO)
+        color_fichas1 = self.fTexto2.render(f" - Color de fichas: {j1.get_colorFicha()}", True, NEGRO)
+        jugador2 = self.fTexto1.render("JUGADOR 2", True, NEGRO)
+        pseudonimo2 = self.fTexto2.render(f" - Pseudónimo: {j2.get_pseudonimo()}", True, NEGRO)
+        color_fichas2 = self.fTexto2.render(f" - Color de fichas: {j2.get_colorFicha()}", True, NEGRO)
+        tiempo_turno1 = self.fTexto3.render("TIEMPO", True, NEGRO)
+        tiempo_turno2 = self.fTexto3.render("POR TURNO", True, NEGRO)
+        tiempo_juego1 = self.fTexto3.render("TIEMPO", True, NEGRO)
+        tiempo_juego2 = self.fTexto3.render("DE JUEGO", True, NEGRO)
+        fichas_liberadas1 = self.fTexto4.render("Fichas liberadas", True, NEGRO)
+        fichas_capturadas1 = self.fTexto4.render("Fichas capturadas", True, NEGRO)
+        fichas_liberadas2 = self.fTexto4.render("Fichas liberadas", True, NEGRO)
+        fichas_capturadas2 = self.fTexto4.render("Fichas capturadas", True, NEGRO)
+        turno = self.fTexto5.render(f"Es turno de las fichas {estado.get_turno().get_turno_actual()}", True, NEGRO)
+
+        # AGREGAR FIGURAS
+        superficie_transparente = pygame.Surface((self.ancho//2.1, self.alto//1.68))
+        superficie_transparente.set_alpha(255 * 0.6) 
+        superficie_transparente.fill(MELON_TRASLUCIDO)
+
+        # DIBUJADO DE LAS FICHAS
+        tablero_01 = self.identificar_fichas(estado)
+        print(str(tablero_01))
+        self.dibujar_fichas(estado, tablero_01)
+
+        # ADICIONAR OBJETOS A LA PANTALA
         corriendo = True
         while corriendo:
-            #time_delta = clock.tick(60)/1000.0 
-            
             reloj.tick(60)
 
             # PINTAR LA PANTALLA
             self.ventana.fill(BEIGE)
             
-            # Dibujar 1 recuadro de color melon oscuro (izquierda)
+            # DIBUJAR FIGURAS
             dibujar_rectangulo_redondeado(self.ventana, MELON_OSCURO, (self.ancho//33, self.alto//6.8, self.ancho//4, self.alto//1.33), 10)
-
-            # Dibujar 1 recuadro de color melon oscuro (superior derecha)
             dibujar_rectangulo_redondeado(self.ventana, MELON_OSCURO, (self.ancho//3.35, self.alto//6.8, self.ancho//1.48, self.alto//11.7), 10)
-
-            # Dibujar 1 recuadro de color melon oscuro (inferior derecha)
             dibujar_rectangulo_redondeado(self.ventana, MELON_OSCURO, (self.ancho//3.35, self.alto//4, self.ancho//1.48, self.alto//1.54), 10)
+            dibujar_rectangulo_redondeado(self.ventana, MELON_CLARO, (self.ancho//22, self.alto//5.5, self.ancho//4.6, self.alto//4.8), 10)
+            dibujar_rectangulo_redondeado(self.ventana, MELON_CLARO, (self.ancho//22, self.alto//2.4, self.ancho//4.6, self.alto//4.8), 10)
+            dibujar_rectangulo_redondeado(self.ventana, MELON_CLARO, (self.ancho//22, self.alto//1.53, self.ancho//4.6, self.alto//4.8), 10)
+            self.ventana.blit(superficie_transparente, (self.ancho//3.22, self.alto//3.6))
+            # tableros de fichas liberadas
+            dibujar_rectangulo_redondeado(self.ventana, MELON_CLARO, (self.ancho//1.25, self.alto//3.2, self.ancho//6.4, self.alto//7), 10)
+            dibujar_rectangulo_redondeado(self.ventana, MELON_CLARO, (self.ancho//1.25, self.alto//2.05, self.ancho//6.4, self.alto//18), 10)
+            dibujar_rectangulo_redondeado(self.ventana, MELON_CLARO, (self.ancho//1.25, self.alto//1.595, self.ancho//6.4, self.alto//7), 10)
+            dibujar_rectangulo_redondeado(self.ventana, MELON_CLARO, (self.ancho//1.25, self.alto//1.24, self.ancho//6.4, self.alto//18), 10)
+            # cronometros
+            dibujar_rectangulo_redondeado(self.ventana, MELON_CLARO, (self.ancho//7, self.alto//1.49, self.ancho//9, self.alto//13), 10)
+            dibujar_rectangulo_redondeado(self.ventana, MELON_CLARO, (self.ancho//7, self.alto//1.31, self.ancho//9, self.alto//13), 10)
+            dibujar_rectangulo_redondeado(self.ventana, MELON_OSCURO, (self.ancho//6.8, self.alto//1.475, self.ancho//10, self.alto//14), 10)
+            dibujar_rectangulo_redondeado(self.ventana, MELON_OSCURO, (self.ancho//6.8, self.alto//1.3, self.ancho//10, self.alto//14), 10)
+            # tablero
+            pygame.draw.rect(self.ventana, AMARILLO, (self.ancho//3.22, self.alto//3.6, self.ancho//25.2, self.alto//3.6))
+            pygame.draw.rect(self.ventana, ROJO, (self.ancho//2.85, self.alto//3.6, self.ancho//25.2, self.alto//3.6))
+            pygame.draw.rect(self.ventana, AMARILLO, (self.ancho//2.56, self.alto//3.6, self.ancho//25.2, self.alto//3.6))
+            pygame.draw.rect(self.ventana, ROJO, (self.ancho//2.32, self.alto//3.6, self.ancho//25.2, self.alto//3.6))
+            pygame.draw.rect(self.ventana, AMARILLO, (self.ancho//2.125, self.alto//3.6, self.ancho//25.2, self.alto//3.6))
+            pygame.draw.rect(self.ventana, ROJO, (self.ancho//1.96, self.alto//3.6, self.ancho//25.2, self.alto//3.6))
+            pygame.draw.rect(self.ventana, AMARILLO, (self.ancho//1.82, self.alto//3.6, self.ancho//25.2, self.alto//3.6))
+            pygame.draw.rect(self.ventana, ROJO, (self.ancho//1.695, self.alto//3.6, self.ancho//25.2, self.alto//3.6))
+            pygame.draw.rect(self.ventana, AMARILLO, (self.ancho//1.587, self.alto//3.6, self.ancho//25.2, self.alto//3.6))
+            pygame.draw.rect(self.ventana, ROJO, (self.ancho//1.493, self.alto//3.6, self.ancho//25.2, self.alto//3.6))
+            pygame.draw.rect(self.ventana, AMARILLO, (self.ancho//1.41, self.alto//3.6, self.ancho//25.2, self.alto//3.6))
+            pygame.draw.rect(self.ventana, ROJO, (self.ancho//1.339, self.alto//3.6, self.ancho//25.2, self.alto//3.6))
+            pygame.draw.rect(self.ventana, ROJO, (self.ancho//3.22, self.alto//1.678, self.ancho//25.2, self.alto//3.6))
+            pygame.draw.rect(self.ventana, AMARILLO, (self.ancho//2.85, self.alto//1.678, self.ancho//25.2, self.alto//3.6))
+            pygame.draw.rect(self.ventana, ROJO, (self.ancho//2.56, self.alto//1.678, self.ancho//25.2, self.alto//3.6))
+            pygame.draw.rect(self.ventana, AMARILLO, (self.ancho//2.32, self.alto//1.678, self.ancho//25.2, self.alto//3.6))
+            pygame.draw.rect(self.ventana, ROJO, (self.ancho//2.125, self.alto//1.678, self.ancho//25.2, self.alto//3.6))
+            pygame.draw.rect(self.ventana, AMARILLO, (self.ancho//1.96, self.alto//1.678, self.ancho//25.2, self.alto//3.6))
+            pygame.draw.rect(self.ventana, ROJO, (self.ancho//1.82, self.alto//1.678, self.ancho//25.2, self.alto//3.6))
+            pygame.draw.rect(self.ventana, AMARILLO, (self.ancho//1.695, self.alto//1.678, self.ancho//25.2, self.alto//3.6))
+            pygame.draw.rect(self.ventana, ROJO, (self.ancho//1.587, self.alto//1.678, self.ancho//25.2, self.alto//3.6))
+            pygame.draw.rect(self.ventana, AMARILLO, (self.ancho//1.493, self.alto//1.678, self.ancho//25.2, self.alto//3.6))
+            pygame.draw.rect(self.ventana, ROJO, (self.ancho//1.41, self.alto//1.678, self.ancho//25.2, self.alto//3.6))
+            pygame.draw.rect(self.ventana, AMARILLO, (self.ancho//1.339, self.alto//1.678, self.ancho//25.2, self.alto//3.6))
 
             # ESCRIBIR TEXTO DEL TITULO
             self.ventana.blit(titulo, (self.ancho//3.8, self.alto//21))
 
-            # OBJETOS, JUGADORES Y RELOJES
-            # Dibujar 1 recuadro de color melon claro (izquierda superior)
-            dibujar_rectangulo_redondeado(self.ventana, MELON_CLARO, (self.ancho//22, self.alto//5.5, self.ancho//4.6, self.alto//4.8), 10)
-
-            # Dibujar 1 recuadro de color melon claro (izquierda medio)
-            dibujar_rectangulo_redondeado(self.ventana, MELON_CLARO, (self.ancho//22, self.alto//2.4, self.ancho//4.6, self.alto//4.8), 10)
-
-            # Dibujar 1 recuadro de color melon claro (izquierda inferior)
-            dibujar_rectangulo_redondeado(self.ventana, MELON_CLARO, (self.ancho//22, self.alto//1.53, self.ancho//4.6, self.alto//4.8), 10)
-
-            # Dibujar la superficie transparente en la ventana en la posición del rectángulo
-            self.ventana.blit(superficie_transparente, (self.ancho//3.22, self.alto//3.6))
-
-            # Rellenar la superficie con el color deseado
-            superficie_transparente.fill(MELON_TRASLUCIDO)
-
-            # TABLERO DE FICHAS LIBERADAS
-            # Dibujar 1 recuadro de color melon claro (derecha superior 1)
-            dibujar_rectangulo_redondeado(self.ventana, MELON_CLARO, (self.ancho//1.25, self.alto//3.2, self.ancho//6.4, self.alto//7), 10)
-
-            # Dibujar 1 recuadro de color melon claro (derecha superior 2)
-            dibujar_rectangulo_redondeado(self.ventana, MELON_CLARO, (self.ancho//1.25, self.alto//2.05, self.ancho//6.4, self.alto//18), 10)
-
-            # Dibujar 1 recuadro de color melon claro (derecha inferior 1)
-            dibujar_rectangulo_redondeado(self.ventana, MELON_CLARO, (self.ancho//1.25, self.alto//1.595, self.ancho//6.4, self.alto//7), 10)
-
-            # Dibujar 1 recuadro de color melon claro (derecha inferior 2)
-            dibujar_rectangulo_redondeado(self.ventana, MELON_CLARO, (self.ancho//1.25, self.alto//1.24, self.ancho//6.4, self.alto//18), 10)
-
-            # CRONÓMETROS
-            # Dibujar 1 recuadro de color melon claro (izquierda inferior 1)
-            dibujar_rectangulo_redondeado(self.ventana, MELON_CLARO, (self.ancho//7, self.alto//1.49, self.ancho//9, self.alto//13), 10)
-
-            # Dibujar 1 recuadro de color melon claor (izquierda inferior 2)
-            dibujar_rectangulo_redondeado(self.ventana, MELON_CLARO, (self.ancho//7, self.alto//1.31, self.ancho//9, self.alto//13), 10)
-
-            # Dibujar 1 recuadro de color melon oscuro (izquierda inferior 3)
-            dibujar_rectangulo_redondeado(self.ventana, MELON_OSCURO, (self.ancho//6.8, self.alto//1.475, self.ancho//10, self.alto//14), 10)
-
-            # Dibujar 1 recuadro de color melon oscuro (izquierda inferior 4)
-            dibujar_rectangulo_redondeado(self.ventana, MELON_OSCURO, (self.ancho//6.8, self.alto//1.3, self.ancho//10, self.alto//14), 10)
-            
-            # SECCIONES DEL TABLERO
-            # ---- Parte de arriba ----
-            # Dibujar 1 recuadro de color rojo
-            pygame.draw.rect(self.ventana, AMARILLO, (self.ancho//3.22, self.alto//3.6, self.ancho//25.2, self.alto//3.6))
-            # Dibujar 1 recuadro de color amarillo al lado del anterior
-            pygame.draw.rect(self.ventana, ROJO, (self.ancho//2.85, self.alto//3.6, self.ancho//25.2, self.alto//3.6))
-            # Dibujar 1 recuadro de color rojo al lado del anterior
-            pygame.draw.rect(self.ventana, AMARILLO, (self.ancho//2.56, self.alto//3.6, self.ancho//25.2, self.alto//3.6))
-            # Dibujar 1 recuadro de color amarillo al lado del anterior
-            pygame.draw.rect(self.ventana, ROJO, (self.ancho//2.32, self.alto//3.6, self.ancho//25.2, self.alto//3.6))
-            # Dibujar 1 recuadro de color rojo al lado del anterior
-            pygame.draw.rect(self.ventana, AMARILLO, (self.ancho//2.125, self.alto//3.6, self.ancho//25.2, self.alto//3.6))
-            # Dibujar 1 recuadro de color amarillo al lado del anterior
-            pygame.draw.rect(self.ventana, ROJO, (self.ancho//1.96, self.alto//3.6, self.ancho//25.2, self.alto//3.6))
-            # Dibujar 1 recuadro de color rojo al lado del anterior
-            pygame.draw.rect(self.ventana, AMARILLO, (self.ancho//1.82, self.alto//3.6, self.ancho//25.2, self.alto//3.6))
-            # Dibujar 1 recuadro de color amarillo al lado del anterior
-            pygame.draw.rect(self.ventana, ROJO, (self.ancho//1.695, self.alto//3.6, self.ancho//25.2, self.alto//3.6))
-            # Dibujar 1 recuadro de color rojo al lado del anterior
-            pygame.draw.rect(self.ventana, AMARILLO, (self.ancho//1.587, self.alto//3.6, self.ancho//25.2, self.alto//3.6))
-            # Dibujar 1 recuadro de color amarillo al lado del anterior
-            pygame.draw.rect(self.ventana, ROJO, (self.ancho//1.493, self.alto//3.6, self.ancho//25.2, self.alto//3.6))
-            # Dibujar 1 recuadro de color rojo al lado del anterior
-            pygame.draw.rect(self.ventana, AMARILLO, (self.ancho//1.41, self.alto//3.6, self.ancho//25.2, self.alto//3.6))
-            # Dibujar 1 recuadro de color amarillo al lado del anterior
-            pygame.draw.rect(self.ventana, ROJO, (self.ancho//1.339, self.alto//3.6, self.ancho//25.2, self.alto//3.6))
-            
-            # ---- Parte de abajo ----
-            # Dibujar 1 recuadro de color rojo
-            pygame.draw.rect(self.ventana, ROJO, (self.ancho//3.22, self.alto//1.678, self.ancho//25.2, self.alto//3.6))
-            # Dibujar 1 recuadro de color amarillo al lado del anterior
-            pygame.draw.rect(self.ventana, AMARILLO, (self.ancho//2.85, self.alto//1.678, self.ancho//25.2, self.alto//3.6))
-            # Dibujar 1 recuadro de color rojo al lado del anterior
-            pygame.draw.rect(self.ventana, ROJO, (self.ancho//2.56, self.alto//1.678, self.ancho//25.2, self.alto//3.6))
-            # Dibujar 1 recuadro de color amarillo al lado del anterior
-            pygame.draw.rect(self.ventana, AMARILLO, (self.ancho//2.32, self.alto//1.678, self.ancho//25.2, self.alto//3.6))
-            # Dibujar 1 recuadro de color rojo al lado del anterior
-            pygame.draw.rect(self.ventana, ROJO, (self.ancho//2.125, self.alto//1.678, self.ancho//25.2, self.alto//3.6))
-            # Dibujar 1 recuadro de color amarillo al lado del anterior
-            pygame.draw.rect(self.ventana, AMARILLO, (self.ancho//1.96, self.alto//1.678, self.ancho//25.2, self.alto//3.6))
-            # Dibujar 1 recuadro de color rojo al lado del anterior
-            pygame.draw.rect(self.ventana, ROJO, (self.ancho//1.82, self.alto//1.678, self.ancho//25.2, self.alto//3.6))
-            # Dibujar 1 recuadro de color amarillo al lado del anterior
-            pygame.draw.rect(self.ventana, AMARILLO, (self.ancho//1.695, self.alto//1.678, self.ancho//25.2, self.alto//3.6))
-            # Dibujar 1 recuadro de color rojo al lado del anterior
-            pygame.draw.rect(self.ventana, ROJO, (self.ancho//1.587, self.alto//1.678, self.ancho//25.2, self.alto//3.6))
-            # Dibujar 1 recuadro de color amarillo al lado del anterior
-            pygame.draw.rect(self.ventana, AMARILLO, (self.ancho//1.493, self.alto//1.678, self.ancho//25.2, self.alto//3.6))
-            # Dibujar 1 recuadro de color rojo al lado del anterior
-            pygame.draw.rect(self.ventana, ROJO, (self.ancho//1.41, self.alto//1.678, self.ancho//25.2, self.alto//3.6))
-            # Dibujar 1 recuadro de color amarillo al lado del anterior
-            pygame.draw.rect(self.ventana, AMARILLO, (self.ancho//1.339, self.alto//1.678, self.ancho//25.2, self.alto//3.6))
-
-            # Dibujar la imagen en la ventana
-            self.ventana.blit(imagen_dado, (self.ancho//17, self.alto//5))
-
-            # Dibujar la imagen en la ventana
-            self.ventana.blit(imagen_moneda, (self.ancho//17, self.alto//3.5))
-            
-            # Dibujar la imagen en la ventana
-            self.ventana.blit(imagen_jugador1, (self.ancho//17, self.alto//2.3))
-            
-            # Dibujar la imagen en la ventana
-            self.ventana.blit(imagen_jugador2, (self.ancho//17, self.alto//1.9))    
+            # DIBUJAR IMAGENES
+            self.ventana.blit(self.imagen_dado, (self.ancho//17, self.alto//5))
+            self.ventana.blit(self.imagen_moneda, (self.ancho//17, self.alto//3.5))
+            self.ventana.blit(self.imagen_jugador1, (self.ancho//17, self.alto//2.3))
+            self.ventana.blit(self.imagen_jugador2, (self.ancho//17, self.alto//1.9))    
 
             # AGREGAR TEXTO
             self.ventana.blit(valor_dado, (self.ancho//9, self.alto//4.4))
@@ -301,34 +225,20 @@ class Tablero2:
             self.ventana.blit(fichas_capturadas2, (self.ancho//1.21, self.alto//1.283))
             self.ventana.blit(turno, (self.ancho//1.9, self.alto//6))
 
-
-            # CRONOMETRO POR TURNO
-            # Inicializar el cronómetro
-            inicio_cronometro_turno = pygame.time.get_ticks() # devuelve el tiempo en milisegundos desde que se llamó al juego
-            inicio_cronometro_juego = pygame.time.get_ticks()
-
-            # Calcular el tiempo restante
-            tiempo_transcurrido_turno = (pygame.time.get_ticks() - inicio_cronometro_turno) / 1000  # Convertir a segundos
-            tiempo_restante_turno = 60 - tiempo_transcurrido_turno  # 60 segundos = 1 minuto
-
-            # Si el tiempo restante es 0 o menos, terminar el juego
-            if tiempo_restante_turno <= 0:
-                print("¡Tiempo agotado por turno!")
-
-            
+            # DIBUJAR FICHAS
             for ficha in self.fichas:
                 ficha.dibujar(self.ventana)
 
-
+            # EVENTOS
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     corriendo = False
                 
+                # modo humano-humano
                 if modo_juego == 'HH':
                     if event.type == pygame.MOUSEBUTTONDOWN:
-                        pos = pygame.mouse.get_pos() # Obtener la posicion del mouse
+                        pos = pygame.mouse.get_pos()
                         print('Acabas de hacer click')
-                        print(pos)
                         if self.ficha_seleccionada is None:
                             print('No hay ninguna ficha seleccionada')
                             for ficha in self.fichas:
@@ -348,7 +258,6 @@ class Tablero2:
                             if x != -1 and y != -1:
                                 pos = (x, y)
                                 print(pos)
-                                print(pos[0], pos[1])
                                 xn = self.posiciones_fichas[pos[0]][pos[1]][0]
                                 yn = self.posiciones_fichas[pos[0]][pos[1]][1]
                                 self.ficha_seleccionada.cambiarPosicion(xn, yn, self)
@@ -357,57 +266,16 @@ class Tablero2:
                                 estado.get_tablero().mostrar_tablero()
                                 turno = self.fTexto5.render(f"Es turno de las fichas {estado.get_turno().get_turno_actual()}", True, NEGRO)
 
-                                tablero_01 = []
-                                tablero_p1, tablero_p2 = [], []
-                                
-                                for i in range(12):
-                                    if estado.get_tablero().estado_casilla(0, i) == 'v':
-                                        tablero_p1.append(0)
-                                    # Si es rojo
-                                    elif estado.get_tablero().estado_casilla(0, i) in ['dro', 'drf']:
-                                        tablero_p1.append(1)
-                                    # Si es amarillo
-                                    elif estado.get_tablero().estado_casilla(0, i) in ['dao', 'daf']:
-                                        tablero_p1.append(2)
-        
-                                for i in range(12):
-                                    if estado.get_tablero().estado_casilla(1, i) == 'v':
-                                        tablero_p2.append(0)
-                                    # Si es rojo
-                                    elif estado.get_tablero().estado_casilla(1, i) in ['dro', 'drf']:
-                                        tablero_p2.append(1)
-                                    # Si es amarillo
-                                    elif estado.get_tablero().estado_casilla(1, i) in ['dao', 'daf']:
-                                        tablero_p2.append(2)
-                                
-                                tablero_01 = [tablero_p1, tablero_p2]
-                                    
+                                tablero_01 = self.identificar_fichas(estado)
                                 print(str(tablero_01))
-
-                                # DIBUJADO DE LAS FICHAS
-                                for fila in range(2):
-                                    estado.get_FA().mostrar_FA()
-                                    estado.get_FR().mostrar_FR()
-                                    m = 0
-                                    for i in tablero_01[fila]:
-                                        print(m)
-                                        if i == 1:
-                                            self.fichas.append(Ficha(ROJO, self.posiciones_fichas[fila][m][0], self.posiciones_fichas[fila][m][1], estado.get_FR().estado_casilla_FR(fila, m))) #self.FR[fila][n]
-                                            print(estado.get_FR().estado_casilla_FR(fila, m))
-                                        elif i == 2:
-                                            self.fichas.append(Ficha(AMARILLO, self.posiciones_fichas[fila][m][0], self.posiciones_fichas[fila][m][1], estado.get_FA().estado_casilla_FA(fila, m))) #self.FR[fila][n]
-                                            print(estado.get_FA().estado_casilla_FA(fila, m))
-                                        m += 1
-
-
-
+                                self.dibujar_fichas(estado, tablero_01)
 
                             else:
                                 self.ficha_seleccionada.seleccionar(False)
                                 self.ficha_seleccionada = None
                 
+                # modo humano-maquina - facil
                 elif modo_juego == 'fácil':
-                    
                     turno_humano = estado.get_turno().get_turno_actual()
                     if turno_humano == 'R':
                         if event.type == pygame.MOUSEBUTTONDOWN:
@@ -469,66 +337,24 @@ class Tablero2:
                                             estado.get_tablero().mostrar_tablero()
                                             turno = self.fTexto5.render(f"Es turno de las fichas {estado.get_turno().get_turno_actual()}", True, NEGRO)
 
-
                                 else:
                                     self.ficha_seleccionada.seleccionar(False)
                                     self.ficha_seleccionada = None
-                        
-                    pass
                 
+                # lanzar la moneda y el dado
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_RETURN:
                         print('Enter presionado')
-                        # Lanzar el dado y la moneda
                         dado, moneda = Dado(), Moneda()
-
                         dado.lanzar()
                         moneda.lanzar()
-
                         controlador_juego = Controlador2()
                         controlador_juego.notificar_valor_dado_moneda(dado, moneda)
-
-                        #Registrar el turno y lanzamiento del dado y la moneda
                         estado.set_dado(dado)
                         estado.set_moneda(moneda)
                         valor_dado = self.fTexto1.render(f"Valor obtenido: {estado.get_dado().get_valor_actual()}", True, NEGRO)
                         valor_moneda = self.fTexto1.render(f"Valor obtenido: {estado.get_moneda().get_valor_actual()}", True, NEGRO)
-                        
-
+                    
             pygame.display.update()
 
-            
         pygame.quit()
-
-    def actualizar_pantalla(self, controlador, estado):
-        clock = pygame.time.Clock()
-        corriendo = True
-
-        while corriendo:
-            time_delta = clock.tick(60)/1000.0
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    corriendo = False
-
-                #self.manager.process_events(event)
-
-                # Mover las fichas
-                fichas = controlador.mover_ficha(event, estado)
-                self.fichas = fichas
-
-                # Borrar las fichas dibujadas previamente
-                for ficha in self.fichas:
-                    if ficha.get_imagen_fondo():
-                        self.ventana.blit(ficha.get_imagen_fondo(), ficha.get_rect().topleft)
-                
-                # Vaciamos el arreglo de fichas para "borrar" las fichas dibujadas
-                self.fichas.clear()
-
-                for ficha in fichas:
-                    ficha.guardar_fondo(self.ventana)
-                    ficha.dibujar(self.ventana)
-                    self.fichas.append(ficha)
-            
-            pygame.display.update()
-
-        return estado
