@@ -6,12 +6,14 @@ from src.jugador import Jugador
 from src.turno import Turno
 from src.estado import Estado
 class Juego:
-    def __init__(self, turno): # Inicializa un juego de backgammon
-        self.jugador1 = Jugador('rojo')
-        self.jugador2 = Jugador('amarillo')
-        self.estado = Estado(Turno(turno))
-        self.tiempo_juego = 0  # Inicializa el tiempo de juego en 0
 
+    #estado_Actual = Estado()
+    
+    def __init__(self,turno):
+        self.estado_actual = Estado(Turno(turno))
+    
+    def obtener_estado(self):
+        return self.estado_actual
     # Solicitud al usuario para que escoja su turno
     def elegir_turno(self): # El primer jugador elije el turno que desea
         turno = input('Elige el turno (R/A): ')
@@ -50,322 +52,618 @@ class Juego:
 
     # REGLAS DEL JUEGO
     # Avanzar dro de (a,b) a (c,d) según “n” posiciones -> adro(a,b,c,d,n)
-    def adro(self, a, b, n):
-        # Calcular valor de d 
-        if a == 0:
-            d = b + n
-        elif a == 1:
-            d = b - n
-            if d<0 :
-                d = n - b - 1
+        
+    # Verificar si adro es válido
+    def movimiento_adro_valido(self, a, b, c, d, n, estado_actual): # Verificar si un movimiento es válido
+        # Verificar si el turno es del jugador rojo
+        if self.estado_actual.get_turno().get_turno_actual() == 'R' and self.estado_actual.get_moneda().estado_actual == 'a':
+            if (self.estado_actual.get_tablero().estado_casilla(a,b) == 'dro') and (self.estado_actual.get_tablero().estado_casilla(c,d) == 'v' or self.estado_actual.get_tablero().estado_casilla(c,d) == 'dro'):
+                if self.estado_actual.get_fichas().get_ficha(4) == 0:
+                    if (c >= 0 and c <= 1) and (d >= 0 and d <= 11) and (n >= 1 and n <= 6):
+                        # VALIDACION DE MOVIMIENTO (PARTE 1)
+                        if b==1 and n==1 and c==a:
+                            validacion1 = True;
+                        elif b==2 and n>=1 and n<=2 and c==a:
+                            validacion1 = True;
+                        elif b==3 and n>=1 and n<=3 and c==a:
+                            validacion1 = True;
+                        elif b==4 and n>=1 and n<=4 and c==a:
+                            validacion1 = True;
+                        elif b==5 and n>=1 and n<=5 and c==a:
+                            validacion1 = True;
+                        elif b>=6 and b<=11 and n>=1 and n<=6 and c==a:
+                            validacion1 = True;
+                        elif b==0 and n>=1 and n<=6 and c==0:
+                            validacion1 = True;
+                        elif b==1 and n>=2 and n<=6 and c==a-1:
+                            validacion1 = True;
+                        elif b==2 and n>=3 and n<=6 and c==a-1:
+                            validacion1 = True;
+                        elif b==3 and n>=4 and n<=6 and c==a-1:
+                            validacion1 = True;
+                        elif b==4 and n>=5 and n<=6 and c==a-1:
+                            validacion1 = True;
+                        elif b==5 and n==5:
+                            validacion1 = True;
+                        else:
+                            validacion1 = False;
 
-        # Calcular valor de c
-        if b+n>= 0 and b+n <= 11 and a == 0:
-            c = 0
-        elif b-n >= 0 and b-n <= 11 and a == 1:
-            c = 1
-        elif b-n < 0 and a == 1:
-            c = 0
+                        # VALIDACION DE MOVIMIENTO (PARTE 2)
+                        if b>=6 and b<=11 and n>=1 and n<=6 and d==b-n and a==1:
+                            validacion2 = True;
+                        elif b==5 and n>=1 and n<=5 and d==b-n and a==1:
+                            validacion2 = True;
+                        elif b==4 and n>=1 and n<=4 and d==b-n and a==1:
+                            validacion2 = True;
+                        elif b==3 and n>=1 and n<=3 and d==b-n and a==1:
+                            validacion2 = True;
+                        elif b==2 and n>=1 and n<=2 and d==b-n and a==1:
+                            validacion2 = True;
+                        elif b==1 and n==1 and d==b-1 and a==1:
+                            validacion2 = True;
+                        elif b==0 and n>=1 and n<=6 and d==b+n-1 and a==1:
+                            validacion2 = True;
+                        elif b==1 and n>=2 and n<=6 and d==b+n-3 and a==1:
+                            validacion2 = True;
+                        elif b==2 and n>=3 and n<=6 and d==b+n-5 and a==1:
+                            validacion2 = True;
+                        elif b==3 and n>=4 and n<=6 and d==b+n-7 and a==1:
+                            validacion2 = True;
+                        elif b==4 and n>=5 and n<=6 and d==b+n-9 and a==1:
+                            validacion2 = True;
+                        elif b==5 and n>=6 and n<=6 and d==0 and a==1:
+                            validacion2 = True;
+                        elif b>=0 and b<=5 and n>=1 and n<=6 and d==b+n and a==0:
+                            validacion2 = True;
+                        elif b==6 and n>=1 and n<=5 and d==b+n and a==0:
+                            validacion2 = True;
+                        elif b==7 and n>=1 and n<=4 and d==b+n and a==0:
+                            validacion2 = True;
+                        elif b==8 and n>=1 and n<=3 and d==b+n and a==0:
+                            validacion2 = True;
+                        elif b==9 and n>=1 and n<=2 and d==b+n and a==0:
+                            validacion2 = True;
+                        elif b==10 and n==1 and d==b+1 and a==0:
+                            validacion2 = True;
+                        else:
+                            validacion2 = False;
+        
+                        # VALIDACION TOTAL
+                        if validacion1 == True and validacion2 == True:
+                            validacion = True;
+                            print('Precondiciones cumplidas')
+                        else:
+                            validacion = False;
+                            print('Precondiciones no cumplidas')
+                    else:
+                        print('Precondición no cumplida: n debe estar entre 1 y 6')
+                        validacion = False;
+                else:
+                    print('Precondición no cumplida: c debe estar entre 1 y 2')
+                    validacion = False;
+            else:
+                print('Precondición no cumplida: d debe estar entre 1 y 12')
+                validacion = False;
+        else:
+            print('Precondición no cumplida: ndro debe ser igual a 0')
+            validacion = False;
+        return validacion
+    
+    def adro(self, a, b, c, d, n):
+        # ESTADO ACTUAL
+        #global estado_actual
+
+        # PRECONDICIONES
+        validez = self.movimiento_adro_valido(a, b, c, d, n, self.estado_actual)
+
+        if validez == True:
 
 
-        # Verificar si el movimiento es válido
-        if self.movimiento_adro_valido(a,b,c,d,n) == True:
-            # ACTUALIZAR TABLERO
-            # Actualizar casilla (a,b)
-            if self.estado.estado_casilla_FR(a,b) == 0:
+            FR_2 = self.estado_actual.get_FR()
+            tablero_2 = self.estado_actual.get_tablero()
+            if FR_2[a][b] == 0:
+                print('La casilla (a,b) está vacía')
                 valor_casilla = 'v'
-            elif self.estado.estado_casilla_FR(a,b) >= 0:
+                #tablero_2.convertir_en_vacia(a, b)
+            else:
                 valor_casilla = 'dro'
+                print('La casilla (a,b) contiene una ficha dro')
 
-            # Actualizar casilla (c,d)
-            if (d >= 0 and d <= 5) and (c == 0):
+            if c==1 and d>=0 and d<=11:
+                print('La ficha dro se convierte en ordinaria')
                 valor_casilla_2 = 'dro'
-            elif (d >= 0 and d <= 11) and (c == 1):
+                #tablero_2.convertir_en_ordinaria(c, d)
+            elif c==0 and d>=0 and d<=5:
+                print('La ficha dro se convierte en ordinaria')
                 valor_casilla_2 = 'dro'
-            elif (d >= 6 and d <= 11) and (c == 0):
+                #tablero_2.convertir_en_ordinaria(c, d)
+            elif c==0 and d>=6 and d<=11:
+                print('La ficha dro se convierte en finalista')
                 valor_casilla_2 = 'drf'
+                #tablero_2.convertir_en_finalista(c, d)
+
+            #print("Este es el estado: " + tablero_2.estado_casilla(a,b))
 
             # Aplicar actualizaciones
-            tablero_2 = self.estado.get_tablero()
             tablero_2.actualizar_casilla(a, b, valor_casilla)
             tablero_2.actualizar_casilla(c, d, valor_casilla_2)
 
             # ACTUALIZAR TIPOS DE FICHAS
-            fichas_2 = self.estado.get_fichas()
+            fichas_2 = self.estado_actual.get_fichas()
             if tablero_2.estado_casilla(c, d) == 'drf':
                 fichas_2.adicionar_ficha_drf()
                 fichas_2.eliminar_ficha_dro()
 
             # ACTUALIZAR FR
-            FR_2 = self.estado.get_FR()
-            self.estado.eliminar_ficha_FR(a, b)
-            self.estado.adicionar_ficha_FR(c, d)
+            self.estado_actual.eliminar_ficha_FR(a, b)
+            self.estado_actual.adicionar_ficha_FR(c, d)
 
-            # Actualizar estado
-            self.estado.actualizar_estado(tablero_2, 'A', fichas_2 , self.estado.moneda.esperar_lanzamiento(), FR_2, self.estado.get_FA)
+            # ACCION
+            self.estado_actual.mostrar_estado()
+            #self.estado_actual.get_tablero()
+            #self.estado_actual.eliminar_ficha_FR(a, b)
+            #self.estado_actual.adicionar_ficha_FR(c, d)
+            # NUEVO ESTADO
+            self.estado_actual.actualizar_estado(tablero_2, 'A', self.estado_actual.get_fichas() , self.estado_actual.moneda.esperar_lanzamiento(), FR_2, self.estado_actual.get_FA())
 
-            # Se indica que el movimiento fue exitoso
-            print('Movimiento exitoso_R1')
         else:
             print('Movimiento no válido_R1')
-        
-    # Verificar si adro es válido
-    def movimiento_adro_valido(self, a, b, c, d, n): # Verificar si un movimiento es válido
-        if (self.estado.get_turno().get_turno_actual() == 'R' and 
-            self.estado.get_moneda().estado_actual == 'a' and 
-            self.estado.get_tablero().estado_casilla(a,b) == 'dro' and 
-            (self.estado.get_tablero().estado_casilla(c,d) == 'v' or self.estado.get_tablero().estado_casilla(c,d) == 'dro') and 
-            self.estado.get_fichas().get_ficha(4) == 0 and (c >= 0 or c <= 1) and (d >= 0 or d <= 11) and (n >= 1 or n <= 6)):
-            return True
+
+
+    
+     # REGLA 2
+    # Retroceder dro de (a,b) a (c,d) según “n” posiciones -> rdro(a,b,c,d,n)
+    def movimiento_adao_valido(self, a, b, c, d, n):
+        # Verificar si el turno es del jugador rojo
+        if self.estado_actual.get_turno().get_turno_actual() == 'A' and self.estado_actual.get_moneda().estado_actual == 'a':
+            if (self.estado_actual.get_tablero().estado_casilla(a, b) == 'dao') and (self.estado_actual.get_tablero().estado_casilla(c, d) == 'v' or self.estado_actual.get_tablero().estado_casilla(c, d) == 'dao'):
+                if self.estado_actual.get_fichas().get_ficha(5) == 0:
+                    if (c >= 0 and c <= 1) and (d >= 0 and d <= 11) and (n >= 1 and n <= 6):
+                        # VALIDACION DE MOVIMIENTO (PARTE 1)
+                        if b==1 and n==1 and c==a:
+                            validacion1 = True;
+                        elif b==2 and n>=1 and n<=2 and c==a:
+                            validacion1 = True;
+                        elif b==3 and n>=1 and n<=3 and c==a:
+                            validacion1 = True;
+                        elif b==4 and n>=1 and n<=4 and c==a:
+                            validacion1 = True;
+                        elif b==5 and n>=1 and n<=5 and c==a:
+                            validacion1 = True;
+                        elif b>=6 and b<=11 and n>=1 and n<=6 and c==a:
+                            validacion1 = True;
+                        elif b==0 and n>=1 and n<=6 and c==1:
+                            validacion1 = True;
+                        elif b==1 and n>=2 and n<=6 and c==a+1:
+                            validacion1 = True;
+                        elif b==2 and n>=3 and n<=6 and c==a+1:
+                            validacion1 = True;
+                        elif b==3 and n>=4 and n<=6 and c==a+1:
+                            validacion1 = True;
+                        elif b==4 and n>=5 and n<=6 and c==a+1:
+                            validacion1 = True;
+                        elif b==5 and n==5:
+                            validacion1 = True;
+                        else:
+                            validacion1 = False;
+
+                        # VALIDACION DE MOVIMIENTO (PARTE 2)
+                        if b>=6 and b<=11 and n>=1 and n<=6 and d==b-n and a==0:
+                            validacion2 = True;
+                        elif b==5 and n>=1 and n<=5 and d==b-n and a==0:
+                            validacion2 = True;
+                        elif b==4 and n>=1 and n<=4 and d==b-n and a==0:
+                            validacion2 = True;
+                        elif b==3 and n>=1 and n<=3 and d==b-n and a==0:
+                            validacion2 = True;
+                        elif b==2 and n>=1 and n<=2 and d==b-n and a==0:
+                            validacion2 = True;
+                        elif b==1 and n==1 and d==b-1 and a==0:
+                            validacion2 = True;
+                        elif b==0 and n>=1 and n<=6 and d==b+n-1 and a==0: #aca me quede en la correcion
+                            validacion2 = True;
+                        elif b==1 and n>=2 and n<=6 and d==b+n-3 and a==0: #aca me quede en la correcion
+                            validacion2 = True;
+                        elif b==2 and n>=3 and n<=6 and d==b+n-5 and a==0: #aca me quede en la correcion
+                            validacion2 = True;
+                        elif b==3 and n>=4 and n<=6 and d==b+n-7 and a==0: #aca me quede en la correcion
+                            validacion2 = True;
+                        elif b==4 and n>=5 and n<=6 and d==b+n-9 and a==0: #aca me quede en la correcion
+                            validacion2 = True;
+                        elif b==5 and n>=6 and n<=6 and d==0 and a==0: #aca me quede en la correcion
+                            validacion2 = True;
+                        elif b>=0 and b<=5 and n>=1 and n<=6 and d==b+n and a==1:
+                            validacion2 = True;
+                        elif b==6 and n>=1 and n<=5 and d==b+n and a==1:
+                            validacion2 = True;
+                        elif b==7 and n>=1 and n<=4 and d==b+n and a==1:
+                            validacion2 = True;
+                        elif b==8 and n>=1 and n<=3 and d==b+n and a==1:
+                            validacion2 = True;
+                        elif b==9 and n>=1 and n<=2 and d==b+n and a==1:
+                            validacion2 = True;
+                        elif b==10 and n==1 and d==b+1 and a==1:
+                            validacion2 = True;
+                        else:
+                            validacion2 = False;
+                            
+                        # VALIDACION TOTAL
+                        if validacion1 == True and validacion2 == True:
+                            validacion = True;
+                            print('Precondiciones cumplidas')
+                        else:
+                            validacion = False;
+                            print('Precondiciones no cumplidas')
+                    else:
+                        print('Precondición no cumplida: n debe estar entre 1 y 6')
+                        validacion = False;
+                else:
+                    print('Precondición no cumplida: c debe estar entre 1 y 2')
+                    validacion = False;
+            else:
+                print('Precondición no cumplida: d debe estar entre 1 y 12')
+                validacion = False;
         else:
-            return False
-        
-    # REGLA 2
-    # Avanzar dao de (a,b) a (c,d) según “n” posiciones -> adao(a,b,c,d,n)
-    def adao(self, a, b, n): 
-        # Calcular valor de d 
-        if a == 1:
-            d = b + n
-        elif a == 0:
-            d = b - n
-            if d<0 :
-                d = n - b - 1
+            print('Precondición no cumplida: ndro debe ser igual a 0')
+            validacion = False;
+        return validacion
+    
 
-        # Calcular valor de c
-        if b-n>= 0 and b-n <= 11 and a == 0:
-            c = 0
-        elif b+n >= 0 and b+n <= 11 and a == 1:
-            c = 1
-        elif b-n < 0 and a == 0:
-            c = 1
 
-        #print("VALOR DE A: "+str(a)+" VAlor de B: "+str(b)+" v. de C: "+str(c)+" V. de D: "+str(d))
+    def adao(self, a, b, c, d ,n):
         
         if self.movimiento_adao_valido(a,b,c,d,n) == True:
-            # ACTUALIZAR TABLERO
-            # Actualizar casilla (a,b)
-            if self.estado.estado_casilla_FA(a,b) == 0:
-                valor_casilla = 'v'
-            elif self.estado.estado_casilla_FA(a,b) >= 0:
-                valor_casilla = 'dao'
+            FA_2 = self.estado_actual.get_FA()
+            tablero_2 = self.estado_actual.get_tablero()
 
-            # Actualizar casilla (c,d)
-            if (d >= 0 and d <= 5) and (c == 1):
+            # Actualizar casilla (a,b)
+            if FA_2[a][b] == 0:
+                print('La casilla (a,b) está vacía')
+                valor_casilla = 'v'
+                #tablero_2.convertir_en_vacia(a, b)
+            else:
+                valor_casilla = 'dao'
+                print('La casilla (a,b) contiene una ficha dao')
+            
+            if c==0 and d>=0 and d<=11:
+                print('La ficha dao se convierte en ordinaria')
                 valor_casilla_2 = 'dao'
-            elif (d >= 0 and d <= 11) and (c == 0):
+                #tablero_2.convertir_en_ordinaria(c, d)
+            elif c==1 and d>=0 and d<=5:
+                print('La ficha dao se convierte en ordinaria')
                 valor_casilla_2 = 'dao'
-            elif (d >= 6 and d <= 11) and (c == 1):
+                #tablero_2.convertir_en_ordinaria(c, d)
+            elif c==1 and d>=6 and d<=11:
+                print('La ficha dao se convierte en finalista')
                 valor_casilla_2 = 'daf'
+                #tablero_2.convertir_en_finalista(c, d)
 
             # Aplicar actualizaciones
-            tablero_2 = self.estado.get_tablero()
+            tablero_2 = self.estado_actual.get_tablero()
             tablero_2.actualizar_casilla(a, b, valor_casilla)
             tablero_2.actualizar_casilla(c, d, valor_casilla_2)
 
             # ACTUALIZAR TIPOS DE FICHAS
-            fichas_2 = self.estado.get_fichas()
+            fichas_2 = self.estado_actual.get_fichas()
             if tablero_2.estado_casilla(c, d) == 'daf':
                 fichas_2.adicionar_ficha_daf()
                 fichas_2.eliminar_ficha_dao()
-
-            # ACTUALIZAR FA
-            FA_2 = self.estado.get_FA()
-            self.estado.eliminar_ficha_FA(a, b)
-            self.estado.adicionar_ficha_FA(c, d)
+            
+            # ACTUALIZAR FR
+            self.estado_actual.eliminar_ficha_FA(a, b)
+            self.estado_actual.adicionar_ficha_FA(c, d)
 
             # Actualizar estado
-            self.estado.actualizar_estado(tablero_2, 'R', fichas_2 , self.estado.moneda.esperar_lanzamiento(), self.estado.get_FR, FA_2)
+            self.estado_actual.mostrar_estado()
+            self.estado_actual.actualizar_estado(tablero_2, 'R', fichas_2 , self.estado_actual.moneda.esperar_lanzamiento(), self.estado_actual.get_FR, FA_2)
 
-            # Se indica que el movimiento fue exitoso   
+
+            # Se indica que el movimiento fue exitoso
             print('Movimiento exitoso_R2')
-            #for fila in self.estado.tablero.casillas:
-            #    print(fila)
         else:
             print('Movimiento no válido_R2')
 
-    # Verificar si adao es válido
-    def movimiento_adao_valido(self, a, b, c, d, n): # Verificar si un movimiento es válido
-        if (self.estado.get_turno().get_turno_actual() == 'A' and 
-            self.estado.get_moneda().estado_actual == 'a' and 
-            self.estado.get_tablero().estado_casilla(a,b) == 'dao' and 
-            (self.estado.get_tablero().estado_casilla(c,d) == 'v' or self.estado.get_tablero().estado_casilla(c,d) == 'dao') and 
-            self.estado.get_fichas().get_ficha(5) == 0 and (c >= 0 or c <= 1) and (d >= 0 or d <= 11) and (n >= 1 or n <= 6)):
-            return True
-        else:
-            return False
 
     # REGLA 3
-    # Avanzar drf de (a,b) a (c,d) según “n” posiciones -> adrf(a,b,c,d,n)
-    def adrf(self, a, b, n):
-        # Calcular valor de d
-        d = b+n
-        # Calcular valor de c
-        c = 0
+    def movimiento_adrf_valido(self, a, b, c, d, n, estado_actual): # Verificar si un movimiento es válido
+        # Verificar si el turno es del jugador rojo
+        if self.estado_actual.get_turno().get_turno_actual() == 'R' and self.estado_actual.get_moneda().estado_actual == 'a':
+            if (self.estado_actual.get_tablero().estado_casilla(a,b) == 'drf') and (self.estado_actual.get_tablero().estado_casilla(c,d) == 'v' or self.estado_actual.get_tablero().estado_casilla(c,d) == 'drf'):
+                if self.estado_actual.get_fichas().get_ficha(4) == 0:
+                    if (c == 0) and (d >= 6 and d <= 11) and (n >= 1 and n <= 6):
+                        # VALIDACION DE MOVIMIENTO (PARTE 1)
+                        if b>=6 and b<=11 and n>=1 and n<=6 and c==a:
+                            validacion1 = True;
+                        else:
+                            validacion1 = False;
+
+                        # VALIDACION DE MOVIMIENTO (PARTE 2)
+                        if b==6 and n>=1 and n<=5 and d==b+n and a==0:
+                            validacion2 = True;
+                        elif b==7 and n>=1 and n<=4 and d==b+n and a==0:
+                            validacion2 = True;
+                        elif b==8 and n>=1 and n<=3 and d==b+n and a==0:
+                            validacion2 = True;
+                        elif b==9 and n>=1 and n<=2 and d==b+n and a==0:
+                            validacion2 = True;
+                        elif b==10 and n==1 and d==b+1 and a==0:
+                            validacion2 = True;
+                        else:
+                            validacion2 = False;
         
-        if self.movimiento_adrf_valido(a,b,c,d,n) == True:
-            # ACTUALIZAR TABLERO
-            # Actualizar casilla (a,b)
-            if self.estado.estado_casilla_FR(a,b) == 0:
+                        # VALIDACION TOTAL
+                        if validacion1 == True and validacion2 == True:
+                            validacion = True;
+                            print('Precondiciones cumplidas')
+                        else:
+                            validacion = False;
+                            print('Precondiciones no cumplidas')
+                    else:
+                        print('Precondición no cumplida: n debe estar entre 1 y 6')
+                        validacion = False;
+                else:
+                    print('Precondición no cumplida: c debe estar entre 1 y 2')
+                    validacion = False;
+            else:
+                print('Precondición no cumplida: d debe estar entre 1 y 12')
+                validacion = False;
+        else:
+            print('Precondición no cumplida: ndro debe ser igual a 0')
+            validacion = False;
+        return validacion
+
+    # Avanzar dro de (a,b) a (c,d) según “n” posiciones -> adro(a,b,c,d,n)
+    def adrf(self, a, b, c, d, n):
+        # ESTADO ACTUAL
+        #global estado_actual
+
+        # PRECONDICIONES
+        validez = self.movimiento_adrf_valido(a, b, c, d, n, self.estado_actual)
+
+        if validez == True:
+
+            FR_2 = self.estado_actual.get_FR()
+            tablero_2 = self.estado_actual.get_tablero()
+            if FR_2[a][b] == 0:
+                print('La casilla (a,b) está vacía')
                 valor_casilla = 'v'
-            elif self.estado.estado_casilla_FR(a,b) >= 0:
+                #tablero_2.convertir_en_vacia(a, b)
+            else:
                 valor_casilla = 'drf'
+                print('La casilla (a,b) contiene una ficha dro')
 
             # Actualizar casilla (c,d)
             valor_casilla_2 = 'drf'
+                #tablero_2.convertir_en_finalista(c, d)
+
+            #print("Este es el estado: " + tablero_2.estado_casilla(a,b))
 
             # Aplicar actualizaciones
-            tablero_2 = self.estado.get_tablero()
             tablero_2.actualizar_casilla(a, b, valor_casilla)
             tablero_2.actualizar_casilla(c, d, valor_casilla_2)
 
             # ACTUALIZAR TIPOS DE FICHAS
-            fichas_2 = self.estado.get_fichas()
+            fichas_2 = self.estado_actual.get_fichas()
             if tablero_2.estado_casilla(c, d) == 'drf':
-                #DUDAS:SERIA LO MISMO ADICIONAR Y LUEGO ELIMINAR
                 fichas_2.adicionar_ficha_drf()
-                fichas_2.eliminar_ficha_drf()
+                #fichas_2.eliminar_ficha_drf()
 
             # ACTUALIZAR FR
-            FR_2 = self.estado.get_FR()
-            self.estado.eliminar_ficha_FR(a, b)
-            self.estado.adicionar_ficha_FR(c, d)
+            self.estado_actual.eliminar_ficha_FR(a, b)
+            self.estado_actual.adicionar_ficha_FR(c, d)
 
-            # Actualizar estado
-            self.estado.actualizar_estado(tablero_2, 'A', fichas_2 , self.estado.moneda.esperar_lanzamiento(), FR_2, self.estado.get_FA)
+            # ACCION
+            self.estado_actual.mostrar_estado()
+            #self.estado_actual.get_tablero()
+            #self.estado_actual.eliminar_ficha_FR(a, b)
+            #self.estado_actual.adicionar_ficha_FR(c, d)
+            # NUEVO ESTADO
+            self.estado_actual.actualizar_estado(tablero_2, 'A', fichas_2 , self.estado_actual.moneda.esperar_lanzamiento(), FR_2, self.estado_actual.get_FA)
 
-            # Se indica que el movimiento fue exitoso
-            print('Movimiento exitoso_R3')
         else:
             print('Movimiento no válido_R3')
 
-    # Verificar si adrf es válido
-    def movimiento_adrf_valido(self, a, b, c, d, n): # Verificar si un movimiento es válido
-        if (self.estado.get_turno().get_turno_actual() == 'R' and 
-            self.estado.get_moneda().estado_actual == 'a' and 
-            self.estado.get_tablero().estado_casilla(a,b) == 'drf' and 
-            (self.estado.get_tablero().estado_casilla(c,d) == 'v' or self.estado.get_tablero().estado_casilla(c,d) == 'drf') and 
-            self.estado.get_fichas().get_ficha(4) == 0 and (d >= 6 or d <= 11) and (c == 0) and (n >= 1 or n <= 6)):
-            return True
-        else:
-            return False
-
     # REGLA 4
     # Avanzar daf de (a,b) a (c,d) según “n” posiciones -> adaf(a,b,c,d,n)
-    def adaf(self, a, b, n):
-        # Calcular valor de d
-        d = b+n
-        # Calcular valor de c
-        c = 1
+    def movimiento_adaf_valido(self, a, b, c, d, n):
+        # Verificar si el turno es del jugador rojo
+        if self.estado_actual.get_turno().get_turno_actual() == 'A' and self.estado_actual.get_moneda().estado_actual == 'a':
+            if (self.estado_actual.get_tablero().estado_casilla(a, b) == 'daf') and (self.estado_actual.get_tablero().estado_casilla(c, d) == 'v' or self.estado_actual.get_tablero().estado_casilla(c, d) == 'daf'):
+                if self.estado_actual.get_fichas().get_ficha(5) == 0:
+                    if ( c == 1) and (d >= 6 and d <= 11) and (n >= 1 and n <= 6):
+                        # VALIDACION DE MOVIMIENTO (PARTE 1)
+                        if b>=6 and b<=11 and n>=1 and n<=6 and c==a:
+                            validacion1 = True;
+                        else:
+                            validacion1 = False;
 
+                        # VALIDACION DE MOVIMIENTO (PARTE 2)
+                        if b==6 and n>=1 and n<=5 and d==b+n and a==1:
+                            validacion2 = True;
+                        elif b==7 and n>=1 and n<=4 and d==b+n and a==1:
+                            validacion2 = True;
+                        elif b==8 and n>=1 and n<=3 and d==b+n and a==1:
+                            validacion2 = True;
+                        elif b==9 and n>=1 and n<=2 and d==b+n and a==1:
+                            validacion2 = True;
+                        elif b==10 and n==1 and d==b+1 and a==1:
+                            validacion2 = True;
+                        else:
+                            validacion2 = False;
+                            
+                        # VALIDACION TOTAL
+                        if validacion1 == True and validacion2 == True:
+                            validacion = True;
+                            print('Precondiciones cumplidas')
+                        else:
+                            validacion = False;
+                            print('Precondiciones no cumplidas')
+                    else:
+                        print('Precondición no cumplida: n debe estar entre 1 y 6')
+                        validacion = False;
+                else:
+                    print('Precondición no cumplida: c debe estar entre 1 y 2')
+                    validacion = False;
+            else:
+                print('Precondición no cumplida: d debe estar entre 1 y 12')
+                validacion = False;
+        else:
+            print('Precondición no cumplida: ndro debe ser igual a 0')
+            validacion = False;
+        return validacion
+    
+
+
+    def adaf(self, a, b, c, d ,n):
         if self.movimiento_adaf_valido(a,b,c,d,n) == True:
-            # ACTUALIZAR TABLERO
-            # Actualizar casilla (a,b)
-            if self.estado.estado_casilla_FA(a,b) == 0:
-                valor_casilla = 'v'
-            elif self.estado.estado_casilla_FA(a,b) >= 0:
-                valor_casilla = 'daf'
+            FA_2 = self.estado_actual.get_FA()
+            tablero_2 = self.estado_actual.get_tablero()
 
+            # Actualizar casilla (a,b)
+            if FA_2[a][b] == 0:
+                print('La casilla (a,b) está vacía')
+                valor_casilla = 'v'
+                #tablero_2.convertir_en_vacia(a, b)
+            else:
+                valor_casilla = 'daf'
+                print('La casilla (a,b) contiene una ficha daf')
+            
             # Actualizar casilla (c,d)
             valor_casilla_2 = 'daf'
+                #tablero_2.convertir_en_finalista(c, d)
 
             # Aplicar actualizaciones
-            tablero_2 = self.estado.get_tablero()
+            tablero_2 = self.estado_actual.get_tablero()
             tablero_2.actualizar_casilla(a, b, valor_casilla)
             tablero_2.actualizar_casilla(c, d, valor_casilla_2)
 
             # ACTUALIZAR TIPOS DE FICHAS
-            fichas_2 = self.estado.get_fichas()
+            fichas_2 = self.estado_actual.get_fichas()
             if tablero_2.estado_casilla(c, d) == 'daf':
-                #DUDAS:SERIA LO MISMO ADICIONAR Y LUEGO ELIMINAR
                 fichas_2.adicionar_ficha_daf()
-                fichas_2.eliminar_ficha_daf()
-
+                #fichas_2.eliminar_ficha_daf()
+            
             # ACTUALIZAR FA
-            FA_2 = self.estado.get_FA()
-            self.estado.eliminar_ficha_FA(a, b)
-            self.estado.adicionar_ficha_FA(c, d)
+            self.estado_actual.eliminar_ficha_FA(a, b)
+            self.estado_actual.adicionar_ficha_FA(c, d)
 
             # Actualizar estado
-            self.estado.actualizar_estado(tablero_2, 'R', fichas_2 , self.estado.moneda.esperar_lanzamiento(), self.estado.get_FR, FA_2)
+            self.estado_actual.mostrar_estado()
+            self.estado_actual.actualizar_estado(tablero_2, 'R', fichas_2 , self.estado_actual.moneda.esperar_lanzamiento(), self.estado_actual.get_FR, FA_2)
+
 
             # Se indica que el movimiento fue exitoso
             print('Movimiento exitoso_R4')
         else:
             print('Movimiento no válido_R4')
 
-    # Verificar si adaf es válido
-    def movimiento_adaf_valido(self, a, b, c, d, n): # Verificar si un movimiento es válido
-        if (self.estado.get_turno().get_turno_actual() == 'A' and 
-            self.estado.get_moneda().estado_actual == 'a' and 
-            self.estado.get_tablero().estado_casilla(a,b) == 'daf' and 
-            (self.estado.get_tablero().estado_casilla(c,d) == 'v' or self.estado.get_tablero().estado_casilla(c,d) == 'daf') and 
-            self.estado.get_fichas().get_ficha(5) == 0 and (d >= 6 or d <= 11) and (c == 1) and (n >= 1 or n <= 6)):
-            return True
-        else:
-            return False
+
 
 
     # REGLA 5
     # Retroceder dro de (a,b) a (c,d) según “n” posiciones -> rdro(a,b,c,d,n)
-    def movimiento_rdro_valido(self, a, b, c, d, n): # Verificar si un movimiento es válido
-        if (self.estado.get_turno().get_turno_actual() == 'R' and 
-            self.estado.get_moneda().estado_actual == 'r' and
-            self.estado.get_tablero().estado_casilla(a,b) == 'dro' and 
-            (self.estado.get_tablero().estado_casilla(c,d) == 'v' or self.estado.get_tablero().estado_casilla(c,d) == 'dro') and 
-            self.estado.get_fichas().get_ficha(4) == 0 and (c >= 0 and c <=1) and (d >= 0 and d <= 11) and 
-            (n >= 1 and n <= 6)):
-            return True
+    def movimiento_rdro_valido(self, a, b, c, d, n):
+        # Verificar si el turno es del jugador rojo
+        validacion = False
+
+        if self.estado_actual.get_turno().get_turno_actual() == 'R' and self.estado_actual.get_moneda().estado_actual == 'r':
+            if (self.estado_actual.get_tablero().estado_casilla(a, b) == 'dro') and (self.estado_actual.get_tablero().estado_casilla(c, d) == 'v' or self.estado_actual.get_tablero().estado_casilla(c, d) == 'dro'):
+                if self.estado_actual.get_fichas().get_ficha(4) == 0:
+                    if (c >= 0 and c <= 1) and (d >= 0 and d <= 11)and(1 <= n <= 6):
+                            if a == 0:
+                                if 6 <= b <= 11 and d == b - n and c == 0:
+                                    validacion = True           
+                                elif b == 5 and 1 <= n <= 5 and d == b - n and c == 0:
+                                    validacion = True           
+                                elif b == 4 and 1 <= n <= 4 and d == b - n and c == 0:
+                                    validacion = True
+                                elif b == 3 and 1 <= n <= 3 and d == b - n and c == 0:
+                                    validacion = True
+                                elif b == 2 and 1 <= n <= 2 and d == b - n and c == 0:
+                                    validacion = True
+                                elif b == 1 and n == 1 and d == b - n and c == 0:
+                                    validacion = True
+                                elif b == 0 and 1 <= n <= 6 and d == 6 - n - 1 and c == 1:
+                                    validacion = True
+                                elif b == 1 and 2 <= n <= 6 and d == n - b - 1 and c == 1:
+                                    validacion = True
+                                elif b == 2 and 3 <= n <= 6 and d == n - b - 1 and c == 1:
+                                    validacion = True
+                                elif b == 3 and 4 <= n <= 6 and d == n - b - 1 and c == 1:
+                                    validacion = True
+                                elif b == 4 and 5 <= n <= 6 and d == n - b - 1 and c == 1:
+                                    validacion = True
+                                elif b == 5 and n == 6 and d == n - b - 1 and c == 1:
+                                    validacion = True
+                            elif a == 1:
+                                if 0 <= b <= 5 and d == b + n and c == 1:
+                                    validacion = True
+                                elif b == 6 and 1 <= n <= 5 and d == b + n and c == 1:
+                                    validacion = True
+                                elif b == 7 and 1 <= n <= 4 and d == b + n and c == 1:
+                                    validacion = True
+                                elif b == 8 and 1 <= n <= 3 and d == b + n and c == 1:
+                                    validacion = True
+                                elif b == 9 and 1 <= n <= 2 and d == b + n and c == 1:
+                                    validacion = True
+                                elif b == 10 and n == 1 and d == b + n and c == 1:
+                                    validacion = True
+                            
+                            if validacion==True:
+                                print('Precondiciones cumplidas')
+                            else:
+                                print('Precondiciones no cumplidas')
+                    else:
+                        print('Precondición no cumplida: n debe estar entre 1 y 6')
+                        validacion = False
+                
+                else:
+                    print('Precondición no cumplida: ndcr debe ser igual a 0')
+                    validacion = False
+            else:
+                print('Precondición no cumplida: la casilla de origen debe contener dro y la casilla de destino debe estar vacía o contener dro')
+                validacion = False
         else:
-            return False
+            print('Precondición no cumplida: turno o moneda incorrectos')
+            validacion = False
+        
+        return validacion
+
 
     def rdro(self, a, b, c, d ,n):
-    # Calcular valor de d
-        if a == 1:
-            d = b+n
-        elif a == 0:
-            d = b-n
-            if d < 0:
-                d = n-b-1
-
-        # Calcular valor de c
-        if b+n >= 0 and b+n <= 11 and a == 1:
-            c = 1
-        elif b-n >= 0 and b-n <= 11 and a == 0:
-            c = 0
-        elif b-n < 0 and a == 0:
-            c = 1
-
-
+        
         if self.movimiento_rdro_valido(a,b,c,d,n) == True:
-            # ACTUALIZAR TABLERO
+            # ACCION
+            self.estado_actual.eliminar_ficha_FR(a, b)
+            self.estado_actual.adicionar_ficha_FR(c, d)
+            
+            FR_2 = self.estado_actual.get_FR()
+            tablero_2 = self.estado_actual.get_tablero()
+
             # Actualizar casilla (a,b)
-            if self.estado.estado_casilla_FR(a,b) == 0:
-                valor_casilla = 'v'
-            elif self.estado.estado_casilla_FR(a,b) >= 0:
+            if FR_2[a][b] == 0:
+                print('La casilla (a,b) está vacía')
+                tablero_2.convertir_en_vacia(a, b)
+            elif FR_2[a][b]  > 0:
                 valor_casilla = 'dro'
 
             # Actualizar casilla (c,d)
             valor_casilla_2 = 'dro'
 
             # Aplicar actualizaciones
-            tablero_2 = self.estado.get_tablero()
+            tablero_2 = self.estado_actual.get_tablero()
             tablero_2.actualizar_casilla(a, b, valor_casilla)
             tablero_2.actualizar_casilla(c, d, valor_casilla_2)
 
             # ACTUALIZAR TIPOS DE FICHAS
-            fichas_2 = self.estado.get_fichas()
+            fichas_2 = self.estado_actual.get_fichas()
             if tablero_2.estado_casilla(c, d) == 'dro':
                 fichas_2.adicionar_ficha_dro()
                 fichas_2.eliminar_ficha_dro()
 
-            # ACTUALIZAR FR
-            FR_2 = self.estado.get_FR()
-            self.estado.eliminar_ficha_FR(a, b)
-            self.estado.adicionar_ficha_FR(c, d)
-
             # Actualizar estado
-
-            self.estado.actualizar_estado(tablero_2, 'A', fichas_2 , self.estado.moneda.esperar_lanzamiento() , FR_2, self.estado.get_FA)
+            self.estado_actual.mostrar_estado()
+            self.estado_actual.actualizar_estado(tablero_2, 'A', fichas_2 , self.estado_actual.moneda.esperar_lanzamiento() , FR_2, self.estado_actual.get_FA)
 
             # Se indica que el movimiento fue exitoso
             print('Movimiento exitoso_R5')
@@ -375,67 +673,114 @@ class Juego:
     # REGLA 6
     # Retroceder dao de (a,b) a (c,d) según “n” posiciones -> rdao(a,b,c,d,n)
     def rdao(self, a, b, c, d, n):
-        # Calcular valor de d
-        if a == 0:
-            d = b + n
-        elif a == 1:
-            d = b - n
-            if d<0 :
-                d = n - b - 1
-
-        # Calcular valor de c
-        if b+n>= 0 and b+n <= 11 and a == 0:
-            c = 0
-        elif b-n >= 0 and b-n <= 11 and a == 1:
-            c = 1
-        elif b-n < 0 and a == 1:
-            c = 0
-
+  
         if self.movimiento_rdao_valido(a,b,c,d,n) == True:
             # ACTUALIZAR TABLERO
+            self.estado_actual.eliminar_ficha_FA(a, b)
+            self.estado_actual.adicionar_ficha_FA(c, d)
+            
+            FA_2 = self.estado_actual.get_FA()
+            tablero_2 = self.estado_actual.get_tablero()
+
             # Actualizar casilla (a,b)
-            if self.estado.estado_casilla_FA(a,b) == 0:
-                valor_casilla = 'v'
-            elif self.estado.estado_casilla_FA(a,b) >= 0:
+            if FA_2[a][b] == 0:
+                print('La casilla (a,b) está vacía')
+                tablero_2.convertir_en_vacia(a, b)
+            elif FA_2[a][b]  > 0:
                 valor_casilla = 'dao'
+
 
             # Actualizar casilla (c,d)
             valor_casilla_2 = 'dao'
 
             # Aplicar actualizaciones
-            tablero_2 = self.estado.get_tablero()
+            tablero_2 = self.estado_actual.get_tablero()
             tablero_2.actualizar_casilla(a, b, valor_casilla)
             tablero_2.actualizar_casilla(c, d, valor_casilla_2)
 
             # ACTUALIZAR TIPOS DE FICHAS
-            fichas_2 = self.estado.get_fichas()
+            fichas_2 = self.estado_actual.get_fichas()
             if tablero_2.estado_casilla(c, d) == 'dao':
                 fichas_2.adicionar_ficha_dao()
                 fichas_2.eliminar_ficha_dao()
 
-            # ACTUALIZAR FA
-            FA_2 = self.estado.get_FA()
-            self.estado.eliminar_ficha_FA(a, b)
-            self.estado.adicionar_ficha_FA(c,d)
                     
             # Actualizar estado
-            self.estado.actualizar_estado(tablero_2, 'R', fichas_2 , self.estado.moneda.esperar_lanzamiento() , self.estado.get_FR, FA_2)
+            self.estado_actual.mostrar_estado()
+            self.estado_actual.actualizar_estado(tablero_2, 'R', fichas_2 , self.estado_actual.moneda.esperar_lanzamiento() , self.estado_actual.get_FR, FA_2)
 
             # Se indica que el movimiento fue exitoso
             print('Movimiento exitoso_R6')
         else:
             print('Movimiento no válido_R6')
 
-    # Verificar si rdao es válido
-    def movimiento_rdao_valido(self, a, b, c, d, n): # Verificar si un movimiento es válido
-        if (self.estado.get_turno().get_turno_actual() == 'A' and 
-            self.estado.get_moneda().estado_actual == 'r' and 
-            self.estado.get_tablero().estado_casilla(a,b) == 'dao' and 
-            (self.estado.get_tablero().estado_casilla(c,d) == 'v' or self.estado.get_tablero().estado_casilla(c,d) == 'dao') and 
-            self.estado.get_fichas().get_ficha(5) == 0 and (c >= 0 or c <= 1) and (d >= 0 or d <= 11) and (n >= 1 or n <= 6)):
-            return True
+    
+    def movimiento_rdao_valido(self, a, b, c, d, n):
+        # Verificar si el turno es del jugador rojo
+        validacion = False
+
+        if self.estado_actual.get_turno().get_turno_actual() == 'A' and self.estado_actual.get_moneda().estado_actual == 'r':
+            if (self.estado_actual.get_tablero().estado_casilla(a, b) == 'dao') and (self.estado_actual.get_tablero().estado_casilla(c, d) == 'v' or self.estado_actual.get_tablero().estado_casilla(c, d) == 'da0'):
+                if self.estado_actual.get_fichas().get_ficha(5) == 0:
+                    if (c >= 0 and c <= 1) and (d >= 0 and d <= 11)and(1 <= n <= 6):
+                            if a == 1:
+                                if 6 <= b <= 11 and 1<=n<=6 and d == b - n and c == 1:
+                                    validacion = True           
+                                elif b == 5 and 1 <= n <= 5 and d == b - n and c == 1:
+                                    validacion = True           
+                                elif b == 4 and 1 <= n <= 4 and d == b - n and c == 1:
+                                    validacion = True
+                                elif b == 3 and 1 <= n <= 3 and d == b - n and c == 1:
+                                    validacion = True
+                                elif b == 2 and 1 <= n <= 2 and d == b - n and c == 1:
+                                    validacion = True
+                                elif b == 1 and n == 1 and d == b - n and c == 1:
+                                    validacion = True
+                                elif b == 0 and 1 <= n <= 6 and d == n - b - 1 and c == 0:
+                                    validacion = True
+                                elif b == 1 and 2 <= n <= 6 and d == n - b - 1 and c == 0:
+                                    validacion = True
+                                elif b == 2 and 3 <= n <= 6 and d == n - b - 1 and c == 0:
+                                    validacion = True
+                                elif b == 3 and 4 <= n <= 6 and d == n - b - 1 and c == 0:
+                                    validacion = True
+                                elif b == 4 and 5 <= n <= 6 and d == n - b - 1 and c == 0:
+                                    validacion = True
+                                elif b == 5 and n == 6 and d == n - b - 1 and c == 0:
+                                    validacion = True
+                            elif a == 0:
+                                if 0 <= b <= 5 and d == b + n and c == 0:
+                                    validacion = True
+                                elif b == 6 and 1 <= n <= 5 and d == b + n and c == 0:
+                                    validacion = True
+                                elif b == 7 and 1 <= n <= 4 and d == b + n and c == 0:
+                                    validacion = True
+                                elif b == 8 and 1 <= n <= 3 and d == b + n and c == 0:
+                                    validacion = True
+                                elif b == 9 and 1 <= n <= 2 and d == b + n and c == 0:
+                                    validacion = True
+                                elif b == 10 and n == 1 and d == b + n and c == 0:
+                                    validacion = True
+                            
+                            if validacion==True:
+                                print('Precondiciones cumplidas')
+                            else:
+                                print('Precondiciones no cumplidas')
+                    else:
+                        print('Precondición no cumplida: n debe estar entre 1 y 6')
+                        validacion = False
+                
+                else:
+                    print('Precondición no cumplida: ndcr debe ser igual a 0')
+                    validacion = False
+            else:
+                print('Precondición no cumplida: la casilla de origen debe contener dro y la casilla de destino debe estar vacía o contener dro')
+                validacion = False
         else:
-            return False
+            print('Precondición no cumplida: turno o moneda incorrectos')
+            validacion = False
+        
+        return validacion
 
     # REGLA 7
     # Capturar con dro de (a,b) a dao de (c,d) según “n” posiciones -> cdro(a,b,c,d,n)
@@ -487,6 +832,7 @@ class Juego:
             self.estado.eliminar_ficha_FA(c,d)
 
             # Actualizar estado
+            self.estado_actual.mostrar_estado()
             self.estado.actualizar_estado(tablero_2, 'A', fichas_2 , self.estado.moneda.esperar_lanzamiento(), FR_2, FA_2)
 
             # Se indica que el movimiento fue exitoso

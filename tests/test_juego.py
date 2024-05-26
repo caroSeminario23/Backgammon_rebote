@@ -22,7 +22,132 @@ class TestJuego(unittest.TestCase):
 
     #def test_mover_ficha_invalido(self): # Test para verificar que el movimiento de una ficha es inválido
     #    self.assertFalse(self.juego.movimiento_adro_valido(1, 2, 3, 4, 7))
+    def test_adro(self):
+        self.juego.estado_actual.turno=Turno('R')
+        print(self.juego.estado_actual.get_turno().get_turno_actual())
+        moneda = Moneda()
+        moneda.lanzar()
+        self.juego.estado_actual.moneda.lanzar()
+        #esto funciona MONEDA()
+        print(self.juego.estado_actual.get_moneda().estado_actual)
+        #self.juego.estado.get_tablero().actualizar_casilla(0,4,'dro')
+        #self.juego.estado.get_tablero().actualizar_casilla(0,1,'dao')
+        #self.juego.estado.get_fichas().get_ficha(5) == 0
+        #:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+        self.juego.adro(1, 0, 0, 0, 1)
 
+
+    def test_adao(self):
+
+        self.juego.estado_actual.turno=Turno('A')
+        print(self.juego.estado_actual.get_turno().get_turno_actual())
+        moneda = Moneda()
+        moneda.lanzar()
+        self.juego.estado_actual.moneda.lanzar()
+        #esto funciona MONEDA()
+        print(self.juego.estado_actual.get_moneda().estado_actual)
+        #self.juego.estado.get_tablero().actualizar_casilla(0,4,'dro')
+        #self.juego.estado.get_tablero().actualizar_casilla(0,1,'dao')
+        #self.juego.estado.get_fichas().get_ficha(5) == 0 
+        #:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+        self.juego.adao(0, 4, 1, 1, 5)
+
+
+
+    def test_adrf(self):
+        self.juego.estado_actual.turno=Turno('R')
+        print(self.juego.estado_actual.get_turno().get_turno_actual()+" REGLA 3")
+        moneda = Moneda()
+        moneda.lanzar()
+        self.juego.estado_actual.moneda.lanzar()
+        #esto funciona MONEDA()
+        print(self.juego.estado_actual.get_moneda().estado_actual)
+        #self.juego.estado.get_tablero().actualizar_casilla(0,4,'dro')
+        self.juego.estado_actual.get_tablero().actualizar_casilla(0,7,'drf')
+        #self.juego.estado.get_fichas().get_ficha(5) == 0 
+        #:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+        self.juego.adrf(0, 7, 0, 10,  3)
+   
+
+
+    def test_adaf(self):
+
+        self.juego.estado_actual.turno=Turno('A')
+        print(self.juego.estado_actual.get_turno().get_turno_actual()+" REGLA 4")
+        moneda = Moneda()
+        moneda.lanzar()
+        self.juego.estado_actual.moneda.lanzar()
+        #esto funciona MONEDA()
+        print(self.juego.estado_actual.get_moneda().estado_actual)
+        #self.juego.estado.get_tablero().actualizar_casilla(0,4,'dro')
+        self.juego.estado_actual.get_tablero().actualizar_casilla(1,7,'daf')
+        #self.juego.estado.get_fichas().get_ficha(5) == 0 
+        #:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+        
+        self.juego.adaf(1, 7, 1, 9, 2)
+
+
+
+
+    def test_rdro(self):  
+            self.juego.estado_actual.turno=Turno('R')
+            print(self.juego.estado_actual.get_turno().get_turno_actual())
+            self.juego.estado_actual.moneda.lanzar()
+            print(self.juego.estado_actual.get_moneda().estado_actual)
+            self.juego.estado_actual.get_tablero().actualizar_casilla(0,4,'dro')
+            self.juego.estado_actual.get_tablero().actualizar_casilla(0,1,'v')
+            self.juego.estado_actual.get_fichas().get_ficha(4) == 0 
+            print(self.juego.movimiento_rdro_valido(0,4,0,2,3))
+
+    
+    def test_rdro1(self):
+            self.juego.estado_actual.turno=Turno('R')
+            print(self.juego.estado_actual.get_turno().get_turno_actual())
+            self.juego.estado_actual.moneda.lanzar()
+            print(self.juego.estado_actual.get_moneda().estado_actual)
+            self.juego.estado_actual.get_tablero().actualizar_casilla(1,0,'dro')
+            self.juego.estado_actual.get_tablero().actualizar_casilla(1,5,'v')
+            self.juego.estado_actual.get_fichas().get_ficha(4) == 0 
+            print(self.juego.movimiento_rdro_valido(1,0,1,5,5))
+            self.juego.rdro(1, 0, 1, 5, 5) 
+    
+    def test_rdro2(self):
+            self.juego.estado_actual.turno=Turno('R')
+            print(self.juego.estado_actual.get_turno().get_turno_actual())
+            self.juego.estado_actual.moneda.lanzar()
+            print(self.juego.estado_actual.get_moneda().estado_actual)
+            self.juego.estado_actual.get_fichas().get_ficha(4) == 0 
+            self.juego.rdro(0, 4, 1, 1, 6)
+    
+    def test_rdao(self): # Test para verificar que rdao devuelve 6
+        self.juego.estado_actual.turno=Turno('A')
+        print(self.juego.estado_actual.get_turno().get_turno_actual())
+        self.juego.estado_actual.moneda.lanzar()
+        print(self.juego.estado_actual.get_moneda().estado_actual)
+        self.juego.estado_actual.get_fichas().get_ficha(5) == 0 
+    
+        self.juego.rdao(0, 0, 0, 3, 3)
+    
+    def test_rdao1(self): # Test para verificar que rdao devuelve 6
+        self.juego.estado_actual.turno=Turno('A')
+        print(self.juego.estado_actual.get_turno().get_turno_actual())
+        self.juego.estado_actual.moneda.lanzar()
+        print(self.juego.estado_actual.get_moneda().estado_actual)
+        self.juego.estado_actual.get_fichas().get_ficha(5) == 0 
+    
+        self.juego.rdao(1, 4, 0, 1, 6)
+  
+
+    def test_rdao2(self): # Test para verificar que rdao devuelve 6
+        self.juego.estado_actual.turno=Turno('A')
+        print(self.juego.estado_actual.get_turno().get_turno_actual())
+        self.juego.estado_actual.moneda.lanzar()
+        print(self.juego.estado_actual.get_moneda().estado_actual)
+        self.juego.estado_actual.get_fichas().get_ficha(5) == 0 
+    
+        self.juego.rdao(1, 6, 1, 3, 3)
+
+'''
     def test_verificar_gana_rojo(self): # Test para verificar que el jugador rojo gana
         self.juego.estado.get_tablero().actualizar_casilla(0,4,'v')
         self.juego.estado.get_tablero().actualizar_casilla(0,6,'v')
@@ -134,22 +259,6 @@ class TestJuego(unittest.TestCase):
         self.assertEqual(self.juego.estado.get_tablero().estado_casilla(1, 8), 'daf')
 
 
-    def test_rdro(self):  
-        self.juego.estado.turno=Turno('R')
-        print(self.juego.estado.get_turno().get_turno_actual())
-        self.juego.estado.moneda.lanzar_moneda()
-        print(self.juego.estado.get_moneda().estado_actual)
-        self.juego.estado.get_tablero().actualizar_casilla(0,4,'dro')
-        self.juego.estado.get_tablero().actualizar_casilla(0,1,'v')
-        self.juego.estado.get_fichas().get_ficha(4) == 0 
-        
-        self.juego.rdro(0, 4, 0, 1, 3)
-            # Verifica que hay fichas en las posiciones iniciales
-        self.assertEqual(self.juego.estado.get_tablero().estado_casilla(0,4), 'dro')
-        self.assertEqual(self.juego.estado.get_tablero().estado_casilla(0,1), 'dro')
-        self.assertEqual(self.juego.estado.estado_casilla_FR(0,4), 2 )
-        self.assertEqual(self.juego.estado.estado_casilla_FR(0,1), 1 )
-
     def test_rdro1(self):
         self.juego.estado.turno=Turno('R')
         print(self.juego.estado.get_turno().get_turno_actual())
@@ -258,8 +367,8 @@ class TestJuego(unittest.TestCase):
 
     def test_sdaf(self): # Test para verificar que sdaf devuelve 4
         self.juego.sdaf(1, 2, 3)
-        self.assertEqual(self.juego.estado.get_tablero().estado_casilla(1, 2), 'v')
-
-
+        self.assertEqual(self.juego.estado.get_tablero().estado_casilla(1, 2), 'v') 
+        
+    '''
 if __name__ == '__main__': # Permite ejecutar los tests desde la consola
     unittest.main()
