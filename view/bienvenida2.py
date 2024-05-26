@@ -58,7 +58,7 @@ class Bienvenida2:
         titulo2 = self.ftexto2.render("BACKGAMMON REBOTE", True, VERDE)
 
         # 2. DE MODO DE JUEGO
-        modo_juego = self.ftexto3.render("Seleccione un modo de juego:", True, NEGRO)
+        modo_juego1 = self.ftexto3.render("Seleccione un modo de juego:", True, NEGRO)
 
         # 3. OPCIONES DE JUEGO
         modo_juego = self.ftexto4.render("Humano-Máquina", True, NEGRO)
@@ -85,7 +85,7 @@ class Bienvenida2:
 
             self.ventana.blit(titulo1, (323, 74))
             self.ventana.blit(titulo2, (153, 113))
-            self.ventana.blit(modo_juego, (62, 198))
+            self.ventana.blit(modo_juego1, (62, 198))
             self.ventana.blit(modo_juego, (470, 254))
 
             # Actualiza la ventana

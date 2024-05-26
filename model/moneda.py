@@ -25,3 +25,6 @@ class Moneda:
     # getter
     def get_valor_actual(self):
         return self.valor_actual
+    
+    def set_valor_actual(self, valor):
+        self.valor_actual = valor

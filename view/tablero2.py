@@ -397,7 +397,7 @@ class Tablero2:
                                 self.ficha_seleccionada = None
                 
                 elif modo_juego == 'fácil':
-                    # TURNO DE LA MAQUINA
+                    '''# TURNO DE LA MAQUINA
                     # Lanzar el dado y la moneda
                     dado, moneda = Dado(), Moneda()
 
@@ -413,7 +413,7 @@ class Tablero2:
                     valor_dado = self.fTexto1.render(f"Valor obtenido: {estado.get_dado().get_valor_actual()}", True, NEGRO)
                     valor_moneda = self.fTexto1.render(f"Valor obtenido: {estado.get_moneda().get_valor_actual()}", True, NEGRO)
                     
-                    
+                    print(estado.get_turno().get_turno_actual())'''
                     turno_humano = estado.get_turno().get_turno_actual()
                     if turno_humano == 'R':
                         if event.type == pygame.MOUSEBUTTONDOWN:
@@ -444,10 +444,44 @@ class Tablero2:
                                     self.ficha_seleccionada = None
                                     estado.get_tablero().mostrar_tablero()
                                     turno = self.fTexto5.render(f"Es turno de las fichas {estado.get_turno().get_turno_actual()}", True, NEGRO)
+
+                                    if (estado.get_turno().get_turno_actual() == 'A'):
+                                        # Lanzar el dado y la moneda
+                                        dado, moneda = Dado(), Moneda()
+
+                                        dado.lanzar()
+                                        moneda.set_valor_actual('a')
+
+                                        controlador_juego = Controlador2()
+                                        controlador_juego.notificar_valor_dado_moneda(dado, moneda)
+
+                                        #Registrar el turno y lanzamiento del dado y la moneda
+                                        estado.set_dado(dado)
+                                        estado.set_moneda(moneda)
+                                        valor_dado = self.fTexto1.render(f"Valor obtenido: {estado.get_dado().get_valor_actual()}", True, NEGRO)
+                                        valor_moneda = self.fTexto1.render(f"Valor obtenido: {estado.get_moneda().get_valor_actual()}", True, NEGRO)
+
+                                        x, y, estado, ficha = mover_ficha(estado, AMARILLO, self.posiciones_fichas, self.fichas)
+                                        if x != -1 and y != -1:
+                                            pos = (x, y)
+                                            print(pos)
+                                            print(pos[0], pos[1])
+                                            xn = self.posiciones_fichas[pos[0]][pos[1]][0]
+                                            yn = self.posiciones_fichas[pos[0]][pos[1]][1]
+                                            self.ficha_seleccionada = ficha
+                                            self.ficha_seleccionada.cambiarPosicion(xn, yn, self)
+                                            self.ficha_seleccionada.seleccionar(False)
+                                            self.ficha_seleccionada = None
+                                            estado.get_tablero().mostrar_tablero()
+                                            turno = self.fTexto5.render(f"Es turno de las fichas {estado.get_turno().get_turno_actual()}", True, NEGRO)
+
+
                                 else:
                                     self.ficha_seleccionada.seleccionar(False)
                                     self.ficha_seleccionada = None
                         
+
+
                         # TURNO DE LA MAQUINA
                         '''# Lanzar el dado y la moneda
                         dado, moneda = Dado(), Moneda()
@@ -464,21 +498,22 @@ class Tablero2:
                         valor_dado = self.fTexto1.render(f"Valor obtenido: {estado.get_dado().get_valor_actual()}", True, NEGRO)
                         valor_moneda = self.fTexto1.render(f"Valor obtenido: {estado.get_moneda().get_valor_actual()}", True, NEGRO)'''
 
-                        x, y, estado = mover_ficha(estado, AMARILLO, self.posiciones_fichas, self.fichas)
-                        if x != -1 and y != -1:
-                            pos = (x, y)
-                            print(pos)
-                            print(pos[0], pos[1])
-                            xn = self.posiciones_fichas[pos[0]][pos[1]][0]
-                            yn = self.posiciones_fichas[pos[0]][pos[1]][1]
-                            self.ficha_seleccionada.cambiarPosicion(xn, yn, self)
-                            self.ficha_seleccionada.seleccionar(False)
-                            self.ficha_seleccionada = None
-                            estado.get_tablero().mostrar_tablero()
-                            turno = self.fTexto5.render(f"Es turno de las fichas {estado.get_turno().get_turno_actual()}", True, NEGRO)
-                        '''else:
-                            self.ficha_seleccionada.seleccionar(False)
-                            self.ficha_seleccionada = None'''
+                        '''if (estado.get_turno().get_turno_actual() == 'A'):
+                            x, y, estado = mover_ficha(estado, AMARILLO, self.posiciones_fichas, self.fichas)
+                            if x != -1 and y != -1:
+                                pos = (x, y)
+                                print(pos)
+                                print(pos[0], pos[1])
+                                xn = self.posiciones_fichas[pos[0]][pos[1]][0]
+                                yn = self.posiciones_fichas[pos[0]][pos[1]][1]
+                                self.ficha_seleccionada.cambiarPosicion(xn, yn, self)
+                                self.ficha_seleccionada.seleccionar(False)
+                                self.ficha_seleccionada = None
+                                estado.get_tablero().mostrar_tablero()
+                                turno = self.fTexto5.render(f"Es turno de las fichas {estado.get_turno().get_turno_actual()}", True, NEGRO)
+                            else:
+                                self.ficha_seleccionada.seleccionar(False)
+                                self.ficha_seleccionada = None'''
                     pass
                 
                 if event.type == pygame.KEYDOWN:

@@ -9,14 +9,22 @@ def identificar_fichas(fichas_tablero, color):
             fichas.append(ficha)
     return fichas
 
+def escoger_ficha(fichas_disponibles):
+    ficha = random.choice(fichas_disponibles)
+    return ficha
+
 # Determinar los posibles movimientos de una ficha
 def movimientos_posibles(estado, posiciones_fichas, fichas_disponibles):
     movimientos = []
+    ficha_apta = []
 
     for ficha in fichas_disponibles:
         if ficha.get_regla() == "ADRO":
+            ficha_apta.append(ficha)
             x, y, estado = mover_ADRO(ficha, estado, posiciones_fichas)
+
         elif ficha.get_regla() == "ADAO":
+            ficha_apta.append(ficha)
             x, y, estado = mover_ADAO(ficha, estado, posiciones_fichas)
         
         if x != -1 and y != -1:
@@ -33,7 +41,15 @@ def mover_ficha(estado, color, posiciones, fichas_totales):
     fichas_disponibles = []
     fichas_disponibles = identificar_fichas(fichas_totales, color)
 
-    movimientos = []
+    ficha = escoger_ficha(fichas_disponibles)
+
+    if ficha.get_regla() == "ADRO":
+        x, y, estado = mover_ADRO(ficha, estado, posiciones)
+
+    elif ficha.get_regla() == "ADAO":
+        x, y, estado = mover_ADAO(ficha, estado, posiciones)
+
+    '''movimientos = []
     movimientos = movimientos_posibles(estado, posiciones, fichas_disponibles)
 
     if len(movimientos) == 0:
@@ -41,7 +57,8 @@ def mover_ficha(estado, color, posiciones, fichas_totales):
     else:
         movimiento = escoger_movimiento(movimientos)
         return movimiento[0], movimiento[1], estado
-    pass
+    pass'''
+    return x, y, estado, ficha
 
 '''# Definir las posibles acciones que puede tomar la IA
 acciones_posibles = ["arriba", "abajo", "izquierda", "derecha"]
