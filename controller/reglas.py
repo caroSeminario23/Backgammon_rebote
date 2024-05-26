@@ -141,7 +141,7 @@ def verificador_ADRO(ficha, estado, posiciones):
                 c = a+1
             elif b==3 and n>=3 and n<=5 and a==1:
                 c = a+1
-            elif b==4 and n>=4 and n<=6 and a==1:
+            elif b==4 and n>=4 and n<=5 and a==1:
                 c = a+1
             elif b==5 and n==5 and a==1:
                 c = a+1
@@ -176,7 +176,7 @@ def verificador_ADRO(ficha, estado, posiciones):
                 d = b-1
             elif b==0 and n==0 and a==0:
                 d = b
-            elif b==0 and n>=0 and n<=5 and a==1:
+            elif b==0 and n>=0 and n<=5 and a==0:
                 d = b+n-1+1
             elif b>=0 and b<=5 and n>=0 and n<=5 and a==1:
                 d = b+n+1
@@ -190,6 +190,19 @@ def verificador_ADRO(ficha, estado, posiciones):
                 d = b+n+1
             elif b==10 and n==0 and a==1:
                 d = b+1
+            elif b==1 and n==0 and a==0:
+                d = b-n-1
+            elif b==1 and n>=1 and n<=5 and a==0:
+                d = b+(n-3)+1
+            elif b==2 and n>=2 and n<=5 and a==0:
+                d = b+(n-5)+1
+            elif b==3 and n>=3 and n<=5 and a==0:
+                d = b+(n-7)+1
+            elif b==4 and n>=4 and n<=5 and a==0:
+                d = b+(n-9)+1
+            elif b==5 and n==5 and a==0:
+                d = b+(n-11)+1
+
             else:
                 print('No se cumplen las condiciones para calcular d')
                 d = -1
