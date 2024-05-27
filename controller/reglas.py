@@ -196,6 +196,7 @@ def verificador_ADAO(ficha, estado, posiciones):
     coord = (aO, bO)  
     pos = encontrar_posicion_cercana(coord, posiciones)
     if pos is not None:
+        print('hola123')
         print(f'La coordenada {coord} está cerca de la posición {pos} en self.posiciones_fichas')
         a = pos[0]
         b = pos[1]
@@ -283,10 +284,12 @@ def verificador_ADAO(ficha, estado, posiciones):
         c = -1
         d = -1
     
-    print(c, d)
+    print('Me voy a mover a: ',c, d)
     if c >= 0 and c <= 1 and d >= 0 and d <= 11:
         if estado.get_tablero().estado_casilla(c,d) == 'v' or estado.get_tablero().estado_casilla(c,d) == 'dao':
             valido = True
+            print('valido')
+            return c, d, valido
         else:
             valido = False
     else:
@@ -308,6 +311,7 @@ def mover_ADAO(ficha, estado, posiciones):
         pos = encontrar_posicion_cercana(coord, posiciones)
         if pos is not None:
             print(f'La coordenada {coord} está cerca de la posición {pos} en self.posiciones_fichas')
+            print('holas567')
             a = pos[0]
             b = pos[1]
         else:

@@ -5,7 +5,7 @@ from utils.figuras import dibujar_rectangulo_redondeado
 from view.ficha import Ficha
 from controller.controlador2 import Controlador2
 #from controller.controlador_tablero2 import C_Tablero2
-from controller.reglas import mover_ADRO, mover_ADAO, mover_ADRF, mover_ADAF, mover_RDRO, mover_RDAO
+from controller.reglas import mover_ADRO, mover_ADAO, mover_ADRF, mover_ADAF, mover_CDRO, mover_CDAO, mover_SDRF, mover_SDAF, mover_LDRC, mover_LDAC
 from ia.no_deterministico import mover_ficha
 from model.dado import Dado
 from model.moneda import Moneda
@@ -47,11 +47,13 @@ class Tablero2:
         return [
             [
                 (self.ancho//3.02, self.alto//3), (self.ancho//2.7, self.alto//3), (self.ancho//2.44, self.alto//3), (self.ancho//2.22, self.alto//3), (self.ancho//2.04, self.alto//3), (self.ancho//1.89, self.alto//3),
-                (self.ancho//1.755, self.alto//3), (self.ancho//1.64, self.alto//3), (self.ancho//1.54, self.alto//3), (self.ancho//1.45, self.alto//3), (self.ancho//1.375, self.alto//3), (self.ancho//1.305, self.alto//3)
+                (self.ancho//1.755, self.alto//3), (self.ancho//1.64, self.alto//3), (self.ancho//1.54, self.alto//3), (self.ancho//1.45, self.alto//3), (self.ancho//1.375, self.alto//3), (self.ancho//1.305, self.alto//3),
+                (1262, 458), (1262, 344)
             ],
             [
                 (self.ancho//3.02, self.alto//1.28), (self.ancho//2.7, self.alto//1.28), (self.ancho//2.44, self.alto//1.28), (self.ancho//2.22, self.alto//1.28), (self.ancho//2.04, self.alto//1.28), (self.ancho//1.89, self.alto//1.28),
-                (self.ancho//1.755, self.alto//1.28), (self.ancho//1.64, self.alto//1.28), (self.ancho//1.54, self.alto//1.28), (self.ancho//1.45, self.alto//1.28), (self.ancho//1.375, self.alto//1.28), (self.ancho//1.305, self.alto//1.28)
+                (self.ancho//1.755, self.alto//1.28), (self.ancho//1.64, self.alto//1.28), (self.ancho//1.54, self.alto//1.28), (self.ancho//1.45, self.alto//1.28), (self.ancho//1.375, self.alto//1.28), (self.ancho//1.305, self.alto//1.28),
+                (1262, 756), (1262, 627)
             ]
         ]
         
@@ -70,7 +72,7 @@ class Tablero2:
         tablero_01 = []
         tablero_p1, tablero_p2 = [], []
         
-        for i in range(12):
+        for i in range(14):
             if estado.get_tablero().estado_casilla(0, i) == 'v':
                 tablero_p1.append(0)
             # Si es rojo y dro
@@ -85,9 +87,21 @@ class Tablero2:
             # Si es amarillo y daf
             elif estado.get_tablero().estado_casilla(0, i) == 'daf':
                 tablero_p1.append(4)
+            # Si es roja y drc
+            elif estado.get_tablero().estado_casilla(0, i) == 'drc':
+                tablero_p1.append(5)
+            # Si es amarilla y dac
+            elif estado.get_tablero().estado_casilla(0, i) == 'dac':
+                tablero_p1.append(6)
+            # Si es roja y drl
+            elif estado.get_tablero().estado_casilla(0, i) == 'drl':
+                tablero_p1.append(7)
+            # Si es amarilla y dal
+            elif estado.get_tablero().estado_casilla(0, i) == 'dal':
+                tablero_p1.append(8)
             
         
-        for i in range(12):
+        for i in range(14):
             if estado.get_tablero().estado_casilla(1, i) == 'v':
                 tablero_p2.append(0)
             # Si es rojo y dro
@@ -102,6 +116,18 @@ class Tablero2:
             # Si es amarillo y daf
             elif estado.get_tablero().estado_casilla(1, i) == 'daf':
                 tablero_p2.append(4)
+            # Si es roja y drc
+            elif estado.get_tablero().estado_casilla(0, i) == 'drc':
+                tablero_p1.append(5)
+            # Si es amarilla y dac
+            elif estado.get_tablero().estado_casilla(0, i) == 'dac':
+                tablero_p1.append(6)
+            # Si es roja y drl
+            elif estado.get_tablero().estado_casilla(0, i) == 'drl':
+                tablero_p1.append(7)
+            # Si es amarilla y dal
+            elif estado.get_tablero().estado_casilla(0, i) == 'dal':
+                tablero_p1.append(8)
         
         tablero_01 = [tablero_p1, tablero_p2]
         print("Tablero 01:", tablero_01)
@@ -127,6 +153,18 @@ class Tablero2:
                     #print(estado.get_FR().estado_casilla_FR(fila, m))
                 elif i == 4:
                     self.fichas.append(Ficha(AMARILLO, self.posiciones_fichas[fila][m][0], self.posiciones_fichas[fila][m][1], estado.get_FA().estado_casilla_FA(fila, m), 'DAF')) 
+                    #print(estado.get_FA().estado_casilla_FA(fila, m))
+                elif i == 5:
+                    self.fichas.append(Ficha(ROJO, self.posiciones_fichas[fila][m][0], self.posiciones_fichas[fila][m][1], estado.get_FR().estado_casilla_FR(fila, m), 'DRC')) 
+                    #print(estado.get_FR().estado_casilla_FR(fila, m))
+                elif i == 6:
+                    self.fichas.append(Ficha(AMARILLO, self.posiciones_fichas[fila][m][0], self.posiciones_fichas[fila][m][1], estado.get_FA().estado_casilla_FA(fila, m), 'DAC')) 
+                    #print(estado.get_FA().estado_casilla_FA(fila, m))
+                elif i == 7:
+                    self.fichas.append(Ficha(ROJO, self.posiciones_fichas[fila][m][0], self.posiciones_fichas[fila][m][1], estado.get_FR().estado_casilla_FR(fila, m), 'DRL')) 
+                    #print(estado.get_FR().estado_casilla_FR(fila, m))
+                elif i == 8:
+                    self.fichas.append(Ficha(AMARILLO, self.posiciones_fichas[fila][m][0], self.posiciones_fichas[fila][m][1], estado.get_FA().estado_casilla_FA(fila, m), 'DAL')) 
                     #print(estado.get_FA().estado_casilla_FA(fila, m))
                 m += 1
     
@@ -289,6 +327,10 @@ class Tablero2:
                                 x, y, estado = mover_ADRF(self.ficha_seleccionada, estado, self.posiciones_fichas)
                             elif self.ficha_seleccionada.get_regla() == "DAF":
                                 x, y, estado = mover_ADAF(self.ficha_seleccionada, estado, self.posiciones_fichas)
+                            elif self.ficha_seleccionada.get_regla() == "DRC":
+                                x, y, estado = mover_LDRC(self.ficha_seleccionada, estado, self.posiciones_fichas)
+                            elif self.ficha_seleccionada.get_regla() == "DAC":
+                                x, y, estado = mover_LDAC(self.ficha_seleccionada, estado, self.posiciones_fichas)
                                 
 
                             if x != -1 and y != -1:
@@ -330,7 +372,14 @@ class Tablero2:
                                         break
                             else:
                                 print('Ya hay una ficha seleccionada')
-                                x, y, estado = mover_ADRO(self.ficha_seleccionada, estado, self.posiciones_fichas)
+                                if self.ficha_seleccionada.get_regla() == "DRO":
+                                    x, y, estado = mover_ADRO(self.ficha_seleccionada, estado, self.posiciones_fichas)
+                                    #x, y, estado = mover_RDRO(self.ficha_seleccionada, estado, self.posiciones_fichas)
+                                elif self.ficha_seleccionada.get_regla() == "DRF":
+                                    x, y, estado = mover_ADRF(self.ficha_seleccionada, estado, self.posiciones_fichas)
+                                elif self.ficha_seleccionada.get_regla() == "DRC":
+                                    x, y, estado = mover_LDRC(self.ficha_seleccionada, estado, self.posiciones_fichas)
+                            
 
                                 if x != -1 and y != -1:
                                     pos = (x, y)
@@ -342,9 +391,13 @@ class Tablero2:
                                     self.ficha_seleccionada.seleccionar(False)
                                     self.ficha_seleccionada = None
                                     estado.get_tablero().mostrar_tablero()
+                                    print(estado.get_dado().get_valor_actual())
+                                    print(estado.get_moneda().get_valor_actual())
+                                    
                                     turno = self.fTexto5.render(f"Es turno de las fichas {estado.get_turno().get_turno_actual()}", True, NEGRO)
 
                                     if (estado.get_turno().get_turno_actual() == 'A'):
+                                        print('\n\n\nYA ENTRE')
                                         # Lanzar el dado y la moneda
                                         dado, moneda = Dado(), Moneda()
 
@@ -355,8 +408,16 @@ class Tablero2:
                                         controlador_juego.notificar_valor_dado_moneda(dado, moneda)
 
                                         #Registrar el turno y lanzamiento del dado y la moneda
-                                        estado.set_dado(dado)
-                                        estado.set_moneda(moneda)
+                                        #estado.set_dado(dado)
+                                        val_dado = dado.get_valor_actual()
+                                        print('valor actual del dado: ', val_dado)
+                                        estado.get_dado().set_valor_actual(val_dado)
+                                        print('valor registrado del dado: ', estado.get_dado().get_valor_actual())
+                                        #estado.set_moneda(moneda)
+                                        val_moneda = moneda.get_valor_actual()
+                                        print('valor actual de la moneda: ', val_moneda)
+                                        estado.get_moneda().set_valor_actual(val_moneda)
+                                        print('valor registrado de la moneda: ', estado.get_moneda().get_valor_actual())
                                         valor_dado = self.fTexto1.render(f"Valor obtenido: {estado.get_dado().get_valor_actual()}", True, NEGRO)
                                         valor_moneda = self.fTexto1.render(f"Valor obtenido: {estado.get_moneda().get_valor_actual()}", True, NEGRO)
 
@@ -373,6 +434,8 @@ class Tablero2:
                                             self.ficha_seleccionada = None
                                             estado.get_tablero().mostrar_tablero()
                                             turno = self.fTexto5.render(f"Es turno de las fichas {estado.get_turno().get_turno_actual()}", True, NEGRO)
+                                        else:
+                                            print('Sin movimientos disponibles')
 
                                 else:
                                     self.ficha_seleccionada.seleccionar(False)

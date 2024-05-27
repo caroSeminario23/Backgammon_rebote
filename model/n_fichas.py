@@ -1,7 +1,7 @@
 class N_Fichas:
     # Clase que representa la cantidad de fichas del juego por tipo
     def __init__(self):
-        self.fichas = [15, 15, 0, 0, 0, 0, 0, 0] # [dro, dao, drf, daf, drc, dac, drl, dal]
+        self.fichas = [13, 13, 2, 2, 0, 0, 0, 0] # [dro, dao, drf, daf, drc, dac, drl, dal]
 
     def get_ndro(self):
         return self.fichas[0]

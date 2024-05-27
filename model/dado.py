@@ -24,3 +24,6 @@ class Dado:
     
     def esperar_lanzamiento(self):
         self.valor_actual = 0
+    
+    def set_valor_actual(self, valor):
+        self.valor_actual = valor

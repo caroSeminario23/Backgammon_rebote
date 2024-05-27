@@ -2,8 +2,8 @@ class Matriz_FR:
     # Inicializa la matriz de fichas rojas
     def __init__(self): 
         self.FR = [
-            [0, 0, 0, 0, 3, 0, 5, 0, 0, 0, 0, 0],
-            [5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2]
+            [0, 0, 0, 0, 3, 0, 5, 0, 0, 0, 0, 0, 0, 0],
+            [5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0]
         ] # FR: matriz que representa el número de fichas rojas por casilla del tablero
     
     # Devuelve el estado de la casilla (a,b) de la matriz de fichas rojas

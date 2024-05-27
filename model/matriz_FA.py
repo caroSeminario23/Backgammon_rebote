@@ -2,8 +2,8 @@ class Matriz_FA:
     # Inicializa la matriz de fichas amarillas
     def __init__(self): 
         self.FA = [
-            [5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
-            [0, 0, 0, 0, 3, 0, 5, 0, 0, 0, 0, 0]
+            [5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0],
+            [0, 0, 0, 0, 3, 0, 5, 0, 0, 0, 0, 0, 0, 0]
         ] # FA: matriz que representa el número de fichas amarillas por casilla del tablero
 
     # Devuelve el estado de la casilla (a,b) de la matriz de fichas amarillas
