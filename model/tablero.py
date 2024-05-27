@@ -1,8 +1,8 @@
 class Tablero:
     # Inicializa el tablero como una matriz de 2x12 
     def __init__(self): 
-        self.casillas = [['dao','v','v','v','dro','v','dro','v','v','v','v','dao'],
-                         ['dro','v','v','v','dao','v','dao','v','v','v','v','dro']]
+        self.casillas = [['dao','v','v','v','dro','v','dro','v','v','v','v','daf','v','v'],
+                         ['dro','v','v','v','dao','v','dao','v','v','v','v','drf','v','v']]
 
     # Devuelve el estado de la casilla (a,b)
     def estado_casilla(self, a, b): 

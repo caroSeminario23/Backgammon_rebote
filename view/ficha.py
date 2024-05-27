@@ -16,6 +16,8 @@ class Ficha:
             self.regla = "DRO"
         elif self.color == AMARILLO:
             self.regla = "DAO"
+        else:
+            self.regla = regla
 
     def obtenerPosicion(self):
         return [self.x, self.y]

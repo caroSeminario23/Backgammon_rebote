@@ -5,7 +5,7 @@ from utils.figuras import dibujar_rectangulo_redondeado
 from view.ficha import Ficha
 from controller.controlador2 import Controlador2
 #from controller.controlador_tablero2 import C_Tablero2
-from controller.reglas import mover_ADRO, mover_ADAO
+from controller.reglas import mover_ADRO, mover_ADAO, mover_ADRF, mover_ADAF, mover_RDRO, mover_RDAO
 from ia.no_deterministico import mover_ficha
 from model.dado import Dado
 from model.moneda import Moneda
@@ -73,38 +73,60 @@ class Tablero2:
         for i in range(12):
             if estado.get_tablero().estado_casilla(0, i) == 'v':
                 tablero_p1.append(0)
-            # Si es rojo
-            elif estado.get_tablero().estado_casilla(0, i) in ['dro', 'drf']:
+            # Si es rojo y dro
+            elif estado.get_tablero().estado_casilla(0, i) == 'dro': #in ['dro', 'drf']
                 tablero_p1.append(1)
-            # Si es amarillo
-            elif estado.get_tablero().estado_casilla(0, i) in ['dao', 'daf']:
+            # Si es rojo y drf
+            elif estado.get_tablero().estado_casilla(0, i) == 'drf':
+                tablero_p1.append(3)
+            # Si es amarillo y dao
+            elif estado.get_tablero().estado_casilla(0, i) == 'dao': #in ['dao', 'daf']
                 tablero_p1.append(2)
+            # Si es amarillo y daf
+            elif estado.get_tablero().estado_casilla(0, i) == 'daf':
+                tablero_p1.append(4)
+            
         
         for i in range(12):
             if estado.get_tablero().estado_casilla(1, i) == 'v':
                 tablero_p2.append(0)
-            # Si es rojo
-            elif estado.get_tablero().estado_casilla(1, i) in ['dro', 'drf']:
+            # Si es rojo y dro
+            elif estado.get_tablero().estado_casilla(1, i) == 'dro': #in ['dro', 'drf']
                 tablero_p2.append(1)
-            # Si es amarillo
-            elif estado.get_tablero().estado_casilla(1, i) in ['dao', 'daf']:
+            # Si es rojo y drf
+            elif estado.get_tablero().estado_casilla(1, i) == 'drf':
+                tablero_p2.append(3)
+            # Si es amarillo y dao
+            elif estado.get_tablero().estado_casilla(1, i) == 'dao': #in ['dao', 'daf']
                 tablero_p2.append(2)
+            # Si es amarillo y daf
+            elif estado.get_tablero().estado_casilla(1, i) == 'daf':
+                tablero_p2.append(4)
         
         tablero_01 = [tablero_p1, tablero_p2]
+        print("Tablero 01:", tablero_01)
         return tablero_01
 
     def dibujar_fichas(self, estado, tablero_01):
         for fila in range(2):
             estado.get_FA().mostrar_FA()
             estado.get_FR().mostrar_FR()
+
+            #estado.get_tablero().estado_casilla(0, 0)
             m = 0
             for i in tablero_01[fila]:
-                #print(m)
+                print(m)
                 if i == 1:
-                    self.fichas.append(Ficha(ROJO, self.posiciones_fichas[fila][m][0], self.posiciones_fichas[fila][m][1], estado.get_FR().estado_casilla_FR(fila, m))) 
+                    self.fichas.append(Ficha(ROJO, self.posiciones_fichas[fila][m][0], self.posiciones_fichas[fila][m][1], estado.get_FR().estado_casilla_FR(fila, m), 'DRO')) 
                     #print(estado.get_FR().estado_casilla_FR(fila, m))
                 elif i == 2:
-                    self.fichas.append(Ficha(AMARILLO, self.posiciones_fichas[fila][m][0], self.posiciones_fichas[fila][m][1], estado.get_FA().estado_casilla_FA(fila, m))) 
+                    self.fichas.append(Ficha(AMARILLO, self.posiciones_fichas[fila][m][0], self.posiciones_fichas[fila][m][1], estado.get_FA().estado_casilla_FA(fila, m), 'DAO'))
+                    #print(estado.get_FA().estado_casilla_FA(fila, m))
+                elif i == 3:
+                    self.fichas.append(Ficha(ROJO, self.posiciones_fichas[fila][m][0], self.posiciones_fichas[fila][m][1], estado.get_FR().estado_casilla_FR(fila, m), 'DRF')) 
+                    #print(estado.get_FR().estado_casilla_FR(fila, m))
+                elif i == 4:
+                    self.fichas.append(Ficha(AMARILLO, self.posiciones_fichas[fila][m][0], self.posiciones_fichas[fila][m][1], estado.get_FA().estado_casilla_FA(fila, m), 'DAF')) 
                     #print(estado.get_FA().estado_casilla_FA(fila, m))
                 m += 1
     
@@ -245,6 +267,7 @@ class Tablero2:
                     if event.type == pygame.MOUSEBUTTONDOWN:
                         pos = pygame.mouse.get_pos()
                         print('Acabas de hacer click')
+                        print(pos)
                         if self.ficha_seleccionada is None:
                             print('No hay ninguna ficha seleccionada')
                             for ficha in self.fichas:
@@ -258,16 +281,15 @@ class Tablero2:
                             print('Ya hay una ficha seleccionada')
                             if self.ficha_seleccionada.get_regla() == "DRO":
                                 x, y, estado = mover_ADRO(self.ficha_seleccionada, estado, self.posiciones_fichas)
+                                #x, y, estado = mover_RDRO(self.ficha_seleccionada, estado, self.posiciones_fichas)
                             elif self.ficha_seleccionada.get_regla() == "DAO":
                                 x, y, estado = mover_ADAO(self.ficha_seleccionada, estado, self.posiciones_fichas)
-                            '''elif self.ficha_seleccionada.get_regla() == "DRF":
+                                #x, y, estado = mover_RDAO(self.ficha_seleccionada, estado, self.posiciones_fichas)
+                            elif self.ficha_seleccionada.get_regla() == "DRF":
                                 x, y, estado = mover_ADRF(self.ficha_seleccionada, estado, self.posiciones_fichas)
                             elif self.ficha_seleccionada.get_regla() == "DAF":
                                 x, y, estado = mover_ADAF(self.ficha_seleccionada, estado, self.posiciones_fichas)
-                            elif self.ficha_seleccionada.get_regla() == "DRC":
-                                x, y, estado = mover_ADRF(self.ficha_seleccionada, estado, self.posiciones_fichas)
-                            elif self.ficha_seleccionada.get_regla() == "DAC":
-                                x, y, estado = mover_ADAF(self.ficha_seleccionada, estado, self.posiciones_fichas)'''
+                                
 
                             if x != -1 and y != -1:
                                 pos = (x, y)
