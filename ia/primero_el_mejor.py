@@ -1,4 +1,36 @@
 import heapq
+from ia.no_deterministico import identificar_fichas, identificar_fichas_validas, escoger_ficha
+
+funcion_evaluadora = [
+    [20, 19, 18 , 17, 16, 15, 5, 4, 3, 2, 1, 0, 0, 5000],
+    [30, 31, 32, 33, 34, 35, 60, 65, 70, 75, 80, 85, 0, 5000]
+]
+# para rojo
+funcion_evaluadora_rojo = [
+    [20, 19, 18 , 17, 16, 15, 5, 4, 3, 2, 1, 0, 0, 5000],
+    [30, 31, 32, 33, 34, 35, 60, 65, 70, 75, 80, 85, 0, 5000]
+]
+
+# para amarillo
+funcion_evaluadora_amarillo = [
+    [-20, -19, -18 , -17, -16, -15, -5, -4, -3, -2, -1, 0, 0, -5000],
+    [-30, -31, -32, -33, -34, -35, -60, -65, -70, -75, -80, -85, 0, -5000]
+]
+
+# OBJETIVO
+objetivo = 5000
+objetivo_rojo = 5000
+objetivo_amarillo = -5000
+
+
+# MOVER LA FICHA
+def mover_fichaPEM(estado, color, posiciones, fichas_totales):
+    pass
+
+
+
+
+
 
 # Función heurística para calcular la distancia euclidiana desde un nodo hasta el objetivo
 def heuristica(nodo, objetivo):
