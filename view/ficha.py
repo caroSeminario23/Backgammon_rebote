@@ -13,9 +13,9 @@ class Ficha:
         self.imagen_fondo = None
 
         if self.color == ROJO:
-            self.regla = "ADRO"
+            self.regla = "DRO"
         elif self.color == AMARILLO:
-            self.regla = "ADAO"
+            self.regla = "DAO"
 
     def obtenerPosicion(self):
         return [self.x, self.y]

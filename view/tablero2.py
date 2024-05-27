@@ -99,14 +99,20 @@ class Tablero2:
             estado.get_FR().mostrar_FR()
             m = 0
             for i in tablero_01[fila]:
-                print(m)
+                #print(m)
                 if i == 1:
                     self.fichas.append(Ficha(ROJO, self.posiciones_fichas[fila][m][0], self.posiciones_fichas[fila][m][1], estado.get_FR().estado_casilla_FR(fila, m))) 
-                    print(estado.get_FR().estado_casilla_FR(fila, m))
+                    #print(estado.get_FR().estado_casilla_FR(fila, m))
                 elif i == 2:
                     self.fichas.append(Ficha(AMARILLO, self.posiciones_fichas[fila][m][0], self.posiciones_fichas[fila][m][1], estado.get_FA().estado_casilla_FA(fila, m))) 
-                    print(estado.get_FA().estado_casilla_FA(fila, m))
+                    #print(estado.get_FA().estado_casilla_FA(fila, m))
                 m += 1
+    
+    def eliminar_fichas_vacias(self):
+        #self.fichas = [ficha for ficha in self.fichas if ficha.get_color() != 'v']
+        fichasN = []
+        self.fichas = fichasN
+
 
     def mostrar_pantalla(self, j1, j2, estado, modo_juego):
         # CARGAR IMÁGENES
@@ -250,10 +256,18 @@ class Tablero2:
                                     break
                         else:
                             print('Ya hay una ficha seleccionada')
-                            if self.ficha_seleccionada.get_regla() == "ADRO":
+                            if self.ficha_seleccionada.get_regla() == "DRO":
                                 x, y, estado = mover_ADRO(self.ficha_seleccionada, estado, self.posiciones_fichas)
-                            elif self.ficha_seleccionada.get_regla() == "ADAO":
+                            elif self.ficha_seleccionada.get_regla() == "DAO":
                                 x, y, estado = mover_ADAO(self.ficha_seleccionada, estado, self.posiciones_fichas)
+                            '''elif self.ficha_seleccionada.get_regla() == "DRF":
+                                x, y, estado = mover_ADRF(self.ficha_seleccionada, estado, self.posiciones_fichas)
+                            elif self.ficha_seleccionada.get_regla() == "DAF":
+                                x, y, estado = mover_ADAF(self.ficha_seleccionada, estado, self.posiciones_fichas)
+                            elif self.ficha_seleccionada.get_regla() == "DRC":
+                                x, y, estado = mover_ADRF(self.ficha_seleccionada, estado, self.posiciones_fichas)
+                            elif self.ficha_seleccionada.get_regla() == "DAC":
+                                x, y, estado = mover_ADAF(self.ficha_seleccionada, estado, self.posiciones_fichas)'''
 
                             if x != -1 and y != -1:
                                 pos = (x, y)
@@ -266,6 +280,7 @@ class Tablero2:
                                 estado.get_tablero().mostrar_tablero()
                                 turno = self.fTexto5.render(f"Es turno de las fichas {estado.get_turno().get_turno_actual()}", True, NEGRO)
 
+                                self.eliminar_fichas_vacias()
                                 tablero_01 = self.identificar_fichas(estado)
                                 print(str(tablero_01))
                                 self.dibujar_fichas(estado, tablero_01)

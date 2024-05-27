@@ -21,3 +21,6 @@ class Dado:
     
     def get_valor_actual(self):
         return self.valor_actual
+    
+    def esperar_lanzamiento(self):
+        self.valor_actual = 0

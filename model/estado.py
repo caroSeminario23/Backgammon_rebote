@@ -18,10 +18,10 @@ class Estado:
     '''
     def __init__(self):
         self.tablero = Tablero()
-        self.turno = None
+        self.turno = 'No escogido'
         self.n_fichas = N_Fichas()
-        self.moneda = None
-        self.dado = None
+        self.moneda = 'i'
+        self.dado = 0
         self.FR = Matriz_FR()
         self.FA = Matriz_FA()
 
@@ -79,6 +79,7 @@ class Estado:
         self.turno.mostrar_turno()
         self.n_fichas.mostrar_n_fichas()
         self.moneda.mostrar_moneda()
+        self.dado.mostrar()
         self.FR.mostrar_FR()
         self.FA.mostrar_FA()
         print('-------------------')

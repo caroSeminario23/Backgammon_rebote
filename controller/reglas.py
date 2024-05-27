@@ -1,7 +1,7 @@
 from pync import Notifier
 
 def encontrar_posicion_cercana(coord, posiciones_fichas):
-    tolerancia = 10  # Puedes ajustar este valor según tus necesidades
+    tolerancia = 10
     for i, fila in enumerate(posiciones_fichas):
         for j, pos in enumerate(fila):
             if abs(pos[0] - coord[0]) <= tolerancia and abs(pos[1] - coord[1]) <= tolerancia:
@@ -11,7 +11,7 @@ def encontrar_posicion_cercana(coord, posiciones_fichas):
 # ==================
 #   REGLA 1: ADRO
 # ==================
-# Verificador de la posicion a la que se movera la ficha
+# Verificador de la posicion a la que se moverá la ficha
 def verificador_ADRO(ficha, estado, posiciones):
     aO = ficha.obtenerPosicion()[0]
     bO = ficha.obtenerPosicion()[1]
@@ -27,7 +27,6 @@ def verificador_ADRO(ficha, estado, posiciones):
     else:
         print(f'La coordenada {coord} no está cerca de ninguna posición en self.posiciones_fichas')
 
-
     n = (estado.get_dado().get_valor_actual())-1
     print(n, a, b)
     c, d = -1, -1
@@ -36,94 +35,98 @@ def verificador_ADRO(ficha, estado, posiciones):
     print(f"Turno: {estado.get_turno().get_turno_actual()}, Moneda: {estado.get_moneda().get_valor_actual()}")
     if estado.get_turno().get_turno_actual() == 'R' and estado.get_moneda().get_valor_actual() == 'a':
         print(f"Estado de la casilla en ({a}, {b}): {estado.get_tablero().estado_casilla(a, b)}")
-        if (estado.get_tablero().estado_casilla(a,b) == 'dro'):
+        if (estado.get_tablero().estado_casilla(a,b) == 'dro') and (estado.get_n_fichas().get_ndrc() == 0):
             # CALCULAR C
-            if b==1 and n==0 and a==0: # X
+            if a==0 and b>=6 and b<=11 and n>=0 and n<=5:
                 c = a
-            elif b==2 and n>=0 and n<=1 and a==0: # X
+            elif a==0 and b==5 and n>=0 and n<=4:
                 c = a
-            elif b==2 and n>=2 and n<=5 and a==0: # X
+            elif a==0 and b==5 and n==5:
                 c = a+1
-            elif b==3 and n>=0 and n<=2 and a==0: # X
+            elif a==0 and b==4 and n>=0 and n<=3: 
                 c = a
-            elif b==3 and n>=3 and n<=5 and a==0: # X
+            elif a==0 and b==4 and n>=4 and n<=5: 
                 c = a+1
-            elif b==4 and n>=0 and n<=3 and a==0: # X
+            elif a==0 and b==3 and n>=0 and n<=2:
                 c = a
-            elif b==4 and n>=4 and n<=5 and a==0: # X
+            elif a==0 and b==3 and n>=3 and n<=5: 
                 c = a+1
-            elif b==5 and n>=0 and n<=4 and a==0: # X
+            elif a==0 and b==2 and n>=0 and n<=1:
                 c = a
-            elif b==5 and n==5 and a==0: # X
+            elif a==0 and b==2 and n>=2 and n<=5: 
                 c = a+1
-            elif b==0 and n>=0 and n<=5 and a==0: # X
+            elif a==0 and b==1 and n==0: 
+                c = a
+            elif a==0 and b==1 and n>=1 and n<=5: 
                 c = a+1
-            elif b>=6 and b<=11 and n>=0 and n<=5 and a==0: # X
-                c = a
-            elif b==1 and n>=1 and n<=5 and a==0: # X
+            elif a==0 and b==0 and n>=0 and n<=5: 
                 c = a+1
-            elif b>=0 and b<=6 and n>=0 and n<=5 and a==1: # X
+            elif a==1 and b>=0 and b<=5 and n>=0 and n<=5: 
                 c = a
-            elif b==7 and n>=0 and n<=4 and a==1: # X
+            elif a==1 and b==6 and n>=0 and n<=4:
                 c = a
-            elif b==8 and n>=0 and n<=3 and a==1:  # X
+            elif a==1 and b==7 and n>=0 and n<=3:
                 c = a
-            elif b==9 and n>=0 and n<=2 and a==1: # X
+            elif a==1 and b==8 and n>=0 and n<=2:  
                 c = a
-            elif b==10 and n>=0 and n<=1 and a==1: # X
+            elif a==1 and b==9 and n>=0 and n<=1: 
                 c = a
-            elif b==11 and n==0 and a==1: # X
+            elif a==1 and b==10 and n==0:
                 c = a
-            
             else:
                 print('No se cumplen las condiciones para calcular c')
                 c = -1
             
             # CALCULAR D
-            if b>=6 and b<=11 and n>=0 and n<=5 and a==0:
+            if a==0 and b>=6 and b<=11 and n>=0 and n<=5:
                 d = b-n-1
-            elif b==5 and n>=0 and n<=4 and a==0:
+            elif a==0 and b==5 and n>=0 and n<=4:
                 d = b-n-1
-            elif b==4 and n>=0 and n<=3 and a==0:
+            elif a==0 and b==5 and n==5:
+                d = 0
+            elif a==0 and b==4 and n>=0 and n<=3:
                 d = b-n-1
-            elif b==3 and n>=0 and n<=2 and a==0:
+            elif a==0 and b==4 and n>=4 and n<=5:
+                d = n-4
+            elif a==0 and b==3 and n>=0 and n<=2:
                 d = b-n-1
-            elif b==2 and n>=0 and n<=1 and a==0:
+            elif a==0 and b==3 and n>=3 and n<=5:
+                d = n-3
+            elif a==0 and b==2 and n>=0 and n<=1:
                 d = b-n-1
-            elif b==1 and n==0 and a==0:
+            elif a==0 and b==2 and n>=2 and n<=5:
+                d = n-2
+            elif a==0 and b==1 and n==0:
                 d = b-1
-            elif b==0 and n==0 and a==0:
+            elif a==0 and b==1 and n>=1 and n<=5:
+                d = n-1
+            elif a==0 and b==0 and n==0:
                 d = b
-            elif b==0 and n>=0 and n<=5 and a==0:
-                d = b+n-1+1
-            elif b>=0 and b<=5 and n>=0 and n<=5 and a==1:
+            elif a==0 and b==0 and n>=1 and n<=5:
+                d = n
+            elif a==1 and b>=0 and b<=5 and n>=0 and n<=5:
                 d = b+n+1
-            elif b==6 and n>=0 and n<=4 and a==1:
+            elif a==1 and b==6 and n>=0 and n<=4:
                 d = b+n+1
-            elif b==7 and n>=0 and n<=3 and a==1:
+            elif a==1 and b==7 and n>=0 and n<=3:
                 d = b+n+1
-            elif b==8 and n>=0 and n<=2 and a==1:
+            elif a==1 and b==8 and n>=0 and n<=2:
                 d = b+n+1
-            elif b==9 and n>=0 and n<=1 and a==1:
+            elif a==1 and b==9 and n>=0 and n<=1:
                 d = b+n+1
-            elif b==10 and n==0 and a==1:
+            elif a==1 and b==10 and n==0:
                 d = b+1
-            elif b==1 and n==0 and a==0:
-                d = b-n-1
-            elif b==1 and n>=1 and n<=5 and a==0:
-                d = b+(n-3)+1
-            elif b==2 and n>=2 and n<=5 and a==0:
-                d = b+(n-5)+1
-            elif b==3 and n>=3 and n<=5 and a==0:
-                d = b+(n-7)+1
-            elif b==4 and n>=4 and n<=5 and a==0:
-                d = b+(n-9)+1
-            elif b==5 and n==5 and a==0:
-                d = b+(n-11)+1
-
             else:
                 print('No se cumplen las condiciones para calcular d')
                 d = -1
+        else:
+            print('No se cumplen las condiciones para calcular c y d')
+            c = -1
+            d = -1
+    else:
+        print('No es el turno de la ficha')
+        c = -1
+        d = -1
     
     print(c, d)
     if c >= 0 and c <= 1 and d >= 0 and d <= 11:
@@ -169,32 +172,25 @@ def mover_ADRO(ficha, estado, posiciones):
 def actualizar_estado_ADRO(estado, xi, yi, xf, yf):
     estado.get_turno().cambio_de_turno()
     estado.get_moneda().esperar_lanzamiento()
+    estado.get_dado().esperar_lanzamiento()
 
-    # Actualizar tablero
-    # Casilla de origen
     print("Antigua: ", xi, yi, "Nueva: ", xf, yf)
     estado.get_FR().eliminar_ficha_FR(xi, yi)
     if estado.get_FR().estado_casilla_FR(xi,yi) == 0:
         estado.get_tablero().convertir_en_vacia(xi, yi)
-        print("estoy dentro 1")
     else:
         estado.get_tablero().convertir_en_ordinaria(xi, yi, 'R')
-        print("estoy dentro 2")
     
     # Casilla de destino
     estado.get_FR().adicionar_ficha_FR(xf, yf)
-    #estadoN = estado.actualizar_estado(tablero, turnoN, estado.get_n_fichas(), monedaN, FRn, estado.get_FA())
     if xf==0 and yf>=0 and yf<=11:
         estado.get_tablero().convertir_en_ordinaria(xf, yf, 'R')
-        print("estoy dentro 3")
     elif xf==1 and yf>=0 and yf<=5:
         estado.get_tablero().convertir_en_ordinaria(xf, yf, 'R')
-        print("estoy dentro 4")
     elif xf==1 and yf>=6 and yf<=11:
         estado.get_tablero().convertir_en_finalista(xf, yf)
-        print("estoy dentro 5")
+        estado.get_tablero().mostrar_tablero()
     
-    #estadoN2 = estadoN.actualizar_estado(tablero2, turnoN, estadoN.get_n_fichas(), monedaN, FRn, estadoN.get_FA())
     estado.mostrar_estado()
     return estado
 
@@ -225,9 +221,33 @@ def verificador_ADAO(ficha, estado, posiciones):
     print(f"Turno: {estado.get_turno().get_turno_actual()}, Moneda: {estado.get_moneda().get_valor_actual()}")
     if estado.get_turno().get_turno_actual() == 'A' and estado.get_moneda().get_valor_actual() == 'a':
         print(f"Estado de la casilla en ({a}, {b}): {estado.get_tablero().estado_casilla(a, b)}")
-        if (estado.get_tablero().estado_casilla(a,b) == 'dao'):
+        if (estado.get_tablero().estado_casilla(a,b) == 'dao') and (estado.get_n_fichas().get_ndac() == 0):
             # CALCULAR C
-            if a==0 and b>=0 and b<=5 and n>=0 and n<=5:
+            if a==1 and b>=6 and b<=11 and n>=0 and n<=5:
+                c = a
+            elif a==1 and b==5 and n>=0 and n<=4:
+                c = a
+            elif a==1 and b==5 and n==5:
+                c = a-1
+            elif a==1 and b==4 and n>=0 and n<=3:
+                c = a
+            elif a==1 and b==4 and n>=4 and n<=5:
+                c = a-1
+            elif a==1 and b==3 and n>=0 and n<=2:
+                c = a
+            elif a==1 and b==3 and n>=3 and n<=5:
+                c = a-1
+            elif a==1 and b==2 and n>=0 and n<=1:
+                c = a
+            elif a==1 and b==2 and n>=2 and n<=5:
+                c = a-1
+            elif a==1 and b==1 and n==0:
+                c = a
+            elif a==1 and b==1 and n>=1 and n<=5:
+                c = a-1
+            elif a==1 and b==0 and n>=0 and n<=5:
+                c = a-1
+            elif a==0 and b>=0 and b<=5 and n>=0 and n<=5:
                 c = a
             elif a==0 and b==6 and n>=0 and n<=4:
                 c = a
@@ -239,30 +259,6 @@ def verificador_ADAO(ficha, estado, posiciones):
                 c = a
             elif a==0 and b==10 and n==0:
                 c = a
-            elif a==1 and b>=6 and b<=11 and n>=0 and n<=5:
-                c = a
-            elif a==1 and b==5 and n>=0 and n<=4:
-                c = a
-            elif a==1 and b==4 and n>=0 and n<=3:
-                c = a
-            elif a==1 and b==3 and n>=0 and n<=2:
-                c = a
-            elif a==1 and b==2 and n>=0 and n<=1:
-                c = a
-            elif a==1 and b==1 and n==0:
-                c = a
-            elif a==1 and b==5 and n==5:
-                c = a-1
-            elif a==1 and b==4 and n>=4 and n<=5:
-                c = a-1
-            elif a==1 and b==3 and n>=3 and n<=5:
-                c = a-1
-            elif a==1 and b==2 and n>=2 and n<=5:
-                c = a-1
-            elif a==1 and b==1 and n>=1 and n<=5:
-                c = a-1
-            elif a==1 and b==0 and n>=0 and n<=5:
-                c = a-1
             else:
                 print('No se cumplen las condiciones para calcular c')
                 c = -1
@@ -272,14 +268,28 @@ def verificador_ADAO(ficha, estado, posiciones):
                 d = b-n-1
             elif a==1 and b==5 and n>=0 and n<=4:
                 d = b-n-1
+            elif a==1 and b==5 and n==5:
+                d = 0
             elif a==1 and b==4 and n>=0 and n<=3:
                 d = b-n-1
+            elif a==1 and b==4 and n>=4 and n<=5:
+                d = n-4
             elif a==1 and b==3 and n>=0 and n<=2:
                 d = b-n-1
+            elif a==1 and b==3 and n>=3 and n<=5:
+                d = n-3
             elif a==1 and b==2 and n>=0 and n<=1:
                 d = b-n-1
+            elif a==1 and b==2 and n>=2 and n<=5:
+                d = n-2
             elif a==1 and b==1 and n==0:
                 d = b-n-1
+            elif a==1 and b==1 and n>=1 and n<=5:
+                d = n-1
+            elif a==1 and b==0 and n==0:
+                d = b
+            elif a==1 and b==0 and n>=1 and n<=5:
+                d = n
             elif a==0 and b>=0 and b<=5 and n>=0 and n<=5:
                 d = b+n+1
             elif a==0 and b==6 and n>=0 and n<=4:
@@ -292,23 +302,17 @@ def verificador_ADAO(ficha, estado, posiciones):
                 d = b+n+1
             elif a==0 and b==10 and n==0:
                 d = b+n+1
-            elif a==1 and b==5 and n==5:
-                d = 0
-            elif a==1 and b==4 and n>=4 and n<=5:
-                d = n-4+1
-            elif a==1 and b==3 and n>=3 and n<=5:
-                d = n-3+1
-            elif a==1 and b==2 and n>=2 and n<=5:
-                d = n-2+1
-            elif a==1 and b==1 and n>=1 and n<=5:
-                d = n-1+1
-            elif a==1 and b==0 and n==0:
-                d = b
-            elif a==1 and b==0 and n>=1 and n<=5:
-                d = b+n-1+1
             else:
                 print('No se cumplen las condiciones para calcular d')
                 d = -1
+        else:
+            print('No se cumplen las condiciones para calcular c y d')
+            c = -1
+            d = -1
+    else:
+        print('No es el turno de la ficha')
+        c = -1
+        d = -1
     
     print(c, d)
     if c >= 0 and c <= 1 and d >= 0 and d <= 11:
@@ -351,25 +355,27 @@ def mover_ADAO(ficha, estado, posiciones):
 
 # Actualizar estado del juego
 def actualizar_estado_ADAO(estado, xi, yi, xf, yf):
-        estado.get_turno().cambio_de_turno()
-        estado.get_moneda().esperar_lanzamiento()
+    estado.get_turno().cambio_de_turno()
+    estado.get_moneda().esperar_lanzamiento()
+    estado.get_dado().esperar_lanzamiento()
+
+    print("Antigua: ", xi, yi, "Nueva: ", xf, yf)
+    estado.get_FA().eliminar_ficha_FA(xi, yi)
+    if estado.get_FA().estado_casilla_FA(xi,yi) == 0:
+        estado.get_tablero().convertir_en_vacia(xi, yi)
+    else:
+        estado.get_tablero().convertir_en_ordinaria(xi, yi, 'A')
     
-        # Actualizar tablero
-        # Casilla de origen
-        estado.get_FA().eliminar_ficha_FA(xi, yi)
-        if estado.get_FA().estado_casilla_FA(xi,yi) == 0:
-            estado.get_tablero().convertir_en_vacia(xi, yi)
-        else:
-            estado.get_tablero().convertir_en_ordinaria(xi, yi, 'A')
-        
-        # Casilla de destino
-        estado.get_FA().adicionar_ficha_FA(xf, yf)
-        if xf==0 and yf>=0 and yf<=5:
-            estado.get_tablero().convertir_en_ordinaria(xf, yf, 'A')
-        elif xf==0 and yf>=6 and yf<=11:
-            estado.get_tablero().convertir_en_finalista(xf, yf)
-        elif xf==1 and yf>=0 and yf<=11:
-            estado.get_tablero().convertir_en_ordinaria(xf, yf, 'A')
-    
-        return estado
+    # Casilla de destino
+    estado.get_FA().adicionar_ficha_FA(xf, yf)
+    if xf==0 and yf>=0 and yf<=5:
+        estado.get_tablero().convertir_en_ordinaria(xf, yf, 'A')
+    elif xf==0 and yf>=6 and yf<=11:
+        estado.get_tablero().convertir_en_finalista(xf, yf)
+        estado.get_tablero().mostrar_tablero()
+    elif xf==1 and yf>=0 and yf<=11:
+        estado.get_tablero().convertir_en_ordinaria(xf, yf, 'A')
+
+    estado.mostrar_estado()
+    return estado
 

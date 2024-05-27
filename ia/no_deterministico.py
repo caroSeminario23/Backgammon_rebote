@@ -19,11 +19,11 @@ def movimientos_posibles(estado, posiciones_fichas, fichas_disponibles):
     ficha_apta = []
 
     for ficha in fichas_disponibles:
-        if ficha.get_regla() == "ADRO":
+        if ficha.get_regla() == "DRO":
             ficha_apta.append(ficha)
             x, y, estado = mover_ADRO(ficha, estado, posiciones_fichas)
 
-        elif ficha.get_regla() == "ADAO":
+        elif ficha.get_regla() == "DAO":
             ficha_apta.append(ficha)
             x, y, estado = mover_ADAO(ficha, estado, posiciones_fichas)
         
@@ -43,10 +43,10 @@ def mover_ficha(estado, color, posiciones, fichas_totales):
 
     ficha = escoger_ficha(fichas_disponibles)
 
-    if ficha.get_regla() == "ADRO":
+    if ficha.get_regla() == "DRO":
         x, y, estado = mover_ADRO(ficha, estado, posiciones)
 
-    elif ficha.get_regla() == "ADAO":
+    elif ficha.get_regla() == "DAO":
         x, y, estado = mover_ADAO(ficha, estado, posiciones)
 
     '''movimientos = []

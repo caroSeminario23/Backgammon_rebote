@@ -3,6 +3,30 @@ class N_Fichas:
     def __init__(self):
         self.fichas = [15, 15, 0, 0, 0, 0, 0, 0] # [dro, dao, drf, daf, drc, dac, drl, dal]
 
+    def get_ndro(self):
+        return self.fichas[0]
+
+    def get_ndao(self):
+        return self.fichas[1]
+    
+    def get_ndrf(self):
+        return self.fichas[2]
+    
+    def get_ndaf(self):
+        return self.fichas[3]
+    
+    def get_ndrc(self):
+        return self.fichas[4]
+    
+    def get_ndac(self):
+        return self.fichas[5]
+    
+    def get_ndrl(self):
+        return self.fichas[6]
+    
+    def get_ndal(self):
+        return self.fichas[7]
+    
     # Adicion de una ficha del tipo correspondiente
     def adicionar_ficha_dro(self):
         self.fichas[0] += 1
