@@ -17,11 +17,15 @@ class Tablero:
         return self.casillas
     
     # Convierte la casilla (a,b) en finalista
-    def convertir_en_finalista(self, a, b):
+    def convertir_en_finalista(self, a, b, color):
         if self.casillas[a][b] == 'dao':
             self.casillas[a][b] = 'daf'
         elif self.casillas[a][b] == 'dro':
             self.casillas[a][b] = 'drf'
+        elif self.casillas[a][b] == 'v' and color == 'R':
+            self.casillas[a][b] = 'drf'
+        elif self.casillas[a][b] == 'v' and color == 'A':
+            self.casillas[a][b] = 'daf'
     
     # Convierte la casilla (a,b) en ordinaria
     def convertir_en_ordinaria(self, a, b, color):
@@ -51,3 +55,15 @@ class Tablero:
     # Convierte la casilla (a,b) en vacía
     def convertir_en_vacia(self, a, b):
         self.casillas[a][b] = 'v'
+
+    def permanecer_como_ordinaria(self, a, b):
+        if self.casillas[a][b] == 'dao':
+            self.casillas[a][b] = 'dao'
+        elif self.casillas[a][b] == 'dro':
+            self.casillas[a][b] = 'dro'
+
+    def permanecer_como_finalista(self, a, b):
+        if self.casillas[a][b] == 'daf':
+            self.casillas[a][b] = 'daf'
+        elif self.casillas[a][b] == 'drf':
+            self.casillas[a][b] = 'drf'
