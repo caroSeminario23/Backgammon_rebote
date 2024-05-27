@@ -67,3 +67,19 @@ class Tablero:
             self.casillas[a][b] = 'daf'
         elif self.casillas[a][b] == 'drf':
             self.casillas[a][b] = 'drf'
+    
+    def convertir_en_liberado(self, a, b, color):
+        if self.casillas[a][b] == 'daf':
+            self.casillas[a][b] = 'dal'
+        elif self.casillas[a][b] == 'drf':
+            self.casillas[a][b] = 'drl'
+        elif self.casillas[a][b] == 'v' and color == 'R':
+            self.casillas[a][b] = 'drl'
+        elif self.casillas[a][b] == 'v' and color == 'A':
+            self.casillas[a][b] = 'dal'
+
+    def permanecer_como_liberado(self, a, b):
+        if self.casillas[a][b] == 'dal':
+            self.casillas[a][b] = 'dal'
+        elif self.casillas[a][b] == 'drl':
+            self.casillas[a][b] = 'drl'
