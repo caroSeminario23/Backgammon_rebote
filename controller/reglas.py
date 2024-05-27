@@ -163,14 +163,21 @@ def actualizar_estado_ADRO(estado, xi, yi, xf, yf):
     
     # Casilla de destino
     estado.get_FR().adicionar_ficha_FR(xf, yf)
-    if xf==0 and yf>=0 and yf<=11:
+    if xf==0 and yf>=0 and yf<=11 and estado.get_FR().estado_casilla_FR(xf,yf) == 1:
         estado.get_tablero().convertir_en_ordinaria(xf, yf, 'R')
-    elif xf==1 and yf>=0 and yf<=5:
+    elif xf==0 and yf>=0 and yf<=11 and estado.get_FR().estado_casilla_FR(xf,yf) >= 2:
+        estado.get_tablero().permanecer_como_ordinaria(xf, yf)
+    elif xf==1 and yf>=0 and yf<=5 and estado.get_FR().estado_casilla_FR(xf,yf) == 1:
         estado.get_tablero().convertir_en_ordinaria(xf, yf, 'R')
-    elif xf==1 and yf>=6 and yf<=11:
+    elif xf==1 and yf>=0 and yf<=5 and estado.get_FR().estado_casilla_FR(xf,yf) >= 2:
+        estado.get_tablero().permanecer_como_ordinaria(xf, yf)
+    elif xf==1 and yf>=6 and yf<=11 and estado.get_FR().estado_casilla_FR(xf,yf) == 1:
         estado.get_tablero().convertir_en_finalista(xf, yf, 'R')
         estado.get_n_fichas().adicionar_ficha_drf()
         estado.get_n_fichas().eliminar_ficha_dro()
+        estado.get_tablero().mostrar_tablero()
+    elif xf==1 and yf>=6 and yf<=11 and estado.get_FR().estado_casilla_FR(xf,yf) >= 2:
+        estado.get_tablero().permanecer_como_finalista(xf, yf)
         estado.get_tablero().mostrar_tablero()
     
     estado.mostrar_estado()
@@ -330,15 +337,22 @@ def actualizar_estado_ADAO(estado, xi, yi, xf, yf):
     
     # Casilla de destino
     estado.get_FA().adicionar_ficha_FA(xf, yf)
-    if xf==0 and yf>=0 and yf<=5:
+    if xf==0 and yf>=0 and yf<=5 and estado.get_FA().estado_casilla_FA(xf,yf) == 1:
         estado.get_tablero().convertir_en_ordinaria(xf, yf, 'A')
-    elif xf==0 and yf>=6 and yf<=11:
+    elif xf==0 and yf>=0 and yf<=5 and estado.get_FA().estado_casilla_FA(xf,yf) >= 2:
+        estado.get_tablero().permanecer_como_ordinaria(xf, yf)
+    elif xf==0 and yf>=6 and yf<=11 and estado.get_FR().estado_casilla_FR(xf,yf) == 1:
         estado.get_tablero().convertir_en_finalista(xf, yf, 'A')
         estado.get_n_fichas().adicionar_ficha_daf()
         estado.get_n_fichas().eliminar_ficha_dao()
         estado.get_tablero().mostrar_tablero()
-    elif xf==1 and yf>=0 and yf<=11:
+    elif xf==0 and yf>=6 and yf<=11 and estado.get_FR().estado_casilla_FR(xf,yf) >= 2:
+        estado.get_tablero().permanecer_como_finalista(xf, yf)
+        estado.get_tablero().mostrar_tablero()
+    elif xf==1 and yf>=0 and yf<=11 and estado.get_FA().estado_casilla_FA(xf,yf) == 1:
         estado.get_tablero().convertir_en_ordinaria(xf, yf, 'A')
+    elif xf==1 and yf>=0 and yf<=11 and estado.get_FA().estado_casilla_FA(xf,yf) >= 2:
+        estado.get_tablero().permanecer_como_ordinaria(xf, yf)
 
     estado.mostrar_estado()
     return estado
@@ -455,8 +469,10 @@ def actualizar_estado_ADRF(estado, xi, yi, xf, yf):
     
     # Casilla de destino
     estado.get_FR().adicionar_ficha_FR(xf, yf)
-    estado.get_tablero().convertir_en_finalista(xf, yf, 'R')
-    estado.get_tablero().mostrar_tablero()
+    if estado.get_FA().estado_casilla_FR(xf,yf) == 1:
+        estado.get_tablero().convertir_en_finalista(xf, yf, 'R')
+    elif estado.get_FA().estado_casilla_FR(xf,yf) >= 2:
+        estado.get_tablero().permanecer_como_finalista(xf, yf)
     
     estado.mostrar_estado()
     return estado
@@ -574,8 +590,10 @@ def actualizar_estado_ADAF(estado, xi, yi, xf, yf):
     
     # Casilla de destino
     estado.get_FA().adicionar_ficha_FA(xf, yf)
-    estado.get_tablero().convertir_en_finalista(xf, yf, 'A')
-    estado.get_tablero().mostrar_tablero()
+    if estado.get_FA().estado_casilla_FA(xf,yf) == 1:
+        estado.get_tablero().convertir_en_finalista(xf, yf, 'A')
+    elif estado.get_FA().estado_casilla_FA(xf,yf) >= 2:
+        estado.get_tablero().permanecer_como_finalista(xf, yf)
     
     estado.mostrar_estado()
     return estado
@@ -751,8 +769,10 @@ def actualizar_estado_RDRO(estado, xi, yi, xf, yf):
     
     # Casilla de destino
     estado.get_FR().adicionar_ficha_FR(xf, yf)
-    estado.get_tablero().convertir_en_ordinaria(xf, yf, 'R')
-    estado.get_tablero().mostrar_tablero()
+    if estado.get_FR().estado_casilla_FR(xf,yf) == 1:
+        estado.get_tablero().convertir_en_finalista(xf, yf, 'R')
+    elif estado.get_FR().estado_casilla_FR(xf,yf) >= 2:
+        estado.get_tablero().permanecer_como_finalista(xf, yf)
     
     estado.mostrar_estado()
     return estado
@@ -922,8 +942,10 @@ def actualizar_estado_RDAO(estado, xi, yi, xf, yf):
     
     # Casilla de destino
     estado.get_FA().adicionar_ficha_FA(xf, yf)
-    estado.get_tablero().convertir_en_ordinaria(xf, yf, 'A')
-    estado.get_tablero().mostrar_tablero()
+    if estado.get_FA().estado_casilla_FA(xf,yf) == 1:
+        estado.get_tablero().convertir_en_ordinaria(xf, yf, 'A')
+    elif estado.get_FA().estado_casilla_FA(xf,yf) >= 2:
+        estado.get_tablero().permanecer_como_ordinaria(xf, yf)
 
     estado.mostrar_estado()
     return estado
@@ -1868,9 +1890,9 @@ def actualizar_estado_SDRF(estado, xi, yi, xf, yf):
     
     # Casilla de destino
     estado.get_FR().adicionar_ficha_FR(xf, yf)
-    if estado.get_FR().estado_casilla_FR(xf,yf) == 0:
+    if estado.get_FR().estado_casilla_FR(xf,yf) == 1:
         estado.get_tablero().convertir_en_liberado(xf, yf, 'R')
-    else:
+    elif estado.get_FR().estado_casilla_FR(xf,yf) >= 2:
         estado.get_tablero().permanecer_como_liberado(xf, yf)
     
     estado.mostrar_estado()
@@ -2000,10 +2022,10 @@ def actualizar_estado_SDAF(estado, xi, yi, xf, yf):
         estado.get_tablero().permanecer_como_finalista(xi, yi)
     
     # Casilla de destino
-    estado.get_FA().adicionar_ficha_FA(xf, yf)
-    if estado.get_FA().estado_casilla_FA(xf,yf) == 0:
+    estado.get_FA().adicionar_ficha_FA(xf, yf)    
+    if estado.get_FA().estado_casilla_FA(xf,yf) == 1:
         estado.get_tablero().convertir_en_liberado(xf, yf, 'A')
-    else:
+    elif estado.get_FA().estado_casilla_FA(xf,yf) >= 2:
         estado.get_tablero().permanecer_como_liberado(xf, yf)
     
     estado.mostrar_estado()
