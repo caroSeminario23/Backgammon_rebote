@@ -22,10 +22,56 @@ objetivo = 5000
 objetivo_rojo = 5000
 objetivo_amarillo = -5000
 
+# Funcion para escoger el mejor
+def escoger_ficha(funcion_evaluadora, fichas_disponibles):
+    pass
+
+
+
 
 # MOVER LA FICHA
 def mover_fichaPEM(estado, color, posiciones, fichas_totales):
-    pass
+    fichas_disponibles = []
+    fichas_validas = []
+
+    print('estado')
+    estado.mostrar_estado()
+    print('estado1')
+    estado1 = estado
+    estado1.mostrar_estado()
+    print('estado2')
+    estado2 = estado
+    estado2.mostrar_estado()
+    dadoV = estado.get_dado().get_valor_actual()
+
+    print('problema')
+    #estado1.mostrar_estado()
+    # Identifica las fichas de su color
+    fichas_disponibles = identificar_fichas(fichas_totales, color)
+    print(fichas_disponibles)
+    print(fichas_disponibles[0].get_regla())
+
+    fichas_validas = identificar_fichas_validas(fichas_disponibles, posiciones, estado)
+    print('mostrar estados')
+    estado1.mostrar_estado()
+    estado.mostrar_estado()
+    estado.get_turno().cambio_de_turno()
+    estado.get_moneda().set_valor_actual('a')
+    estado.get_dado().set_valor_actual(dadoV)
+    print('Fichas validas: ',fichas_validas)
+    if len(fichas_validas) >= 1:
+        '''ficha = escoger_ficha(fichas_validas)
+        print('Ficha escogida: ',ficha)
+        if ficha.get_regla() == "DAO":
+            x, y, estado = mover_ADAO(ficha, estado1, posiciones)
+
+        elif ficha.get_regla() == "DAF":
+            x, y, estado = mover_ADAF(ficha, estado1, posiciones)'''
+    else:
+        print("No se escogió ninguna ficha válida")
+        x, y, estado, ficha = -1, -1, estado, None
+
+    return x, y, estado, ficha
 
 
 
