@@ -16,17 +16,26 @@ class Estado:
         self.FR = Matriz_FR() # FR: matriz que representa el número de fichas rojas por casilla del tablero
         self.FA = Matriz_FA() # FA: matriz que representa el número de fichas amarillas por casilla del tablero
     '''
-    def __init__(self):
+    def __init__(self, turno=None):
         self.tablero = Tablero()
-        self.turno = 'No escogido'
+        if turno is None:
+            self.turno = 'No escogido'
+        else:
+            self.turno = turno
         self.n_fichas = N_Fichas()
         self.moneda = 'i'
         self.dado = 0
         self.FR = Matriz_FR()
         self.FA = Matriz_FA()
 
+    def set_tablero(self, tablero):
+        self.tablero = tablero
+
     def set_turno(self, turno):
         self.turno = turno
+
+    def set_n_fichas(self, n_fichas):
+        self.n_fichas = n_fichas
 
     def set_moneda(self, moneda):
         self.moneda = moneda
@@ -34,6 +43,12 @@ class Estado:
     def set_dado(self, dado):
         self.dado = dado
 
+    def set_FR(self, FR):
+        self.FR = FR
+    
+    def set_FA(self, FA):
+        self.FA = FA
+        
     # getters
     def get_tablero(self):
         """Devuelve el tablero del juego"""

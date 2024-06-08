@@ -9,6 +9,9 @@ class Turno:
             self.turno_actual = turno
 
     # gettter
+    def set_turno_actual(self, turno):
+        self.turno_actual = turno
+        
     def get_turno_actual(self):
         return self.turno_actual
 

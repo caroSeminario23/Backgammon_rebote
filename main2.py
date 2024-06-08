@@ -10,9 +10,7 @@
 # 9. Mostrar mensaje de victoria o continuar jugando
 # 10. Finalizar el juego
 
-from pync import Notifier
 import pygame
-from pygame.locals import QUIT
 
 from view.bienvenida2 import Bienvenida2
 from view.registro2 import Registro2
@@ -20,12 +18,8 @@ from view.tablero2 import Tablero2
 from controller.controlador_bienvenida2 import C_Bienvenida2
 from controller.controlador_registro2 import C_Registro2
 from controller.controlador2 import Controlador2
-from controller.controlador_tablero2 import C_Tablero2
-from model.jugador import Jugador
 from model.turno import Turno
 from model.estado import Estado
-from model.dado import Dado
-from model.moneda import Moneda
 
 def main():
 
@@ -61,59 +55,35 @@ def main():
 
     while turno.get_turno_actual() not in ['R', 'A']:
         if modo_juego == 'HH':
-            turno = Turno()
+            turno = Turno() # aleatorio
         else:
-            turno = Turno(jugador1.get_colorFicha())
-    
-    #turno.notificar()
+            turno = Turno(jugador1.get_colorFicha()) # del humano
 
     # Iniciar el juego
     print('Iniciando el juego...')
     ANCHO, ALTO = pygame.display.list_modes()[0]
 
-    estado_inicial = Estado()
+    estado_inicial = Estado(turno)
     estado_actual = estado_inicial
-    estado_actual.set_turno(turno)
+    #estado_actual.set_turno(turno)
     estado_actual.get_turno().mostrar_turno()
     
     interfaz_tablero = Tablero2(ALTO, ANCHO)
-    ganador = interfaz_tablero.mostrar_pantalla(jugador1, jugador2, estado_actual, modo_juego)
-    #interfaz_tablero.mostrar_pantalla(jugador1, jugador2, estado_actual.get_turno(), estado_actual.get_tablero(), estado_actual.get_FR(), estado_actual.get_FA(), estado_actual)
 
     # Verificar si algún jugador cumple el estado meta
-    controlador_juego = Controlador2()
-    #ganador = controlador_juego.verificar_estado_meta(estado_actual)
-    '''ganador = None
-
-    controlador_tablero = C_Tablero2(interfaz_tablero)
-    print('hola1')
-
-    while ganador not in ['R', 'A']:
-        print('hola2')
-        if ganador not in ['R', 'A']:
-            # Indicar de quien es el turno
-            turno.notificar()
-            print('hola3')
-
-            # Lanzar el dado y la moneda
-            dado, moneda = Dado(), Moneda()
-
-            dado.lanzar()
-            moneda.lanzar()
-            
-            # Registrar el turno y lanzamiento del dado y la moneda
-            estado_actual.set_turno(turno)
-            estado_actual.set_dado(dado)
-            estado_actual.set_moneda(moneda)
-
-            controlador_juego.notificar_valor_dado_moneda(dado, moneda)
-
-            # Mover fichas según reglas de juego
-            estado_actual = interfaz_tablero.actualizar_pantalla(controlador_tablero, estado_actual)
-            #estado_actual = controlador_tablero.mover_ficha(estado_actual)
-        
-        ganador = controlador_juego.verificar_estado_meta(estado_actual)'''
+    ganador = interfaz_tablero.mostrar_pantalla(jugador1, jugador2, estado_actual, modo_juego)
     
+    controlador_juego = Controlador2()
+    if ganador is not None:
+        case = {
+            'J1': '¡Felicidades! El jugador 1 ha ganado.',
+            'J2': '¡Felicidades! El jugador 2 ha ganado.',
+            'Empate': '¡Empate! No hay ganadores.'
+        }
+        print(case[ganador])
+    else:
+        print('Ha ocurrido un error')
+
     # Mostrar mensaje de victoria o continuar jugando
     controlador_juego.mostrar_mensaje_victoria(ganador)
 
