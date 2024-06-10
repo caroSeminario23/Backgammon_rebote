@@ -45,7 +45,7 @@ def main():
 
     if jugador1 is not None and jugador2 is not None:
         print('Jugadores registrados:', jugador1.get_pseudonimo(), ' y ', jugador2.get_pseudonimo())
-        print('Color de fichas:', '\nJ1: ', jugador1.get_colorFicha(), '\nJ2: ', jugador2.get_colorFicha())
+        print('Color de fichas:', '\nJ1: ', jugador1.get_pseudonimo(), ' -> ', jugador1.get_colorFicha(), '\nJ2: ', jugador2.get_pseudonimo(), ' -> ', jugador2.get_colorFicha())
     else:
         print('No se han registrado todos los jugadores.')
         return

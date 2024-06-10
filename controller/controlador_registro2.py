@@ -12,11 +12,11 @@ class C_Registro2:
         if self.modo_juego == 'HH':
             if event.type == pygame_gui.UI_TEXT_ENTRY_FINISHED:
                 if event.ui_element == self.vista.texto_pseudonimo1:
-                    print(f"El usuario ingresó: {event.text}")
+                    print(f"El jugador 1 ingresó: {event.text}")
                     self.vista.jugador1 = Jugador(self.vista.texto_pseudonimo1.get_text(), None)
                 
                 elif event.ui_element == self.vista.texto_pseudonimo2:
-                    print(f"El usuario ingresó: {event.text}")
+                    print(f"El jugador 2 ingresó: {event.text}")
                     self.vista.jugador2 = Jugador(self.vista.texto_pseudonimo2.get_text(), None)
 
             if event.type == pygame_gui.UI_BUTTON_PRESSED:

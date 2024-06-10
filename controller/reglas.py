@@ -199,7 +199,7 @@ def verificador_ADAO(ficha, estado, posiciones):
     coord = (aO, bO)  
     pos = encontrar_posicion_cercana(coord, posiciones)
     if pos is not None:
-        print('hola123')
+        #print('hola123')
         print(f'La coordenada {coord} está cerca de la posición {pos} en self.posiciones_fichas')
         a = pos[0]
         b = pos[1]
@@ -315,7 +315,7 @@ def mover_ADAO(ficha, estado, posiciones):
         pos = encontrar_posicion_cercana(coord, posiciones)
         if pos is not None:
             print(f'La coordenada {coord} está cerca de la posición {pos} en self.posiciones_fichas')
-            print('holas567')
+            #print('holas567')
             a = pos[0]
             b = pos[1]
         else:

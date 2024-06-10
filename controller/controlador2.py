@@ -16,10 +16,13 @@ class Controlador2:
 
         if estado.get_n_fichas().get_ndrl() == 15:
             ganador = rojo
+            print('Ha llegado al estado meta, jugador rojo')
         elif estado.get_n_fichas().get_ndal == 15:
             ganador = amarillo
+            print('Ha llegado al estado meta, jugador amarillo')
         else:
             ganador = 'NO'
+            #print('No ha llegado al estado meta aún')
         
         return ganador
     
