@@ -10,12 +10,12 @@ class Ficha:
         self.y = y
         self.nFichas = nFichas
         self.rect = pygame.Rect(self.x, self.y, 50, 50)  # Asume que las fichas son rectángulos de 50x50
-        self.imagen_fondo = None
-
-        if self.color == ROJO:
-            self.regla = "DRO"
-        elif self.color == AMARILLO:
-            self.regla = "DAO"
+        #self.imagen_fondo = None
+        if regla is None:
+            if self.color == ROJO:
+                self.regla = "DRO"
+            elif self.color == AMARILLO:
+                self.regla = "DAO"
         else:
             self.regla = regla
 
@@ -69,17 +69,17 @@ class Ficha:
 
     #imprimir informacion de la ficha
     def mostrarInformacion(self):
-        print(f"Color: {self.color}")
+        print(f"\nColor: {self.color}")
         print(f"Posición: ({self.x}, {self.y})")
         print(f"Número de fichas: {self.nFichas}")
 
-    def guardar_fondo(self, ventana):
+    '''def guardar_fondo(self, ventana):
         if self.imagen_fondo is None:
             self.imagen_fondo = pygame.Surface((self.rect.width, self.rect.height))
         self.imagen_fondo.blit(ventana, (0, 0), self.rect)
 
     def get_imagen_fondo(self):
-        return self.imagen_fondo
+        return self.imagen_fondo'''
     
     def get_rect(self):
         return self.rect

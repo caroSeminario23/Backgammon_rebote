@@ -65,7 +65,6 @@ def main():
 
     estado_inicial = Estado(turno)
     estado_actual = estado_inicial
-    #estado_actual.set_turno(turno)
     estado_actual.get_turno().mostrar_turno()
     
     interfaz_tablero = Tablero2(ALTO, ANCHO)

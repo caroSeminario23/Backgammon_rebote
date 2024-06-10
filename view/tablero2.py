@@ -4,12 +4,10 @@ from utils.colores import MELON_OSCURO, ROJO, AMARILLO, NEGRO, BEIGE, MELON_CLAR
 from utils.figuras import dibujar_rectangulo_redondeado
 from view.ficha import Ficha
 from controller.controlador2 import Controlador2
-#from controller.controlador_tablero2 import C_Tablero2
-from controller.reglas import mover_ADRO, mover_ADAO, mover_ADRF, mover_ADAF, mover_CDRO, mover_CDAO, mover_SDRF, mover_SDAF, mover_LDRC, mover_LDAC
+from controller.reglas import mover_ADRO, mover_ADAO, mover_ADRF, mover_ADAF, mover_CDRO, mover_CDAO, mover_RDAF, mover_RDAO, mover_RDRF, mover_RDRO, mover_SDRF, mover_SDAF, mover_LDRC, mover_LDAC
 from ia.no_deterministico import mover_ficha
 from model.dado import Dado
 from model.moneda import Moneda
-#from model.estado import Estado
 
 class Tablero2:
     def __init__(self, alto, ancho):
@@ -169,10 +167,8 @@ class Tablero2:
                 m += 1
     
     def eliminar_fichas_vacias(self):
-        #self.fichas = [ficha for ficha in self.fichas if ficha.get_color() != 'v']
         fichasN = []
         self.fichas = fichasN
-
 
     def mostrar_pantalla(self, j1, j2, estado, modo_juego):
         # CARGAR IMÁGENES
@@ -208,7 +204,7 @@ class Tablero2:
 
         # DIBUJADO DE LAS FICHAS
         tablero_01 = self.identificar_fichas(estado)
-        print(str(tablero_01))
+        print("Tablero_01: ", str(tablero_01))
         self.dibujar_fichas(estado, tablero_01)
 
         # ADICIONAR OBJETOS A LA PANTALA
@@ -302,56 +298,104 @@ class Tablero2:
                 
                 # modo humano-humano
                 if modo_juego == 'HH':
-                    if event.type == pygame.MOUSEBUTTONDOWN:
-                        pos = pygame.mouse.get_pos()
-                        print('Acabas de hacer click')
-                        print(pos)
-                        if self.ficha_seleccionada is None:
-                            print('No hay ninguna ficha seleccionada')
-                            for ficha in self.fichas:
-                                if ficha.rect.collidepoint(pos):
-                                    self.ficha_seleccionada = ficha
-                                    self.ficha_seleccionada.seleccionar(True)
-                                    self.ficha_seleccionada.mostrarInformacion()
-                                    print(self.ficha_seleccionada.get_regla())
-                                    break
-                        else:
-                            print('Ya hay una ficha seleccionada')
-                            if self.ficha_seleccionada.get_regla() == "DRO":
-                                x, y, estado = mover_ADRO(self.ficha_seleccionada, estado, self.posiciones_fichas)
-                                #x, y, estado = mover_RDRO(self.ficha_seleccionada, estado, self.posiciones_fichas)
-                            elif self.ficha_seleccionada.get_regla() == "DAO":
-                                x, y, estado = mover_ADAO(self.ficha_seleccionada, estado, self.posiciones_fichas)
-                                #x, y, estado = mover_RDAO(self.ficha_seleccionada, estado, self.posiciones_fichas)
-                            elif self.ficha_seleccionada.get_regla() == "DRF":
-                                x, y, estado = mover_ADRF(self.ficha_seleccionada, estado, self.posiciones_fichas)
-                            elif self.ficha_seleccionada.get_regla() == "DAF":
-                                x, y, estado = mover_ADAF(self.ficha_seleccionada, estado, self.posiciones_fichas)
-                            elif self.ficha_seleccionada.get_regla() == "DRC":
-                                x, y, estado = mover_LDRC(self.ficha_seleccionada, estado, self.posiciones_fichas)
-                            elif self.ficha_seleccionada.get_regla() == "DAC":
-                                x, y, estado = mover_LDAC(self.ficha_seleccionada, estado, self.posiciones_fichas)
-                                
-
-                            if x != -1 and y != -1:
-                                pos = (x, y)
-                                print(pos)
-                                xn = self.posiciones_fichas[pos[0]][pos[1]][0]
-                                yn = self.posiciones_fichas[pos[0]][pos[1]][1]
-                                self.ficha_seleccionada.cambiarPosicion(xn, yn, self)
-                                self.ficha_seleccionada.seleccionar(False)
-                                self.ficha_seleccionada = None
-                                estado.get_tablero().mostrar_tablero()
-                                turno = self.fTexto5.render(f"Es turno de las fichas {estado.get_turno().get_turno_actual()}", True, NEGRO)
-
-                                self.eliminar_fichas_vacias()
-                                tablero_01 = self.identificar_fichas(estado)
-                                print(str(tablero_01))
-                                self.dibujar_fichas(estado, tablero_01)
-
+                    controlador2 = Controlador2()
+                    hay_ganador = controlador2.verificar_estado_meta(estado, j1)
+                    if hay_ganador in ['J1', 'J2']:
+                        return estado.get_turno().get_turno_actual()
+                    
+                    else:
+                        if event.type == pygame.MOUSEBUTTONDOWN:
+                            pos = pygame.mouse.get_pos()
+                            print('Acabas de hacer click')
+                            #print(pos)
+                            contador = 0;
+                            if self.ficha_seleccionada is None:
+                                print('No hay ninguna ficha seleccionada')
+                                for ficha in self.fichas:
+                                    if ficha.rect.collidepoint(pos):
+                                        self.ficha_seleccionada = ficha
+                                        self.ficha_seleccionada.seleccionar(True)
+                                        self.ficha_seleccionada.mostrarInformacion()
+                                        print('Regla: ', self.ficha_seleccionada.get_regla())
+                                        break
                             else:
-                                self.ficha_seleccionada.seleccionar(False)
-                                self.ficha_seleccionada = None
+                                print('Ya hay una ficha seleccionada')
+                                if estado.get_n_fichas().get_ndac() == 0 and estado.get_n_fichas().get_ndrc() == 0:
+                                    if self.ficha_seleccionada.get_regla() == "DRO" and estado.get_turno().get_turno_actual() == 'R':
+                                        if estado.get_moneda().get_valor_actual() == 'a':
+                                            x, y, estado = mover_ADRO(self.ficha_seleccionada, estado, self.posiciones_fichas)
+                                            if x == -1 and y == -1:
+                                                x, y, estado = mover_CDRO(self.ficha_seleccionada, estado, self.posiciones_fichas)
+                                        elif estado.get_moneda().get_valor_actual() == 'r':
+                                            x, y, estado = mover_RDRO(self.ficha_seleccionada, estado, self.posiciones_fichas)
+
+                                    elif self.ficha_seleccionada.get_regla() == "DAO" and estado.get_turno().get_turno_actual() == 'A':
+                                        if estado.get_moneda().get_valor_actual() == 'a':
+                                            x, y, estado = mover_ADAO(self.ficha_seleccionada, estado, self.posiciones_fichas)
+                                            if x == -1 and y == -1:
+                                                x, y, estado = mover_CDAO(self.ficha_seleccionada, estado, self.posiciones_fichas)
+                                        elif estado.get_moneda().get_valor_actual() == 'r':
+                                            x, y, estado = mover_RDAO(self.ficha_seleccionada, estado, self.posiciones_fichas)
+
+                                    elif self.ficha_seleccionada.get_regla() == "DRF" and estado.get_turno().get_turno_actual() == 'R':
+                                        x, y, estado = mover_ADRF(self.ficha_seleccionada, estado, self.posiciones_fichas)
+                                        if x == -1 and y == -1:
+                                            x, y, estado = mover_SDRF(self.ficha_seleccionada, estado, self.posiciones_fichas)
+                                            if x == -1 and y == -1:
+                                                x, y, estado = mover_RDRF(self.ficha_seleccionada, estado, self.posiciones_fichas)
+
+                                    elif self.ficha_seleccionada.get_regla() == "DAF" and estado.get_turno().get_turno_actual() == 'A':
+                                        x, y, estado = mover_ADAF(self.ficha_seleccionada, estado, self.posiciones_fichas)
+                                        if x == -1 and y == -1:
+                                            x, y, estado = mover_SDAF(self.ficha_seleccionada, estado, self.posiciones_fichas)
+                                            if x == -1 and y == -1:
+                                                x, y, estado = mover_RDAF(self.ficha_seleccionada, estado, self.posiciones_fichas)
+
+                                else:
+                                    if self.ficha_seleccionada.get_regla() == "DRC" and estado.get_turno().get_turno_actual() == 'R':
+                                        x, y, estado = mover_LDRC(self.ficha_seleccionada, estado, self.posiciones_fichas)
+
+                                    elif self.ficha_seleccionada.get_regla() == "DAC" and estado.get_turno().get_turno_actual() == 'A':
+                                        x, y, estado = mover_LDAC(self.ficha_seleccionada, estado, self.posiciones_fichas)
+                                    
+                                    else:
+                                        print('Debe liberar su ficha capturada')
+
+                                if x != -1 and y != -1:
+                                    pos = (x, y)
+                                    #print(pos)
+                                    xn = self.posiciones_fichas[pos[0]][pos[1]][0]
+                                    yn = self.posiciones_fichas[pos[0]][pos[1]][1]
+                                    self.ficha_seleccionada.cambiarPosicion(xn, yn, self)
+                                    self.ficha_seleccionada.seleccionar(False)
+                                    self.ficha_seleccionada = None
+                                    estado.get_tablero().mostrar_tablero()
+                                    turno = self.fTexto5.render(f"Es turno de las fichas {estado.get_turno().get_turno_actual()}", True, NEGRO)
+                                    valor_dado = self.fTexto1.render(f"Valor obtenido: {estado.get_dado().get_valor_actual()}", True, NEGRO)
+                                    valor_moneda = self.fTexto1.render(f"Valor obtenido: {estado.get_moneda().get_valor_actual()}", True, NEGRO)
+
+                                    self.eliminar_fichas_vacias()
+                                    tablero_01 = self.identificar_fichas(estado)
+                                    print(str(tablero_01))
+                                    self.dibujar_fichas(estado, tablero_01)
+                                    contador = 0;
+
+                                else:
+                                    while(contador<3):
+                                        print('No hay movimientos disponibles')
+                                        self.ficha_seleccionada.seleccionar(False)
+                                        self.ficha_seleccionada = None
+                                        contador+=1
+                                    if contador == 3:
+                                        print('Ha perdido este turno')
+                                        self.ficha_seleccionada.seleccionar(False)
+                                        self.ficha_seleccionada = None
+                                        estado.get_turno().cambio_de_turno()
+                                        turno = self.fTexto5.render(f"Es turno de las fichas {estado.get_turno().get_turno_actual()}", True, NEGRO)
+                                        valor_dado = self.fTexto1.render(f"Valor obtenido: {estado.get_dado().get_valor_actual()}", True, NEGRO)
+                                        valor_moneda = self.fTexto1.render(f"Valor obtenido: {estado.get_moneda().get_valor_actual()}", True, NEGRO)
+                                        contador = 0
+
                 
                 # modo humano-maquina - facil
                 elif modo_juego == 'fácil':

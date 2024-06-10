@@ -3,14 +3,24 @@ from pync import Notifier
 class Controlador2:
 
     # Verifica si el estado actual es un estado meta
-    def verificar_estado_meta(self):
+    def verificar_estado_meta(self, estado, j1):
         ganador = None
+        rojo, amarillo = None, None
 
-        '''if estado_actual.get_n_fichas().get_ficha(7) == 15:
-            ganador = 'A'
-        elif estado_actual.get_n_fichas().get_ficha(6) == 15:
-            ganador = 'R'''
+        if j1.get_colorFicha() == 'R':
+            rojo = 'J1'
+            amarillo = 'J2'
+        else:
+            rojo = 'J2'
+            amarillo = 'J1'
 
+        if estado.get_n_fichas().get_ndrl() == 15:
+            ganador = rojo
+        elif estado.get_n_fichas().get_ndal == 15:
+            ganador = amarillo
+        else:
+            ganador = 'NO'
+        
         return ganador
     
     def notificar_valor_dado_moneda(self, dado, moneda):

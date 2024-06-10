@@ -1,4 +1,5 @@
-from pync import Notifier
+#from pync import Notifier
+import copy
 
 def encontrar_posicion_cercana(coord, posiciones_fichas):
     tolerancia = 10
@@ -121,8 +122,8 @@ def verificador_ADRO(ficha, estado, posiciones):
 
 # Movimiento de la ficha
 def mover_ADRO(ficha, estado, posiciones):
+    estadoN = copy.deepcopy(estado)
     c, d, valido = verificador_ADRO(ficha, estado, posiciones)
-    estadoN = estado
     if valido:
         posX, posY = c, d
         a = ficha.obtenerPosicion()[0]
@@ -139,13 +140,13 @@ def mover_ADRO(ficha, estado, posiciones):
             print(f'La coordenada {coord} no está cerca de ninguna posición en self.posiciones_fichas')
 
         print("Ficha antigua: ", a, b)
-        estadoN = actualizar_estado_ADRO(estado, a, b, posX, posY)
+        estadoN = actualizar_estado_ADRO(estadoN, a, b, posX, posY)
         print(posX, posY, estadoN.get_tablero().estado_casilla(posX, posY))
         estadoN.get_tablero().mostrar_tablero()
         return posX, posY, estadoN
     else:
         print('Movimiento no válido')
-        Notifier.notify('Movimiento no válido', title='Error', sound='default')
+        #Notifier.notify('Movimiento no válido', title='Error', sound='default')
         return -1, -1, estadoN
 
 # Actualizar estado del juego
@@ -155,6 +156,8 @@ def actualizar_estado_ADRO(estado, xi, yi, xf, yf):
     estado.get_dado().esperar_lanzamiento()
 
     print("Antigua: ", xi, yi, "Nueva: ", xf, yf)
+
+    # Casilla de origen
     estado.get_FR().eliminar_ficha_FR(xi, yi)
     if estado.get_FR().estado_casilla_FR(xi,yi) == 0:
         estado.get_tablero().convertir_en_vacia(xi, yi)
@@ -176,9 +179,9 @@ def actualizar_estado_ADRO(estado, xi, yi, xf, yf):
         estado.get_n_fichas().adicionar_ficha_drf()
         estado.get_n_fichas().eliminar_ficha_dro()
         estado.get_tablero().mostrar_tablero()
-    elif xf==1 and yf>=6 and yf<=11 and estado.get_FR().estado_casilla_FR(xf,yf) >= 2:
+    '''elif xf==1 and yf>=6 and yf<=11 and estado.get_FR().estado_casilla_FR(xf,yf) >= 2:
         estado.get_tablero().permanecer_como_finalista(xf, yf)
-        estado.get_tablero().mostrar_tablero()
+        estado.get_tablero().mostrar_tablero()'''
     
     estado.mostrar_estado()
     return estado
@@ -299,8 +302,9 @@ def verificador_ADAO(ficha, estado, posiciones):
 
 # Movimiento de la ficha
 def mover_ADAO(ficha, estado, posiciones):
+    estadoN = copy.deepcopy(estado)
     c, d, valido = verificador_ADAO(ficha, estado, posiciones)
-    estadoN = estado
+    
     if valido:
         posX, posY = c, d
         a = ficha.obtenerPosicion()[0]
@@ -323,7 +327,7 @@ def mover_ADAO(ficha, estado, posiciones):
         return posX, posY, estadoN
     else:
         print('Movimiento no válido')
-        Notifier.notify('Movimiento no válido', title='Error', sound='default')
+        #Notifier.notify('Movimiento no válido', title='Error', sound='default')
         return -1, -1, estadoN
 
 # Actualizar estado del juego
@@ -333,6 +337,8 @@ def actualizar_estado_ADAO(estado, xi, yi, xf, yf):
     estado.get_dado().esperar_lanzamiento()
 
     print("Antigua: ", xi, yi, "Nueva: ", xf, yf)
+
+    # Casilla de origen
     estado.get_FA().eliminar_ficha_FA(xi, yi)
     if estado.get_FA().estado_casilla_FA(xi,yi) == 0:
         estado.get_tablero().convertir_en_vacia(xi, yi)
@@ -350,14 +356,14 @@ def actualizar_estado_ADAO(estado, xi, yi, xf, yf):
         estado.get_n_fichas().adicionar_ficha_daf()
         estado.get_n_fichas().eliminar_ficha_dao()
         estado.get_tablero().mostrar_tablero()
-    elif xf==0 and yf>=6 and yf<=11 and estado.get_FR().estado_casilla_FR(xf,yf) >= 2:
-        estado.get_tablero().permanecer_como_finalista(xf, yf)
-        estado.get_tablero().mostrar_tablero()
     elif xf==1 and yf>=0 and yf<=11 and estado.get_FA().estado_casilla_FA(xf,yf) == 1:
         estado.get_tablero().convertir_en_ordinaria(xf, yf, 'A')
     elif xf==1 and yf>=0 and yf<=11 and estado.get_FA().estado_casilla_FA(xf,yf) >= 2:
         estado.get_tablero().permanecer_como_ordinaria(xf, yf)
-
+    '''elif xf==0 and yf>=6 and yf<=11 and estado.get_FR().estado_casilla_FR(xf,yf) >= 2:
+        estado.get_tablero().permanecer_como_finalista(xf, yf)
+        estado.get_tablero().mostrar_tablero()'''
+    
     estado.mostrar_estado()
     return estado
 
@@ -432,8 +438,9 @@ def verificador_ADRF(ficha, estado, posiciones):
 
 # Movimiento de la ficha
 def mover_ADRF(ficha, estado, posiciones):
+    estadoN = copy.deepcopy(estado)
     c, d, valido = verificador_ADRF(ficha, estado, posiciones)
-    estadoN = estado
+    
     if valido:
         posX, posY = c, d
         a = ficha.obtenerPosicion()[0]
@@ -455,7 +462,7 @@ def mover_ADRF(ficha, estado, posiciones):
         return posX, posY, estadoN
     else:
         print('Movimiento no válido')
-        Notifier.notify('Movimiento no válido', title='Error', sound='default')
+        #Notifier.notify('Movimiento no válido', title='Error', sound='default')
         return -1, -1, estadoN
 
 # Actualizar estado del juego
@@ -465,6 +472,8 @@ def actualizar_estado_ADRF(estado, xi, yi, xf, yf):
     estado.get_dado().esperar_lanzamiento()
 
     print("Antigua: ", xi, yi, "Nueva: ", xf, yf)
+
+    # Casilla de origen
     estado.get_FR().eliminar_ficha_FR(xi, yi)
     if estado.get_FR().estado_casilla_FR(xi,yi) == 0:
         estado.get_tablero().convertir_en_vacia(xi, yi)
@@ -553,8 +562,9 @@ def verificador_ADAF(ficha, estado, posiciones):
 
 # Movimiento de la ficha
 def mover_ADAF(ficha, estado, posiciones):
+    estadoN = copy.deepcopy(estado)
     c, d, valido = verificador_ADAF(ficha, estado, posiciones)
-    estadoN = estado
+    
     if valido:
         posX, posY = c, d
         a = ficha.obtenerPosicion()[0]
@@ -576,7 +586,7 @@ def mover_ADAF(ficha, estado, posiciones):
         return posX, posY, estadoN
     else:
         print('Movimiento no válido')
-        Notifier.notify('Movimiento no válido', title='Error', sound='default')
+        #Notifier.notify('Movimiento no válido', title='Error', sound='default')
         return -1, -1, estadoN
 
 # Actualizar estado del juego
@@ -586,6 +596,8 @@ def actualizar_estado_ADAF(estado, xi, yi, xf, yf):
     estado.get_dado().esperar_lanzamiento()
 
     print("Antigua: ", xi, yi, "Nueva: ", xf, yf)
+
+    # Casilla de origen
     estado.get_FA().eliminar_ficha_FA(xi, yi)
     if estado.get_FA().estado_casilla_FA(xi,yi) == 0:
         estado.get_tablero().convertir_en_vacia(xi, yi)
@@ -732,8 +744,9 @@ def verificador_RDRO(ficha, estado, posiciones):
 
 # Movimiento de la ficha
 def mover_RDRO(ficha, estado, posiciones):
+    estadoN = copy.deepcopy(estado)
     c, d, valido = verificador_RDRO(ficha, estado, posiciones)
-    estadoN = estado
+    
     if valido:
         posX, posY = c, d
         a = ficha.obtenerPosicion()[0]
@@ -755,7 +768,7 @@ def mover_RDRO(ficha, estado, posiciones):
         return posX, posY, estadoN
     else:
         print('Movimiento no válido')
-        Notifier.notify('Movimiento no válido', title='Error', sound='default')
+        #Notifier.notify('Movimiento no válido', title='Error', sound='default')
         return -1, -1, estadoN
 
 # Actualizar estado del juego
@@ -765,18 +778,20 @@ def actualizar_estado_RDRO(estado, xi, yi, xf, yf):
     estado.get_dado().esperar_lanzamiento()
 
     print("Antigua: ", xi, yi, "Nueva: ", xf, yf)
+
+    # Casilla de origen
     estado.get_FR().eliminar_ficha_FR(xi, yi)
     if estado.get_FR().estado_casilla_FR(xi,yi) == 0:
         estado.get_tablero().convertir_en_vacia(xi, yi)
     else:
-        estado.get_tablero().convertir_en_ordinaria(xi, yi, 'R')
+        estado.get_tablero().permanecer_como_ordinaria(xi, yi)
     
     # Casilla de destino
     estado.get_FR().adicionar_ficha_FR(xf, yf)
     if estado.get_FR().estado_casilla_FR(xf,yf) == 1:
-        estado.get_tablero().convertir_en_finalista(xf, yf, 'R')
+        estado.get_tablero().convertir_en_ordinaria(xf, yf, 'R')
     elif estado.get_FR().estado_casilla_FR(xf,yf) >= 2:
-        estado.get_tablero().permanecer_como_finalista(xf, yf)
+        estado.get_tablero().permanecer_como_ordinaria(xf, yf)
     
     estado.mostrar_estado()
     return estado
@@ -905,8 +920,9 @@ def verificador_RDAO(ficha, estado, posiciones):
 
 # Movimiento de la ficha
 def mover_RDAO(ficha, estado, posiciones):
+    estadoN = copy.deepcopy(estado)
     c, d, valido = verificador_RDAO(ficha, estado, posiciones)
-    estadoN = estado
+    
     if valido:
         posX, posY = c, d
         a = ficha.obtenerPosicion()[0]
@@ -928,7 +944,7 @@ def mover_RDAO(ficha, estado, posiciones):
         return posX, posY, estadoN
     else:
         print('Movimiento no válido')
-        Notifier.notify('Movimiento no válido', title='Error', sound='default')
+        #Notifier.notify('Movimiento no válido', title='Error', sound='default')
         return -1, -1, estadoN
 
 # Actualizar estado del juego
@@ -938,6 +954,8 @@ def actualizar_estado_RDAO(estado, xi, yi, xf, yf):
     estado.get_dado().esperar_lanzamiento()
 
     print("Antigua: ", xi, yi, "Nueva: ", xf, yf)
+
+    # Casilla de origen
     estado.get_FA().eliminar_ficha_FA(xi, yi)
     if estado.get_FA().estado_casilla_FA(xi,yi) == 0:
         estado.get_tablero().convertir_en_vacia(xi, yi)
@@ -1080,8 +1098,9 @@ def verificador_CDRO(ficha, estado, posiciones):
 
 # Movimiento de la ficha
 def mover_CDRO(ficha, estado, posiciones):
+    estadoN = copy.deepcopy(estado)
     c, d, valido = verificador_CDRO(ficha, estado, posiciones)
-    estadoN = estado
+    
     if valido:
         posX, posY = c, d
         a = ficha.obtenerPosicion()[0]
@@ -1103,7 +1122,7 @@ def mover_CDRO(ficha, estado, posiciones):
         return posX, posY, estadoN
     else:
         print('Movimiento no válido')
-        Notifier.notify('Movimiento no válido', title='Error', sound='default')
+        #Notifier.notify('Movimiento no válido', title='Error', sound='default')
         return -1, -1, estadoN
 
 # Actualizar estado del juego
@@ -1113,6 +1132,8 @@ def actualizar_estado_CDRO(estado, xi, yi, xf, yf):
     estado.get_dado().esperar_lanzamiento()
 
     print("Antigua: ", xi, yi, "Nueva: ", xf, yf)
+
+    # Casilla de origen
     estado.get_FR().eliminar_ficha_FR(xi, yi)
     if estado.get_FR().estado_casilla_FR(xi,yi) == 0:
         estado.get_tablero().convertir_en_vacia(xi, yi)
@@ -1121,7 +1142,7 @@ def actualizar_estado_CDRO(estado, xi, yi, xf, yf):
     
     # Casilla de destino
     estado.get_FR().adicionar_ficha_FR(xf, yf)
-    estado.get_tablero().convertir_en_ordinaria(xf, yf, 'R')
+    estado.get_tablero().convertir_en_capturada(xf, yf)
     estado.get_FA().eliminar_ficha_FA(xf, yf)
     estado.get_n_fichas().eliminar_ficha_dao()
     estado.get_n_fichas().adicionar_ficha_dac()
@@ -1254,8 +1275,9 @@ def verificador_CDAO(ficha, estado, posiciones):
 
 # Movimiento de la ficha
 def mover_CDAO(ficha, estado, posiciones):
+    estadoN = copy.deepcopy(estado)
     c, d, valido = verificador_CDAO(ficha, estado, posiciones)
-    estadoN = estado
+    
     if valido:
         posX, posY = c, d
         a = ficha.obtenerPosicion()[0]
@@ -1277,7 +1299,7 @@ def mover_CDAO(ficha, estado, posiciones):
         return posX, posY, estadoN
     else:
         print('Movimiento no válido')
-        Notifier.notify('Movimiento no válido', title='Error', sound='default')
+        #Notifier.notify('Movimiento no válido', title='Error', sound='default')
         return -1, -1, estadoN
 
 # Actualizar estado del juego
@@ -1287,6 +1309,8 @@ def actualizar_estado_CDAO(estado, xi, yi, xf, yf):
     estado.get_dado().esperar_lanzamiento()
 
     print("Antigua: ", xi, yi, "Nueva: ", xf, yf)
+
+    # Casilla de origen
     estado.get_FA().eliminar_ficha_FA(xi, yi)
     if estado.get_FA().estado_casilla_FA(xi,yi) == 0:
         estado.get_tablero().convertir_en_vacia(xi, yi)
@@ -1295,7 +1319,7 @@ def actualizar_estado_CDAO(estado, xi, yi, xf, yf):
     
     # Casilla de destino
     estado.get_FA().adicionar_ficha_FA(xf, yf)
-    estado.get_tablero().convertir_en_ordinaria(xf, yf, 'A')
+    estado.get_tablero().convertir_en_capturada(xf, yf)
     estado.get_FR().eliminar_ficha_FR(xf, yf)
     estado.get_n_fichas().eliminar_ficha_dro()
     estado.get_n_fichas().adicionar_ficha_drc()
@@ -1368,8 +1392,9 @@ def verificador_LDRC(ficha, estado, posiciones):
 
 # Movimiento de la ficha
 def mover_LDRC(ficha, estado, posiciones):
+    estadoN = copy.deepcopy(estado)
     c, d, valido = verificador_LDRC(ficha, estado, posiciones)
-    estadoN = estado
+    
     if valido:
         posX, posY = c, d
         a = ficha.obtenerPosicion()[0]
@@ -1391,7 +1416,7 @@ def mover_LDRC(ficha, estado, posiciones):
         return posX, posY, estadoN
     else:
         print('Movimiento no válido')
-        Notifier.notify('Movimiento no válido', title='Error', sound='default')
+        #Notifier.notify('Movimiento no válido', title='Error', sound='default')
         return -1, -1, estadoN
 
 # Actualizar estado del juego
@@ -1401,6 +1426,8 @@ def actualizar_estado_LDRC(estado, xi, yi, xf, yf):
     estado.get_dado().esperar_lanzamiento()
 
     print("Antigua: ", xi, yi, "Nueva: ", xf, yf)
+
+    # Casilla de origen
     estado.get_n_fichas().eliminar_ficha_drc()
     
     # Casilla de destino
@@ -1477,8 +1504,9 @@ def verificador_LDAC(ficha, estado, posiciones):
 
 # Movimiento de la ficha
 def mover_LDAC(ficha, estado, posiciones):
+    estadoN = copy.deepcopy(estado)
     c, d, valido = verificador_LDAC(ficha, estado, posiciones)
-    estadoN = estado
+    
     if valido:
         posX, posY = c, d
         a = ficha.obtenerPosicion()[0]
@@ -1500,7 +1528,7 @@ def mover_LDAC(ficha, estado, posiciones):
         return posX, posY, estadoN
     else:
         print('Movimiento no válido')
-        Notifier.notify('Movimiento no válido', title='Error', sound='default')
+        #Notifier.notify('Movimiento no válido', title='Error', sound='default')
         return -1, -1, estadoN
 
 # Actualizar estado del juego
@@ -1510,6 +1538,8 @@ def actualizar_estado_LDAC(estado, xi, yi, xf, yf):
     estado.get_dado().esperar_lanzamiento()
 
     print("Antigua: ", xi, yi, "Nueva: ", xf, yf)
+
+    # Casilla de origen
     estado.get_n_fichas().eliminar_ficha_dac()
     
     # Casilla de destino
@@ -1602,8 +1632,9 @@ def verificador_RDRF(ficha, estado, posiciones):
 
 # Movimiento de la ficha
 def mover_RDRF(ficha, estado, posiciones):
+    estadoN = copy.deepcopy(estado)
     c, d, valido = verificador_RDRF(ficha, estado, posiciones)
-    estadoN = estado
+    
     if valido:
         posX, posY = c, d
         a = ficha.obtenerPosicion()[0]
@@ -1625,7 +1656,7 @@ def mover_RDRF(ficha, estado, posiciones):
         return posX, posY, estadoN
     else:
         print('Movimiento no válido')
-        Notifier.notify('Movimiento no válido', title='Error', sound='default')
+        #Notifier.notify('Movimiento no válido', title='Error', sound='default')
         return -1, -1, estadoN
 
 # Actualizar estado del juego
@@ -1635,11 +1666,13 @@ def actualizar_estado_RDRF(estado, xi, yi, xf, yf):
     estado.get_dado().esperar_lanzamiento()
 
     print("Antigua: ", xi, yi, "Nueva: ", xf, yf)
+
+    # Casilla de origen
     estado.get_FR().eliminar_ficha_FR(xi, yi)
     if estado.get_FR().estado_casilla_FR(xi,yi) == 0:
         estado.get_tablero().convertir_en_vacia(xi, yi)
     else:
-        estado.get_tablero().convertir_en_finalista(xi, yi, 'R')
+        estado.get_tablero().permanecer_como_finalista(xi, yi)
     
     # Casilla de destino
     estado.get_FR().adicionar_ficha_FR(xf, yf)
@@ -1720,8 +1753,9 @@ def verificador_RDAF(ficha, estado, posiciones):
 
 # Movimiento de la ficha
 def mover_RDAF(ficha, estado, posiciones):
+    estadoN = copy.deepcopy(estado)
     c, d, valido = verificador_RDAF(ficha, estado, posiciones)
-    estadoN = estado
+    
     if valido:
         posX, posY = c, d
         a = ficha.obtenerPosicion()[0]
@@ -1743,7 +1777,7 @@ def mover_RDAF(ficha, estado, posiciones):
         return posX, posY, estadoN
     else:
         print('Movimiento no válido')
-        Notifier.notify('Movimiento no válido', title='Error', sound='default')
+        #Notifier.notify('Movimiento no válido', title='Error', sound='default')
         return -1, -1, estadoN
 
 # Actualizar estado del juego
@@ -1753,11 +1787,13 @@ def actualizar_estado_RDAF(estado, xi, yi, xf, yf):
     estado.get_dado().esperar_lanzamiento()
 
     print("Antigua: ", xi, yi, "Nueva: ", xf, yf)
+
+    # Casilla de origen
     estado.get_FA().eliminar_ficha_FA(xi, yi)
     if estado.get_FA().estado_casilla_FA(xi,yi) == 0:
         estado.get_tablero().convertir_en_vacia(xi, yi)
     else:
-        estado.get_tablero().convertir_en_finalista(xi, yi, 'A')
+        estado.get_tablero().permancer_como_finalista(xi, yi)
     
     # Casilla de destino
     estado.get_FA().adicionar_ficha_FA(xf, yf)
@@ -1853,8 +1889,9 @@ def verificador_SDRF(ficha, estado, posiciones):
 
 # Movimiento de la ficha
 def mover_SDRF(ficha, estado, posiciones):
+    estadoN = copy.deepcopy(estado)
     c, d, valido = verificador_SDRF(ficha, estado, posiciones)
-    estadoN = estado
+    
     if valido:
         posX, posY = c, d
         a = ficha.obtenerPosicion()[0]
@@ -1876,7 +1913,7 @@ def mover_SDRF(ficha, estado, posiciones):
         return posX, posY, estadoN
     else:
         print('Movimiento no válido')
-        Notifier.notify('Movimiento no válido', title='Error', sound='default')
+        #Notifier.notify('Movimiento no válido', title='Error', sound='default')
         return -1, -1, estadoN
 
 # Actualizar estado del juego
@@ -1886,6 +1923,8 @@ def actualizar_estado_SDRF(estado, xi, yi, xf, yf):
     estado.get_dado().esperar_lanzamiento()
 
     print("Antigua: ", xi, yi, "Nueva: ", xf, yf)
+
+    # Casilla de origen
     estado.get_FR().eliminar_ficha_FR(xi, yi)
     if estado.get_FR().estado_casilla_FR(xi,yi) == 0:
         estado.get_tablero().convertir_en_vacia(xi, yi)
@@ -1986,8 +2025,9 @@ def verificador_SDAF(ficha, estado, posiciones):
 
 # Movimiento de la ficha
 def mover_SDAF(ficha, estado, posiciones):
+    estadoN = copy.deepcopy(estado)
     c, d, valido = verificador_SDAF(ficha, estado, posiciones)
-    estadoN = estado
+    
     if valido:
         posX, posY = c, d
         a = ficha.obtenerPosicion()[0]
@@ -2009,7 +2049,7 @@ def mover_SDAF(ficha, estado, posiciones):
         return posX, posY, estadoN
     else:
         print('Movimiento no válido')
-        Notifier.notify('Movimiento no válido', title='Error', sound='default')
+        #Notifier.notify('Movimiento no válido', title='Error', sound='default')
         return -1, -1, estadoN
 
 # Actualizar estado del juego
@@ -2019,6 +2059,8 @@ def actualizar_estado_SDAF(estado, xi, yi, xf, yf):
     estado.get_dado().esperar_lanzamiento()
 
     print("Antigua: ", xi, yi, "Nueva: ", xf, yf)
+
+    # Casilla de origen
     estado.get_FA().eliminar_ficha_FA(xi, yi)
     if estado.get_FA().estado_casilla_FA(xi,yi) == 0:
         estado.get_tablero().convertir_en_vacia(xi, yi)
